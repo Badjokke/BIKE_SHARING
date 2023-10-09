@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+  backend:
+    build:
+      context: bike_sharing
+    environment:
+      MYSQL_HOST: db
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - react-spring
+      - spring-mysql
+    depends_on:
+    - db
+    ports:
+      - '8080:8080'
+    restart: always
+
+  db:
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=mydatabase'
+      - 'MYSQL_PASSWORD=secret'
+      - 'MYSQL_ROOT_PASSWORD=verysecret'
+      - 'MYSQL_USER=myuser'
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - spring-mysql
+    ports:
+      - '3306'
+
+  frontend:
+    build:
+      context: 'bike_sharing_ui'
+      args:
+        REACT_APP_API_BASE_URL:  http://127.0.0.1:8080/
+
+    ports:
+      - '3000:80'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - react-spring
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  db-data: {}
+
+networks:
+  react-spring: {}
+  spring-mysql: {}
