@@ -1,7 +1,9 @@
 package com.example.bike_sharing.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -14,7 +16,13 @@ public class User {
     /**
      * Unique identifier.
      */
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    /*
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(columnDefinition = "VARCHAR(36)")
+    @JdbcTypeCode(SqlTypes.VARCHAR)*/
     private final int id;
     /**
      * Full name of the user.
