@@ -85,7 +85,11 @@ paths:
       summary: Invalidates user token
       description: ''
       operationId: logoutUser
-      parameters: []
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
       responses:
         default:
           description: successful operation

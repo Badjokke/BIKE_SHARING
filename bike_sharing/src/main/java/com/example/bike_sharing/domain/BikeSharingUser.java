@@ -3,27 +3,25 @@ package com.example.bike_sharing.domain;
 import jakarta.persistence.*;
 
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Represents a single user of the service.
  */
 @Entity
-public class User {
+@Table(name="Users")
+public class BikeSharingUser {
+
     /**
-     * Unique identifier.
+     * Unique key of table
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    /*
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(columnDefinition = "VARCHAR(36)")
-    @JdbcTypeCode(SqlTypes.VARCHAR)*/
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     /**
      * Full name of the user.
      */
     private String name;
+
+    private String password;
     /**
      * Email address of the user, used for log in.
      */
@@ -33,16 +31,28 @@ public class User {
      */
     private Role role;
 
-    public User(String name, String emailAddress, Role role) {
+    public BikeSharingUser(Long id, String name, String emailAddress, Role role, String password) {
         this.name = name;
         this.emailAddress = emailAddress;
         this.role = role;
+        this.id = id;
+        this.password = password;
+    }
+    public BikeSharingUser(String name, String emailAddress, Role role, String password) {
+        this.name = name;
+        this.emailAddress = emailAddress;
+        this.role = role;
+        this.password = password;
+    }
+    public BikeSharingUser(String name, String emailAddress){
+        this.name = name;
+        this.emailAddress = emailAddress;
     }
 
-    public User() {
+    public BikeSharingUser() {
     }
 
-
+    public String getPassword(){return this.password;}
     public Long getId() {
         return id;
     }
@@ -64,7 +74,7 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User user)) return false;
+        if (!(o instanceof BikeSharingUser user)) return false;
         return Objects.equals(id, user.id) && Objects.equals(name, user.name) && Objects.equals(emailAddress, user.emailAddress) && role == user.role;
     }
 
