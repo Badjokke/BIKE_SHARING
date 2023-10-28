@@ -9,6 +9,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/bikeservice
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=verysecret
+      - AUTH_URL=ahojsvete
     networks:
       - react-spring
       - spring-mysql

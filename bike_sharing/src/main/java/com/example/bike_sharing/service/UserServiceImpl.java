@@ -1,6 +1,7 @@
 package com.example.bike_sharing.service;
 
 import com.example.bike_sharing.authentication.OAuthService;
+import com.example.bike_sharing.configuration.AuthConfiguration;
 import com.example.bike_sharing.crypto.DefaultEncryption;
 import com.example.bike_sharing.crypto.EncryptionEngine;
 import com.example.bike_sharing.domain.BikeSharingUser;
@@ -18,7 +19,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final OAuthService oAuthService;
-
     private final EncryptionEngine engine;
     UserServiceImpl(UserRepository userRepository, OAuthService oAuthService){
         this.oAuthService = oAuthService;
@@ -29,27 +29,22 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public UserServiceStatus registerUser(UserCreate userRegistrationDto) {
-        final String email = userRegistrationDto.getEmail();
-        String password = userRegistrationDto.getPassword();
+    public UserServiceStatus registerUser(String email, String userName, String password ) {
         //nonsense email - kill the request
         if(!isUserEmailValid(email)){
             return UserServiceStatus.INVALID_USER_ARGUMENTS;
         }
-        final String userName = userRegistrationDto.getUsername();
         if(userExists(email)){
             return UserServiceStatus.USER_EXISTS;
         }
         password = engine.generateHash(password);
         this.userRepository.save(new BikeSharingUser(userName,email, BikeSharingUser.Role.REGULAR,password));
+        String token = this.oAuthService.generateToken(userName,email);
         return UserServiceStatus.USER_CREATED;
     }
 
     @Override
-    public UserServiceStatus loginUser(UserLogin userLoginDto) {
-        final String email = userLoginDto.getEmail();
-        final String password = userLoginDto.getPassword();
-
+    public UserServiceStatus loginUser(String email, String password) {
         BikeSharingUser user = this.userRepository.findUserByEmailAddress(email);
         if(user == null)
             return UserServiceStatus.USER_LOGIN_FAILED;

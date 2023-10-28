@@ -12,8 +12,8 @@ import java.util.List;
 public interface UserService {
 
 
-    UserServiceStatus registerUser(UserCreate userRegistrationDto);
-    UserServiceStatus loginUser(UserLogin userLoginDto);
+    UserServiceStatus registerUser(String email, String userName, String password);
+    UserServiceStatus loginUser(String email, String password);
     UserServiceStatus logoutUser(String token);
     BikeSharingUser fetchUserByEmail(String emailAddress);
 

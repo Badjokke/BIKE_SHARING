@@ -28,7 +28,7 @@ tags:
   - name: user
     description: Operations about user
 paths:
-  /user:
+  /user/register:
     post:
       tags:
         - user
@@ -121,10 +121,15 @@ components:
         name: user
     UserCreate:
       type: object
+      required:
+        - username
+        - email
+        - password
       properties:
         username:
           type: string
           example: 'username'
+
         email:
           type: string
           example: 'user@user.com'

@@ -37,6 +37,7 @@ public class AuthController {
      */
     @PostMapping("/login")
     ResponseEntity<String> handleSingIn(@RequestBody User user) {
+
         return oAuth.generateJwt(user.getName(), false);
     }
 
