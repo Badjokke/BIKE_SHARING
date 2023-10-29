@@ -1,17 +1,19 @@
 package cz.zcu.fav.kiv.authenticator.service;
 
+import cz.zcu.fav.kiv.authenticator.dials.StatusCodes;
 import cz.zcu.fav.kiv.authenticator.entit.User;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface IAuth {
 
-    ResponseEntity<String> validateJwt(String token);
+    StatusCodes validateJwt(HttpHeaders headers);
 
-    ResponseEntity<String> generateJwt(String userName, boolean refreshToken);
+    List<String> generateJwt(String userName, boolean refreshToken);
 
-    ResponseEntity<String> logout(User user);
+    StatusCodes logout(User user);
 
-    ResponseEntity<String> refreshToken(HttpHeaders headers);
 }
 

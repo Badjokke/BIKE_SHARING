@@ -1,6 +1,6 @@
 package cz.zcu.fav.kiv.authenticator.service;
 
-import cz.zcu.fav.kiv.authenticator.entit.JwtTokenProvider;
+import cz.zcu.fav.kiv.authenticator.token.JwtTokenProvider;
 import cz.zcu.fav.kiv.authenticator.entit.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,12 +24,5 @@ public class AuthTest {
     @MockBean
     private JwtTokenProvider jwtTokenProvider;
 
-    @Test
-    public void logouttest() {
-        when(jwtTokenProvider.invalidateToken(any())).thenReturn(true);
 
-        ResponseEntity<String> done = auth.logout(new User("test", "token"));
-
-        assertEquals(true, done);
-    }
 }

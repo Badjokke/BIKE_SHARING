@@ -29,9 +29,10 @@ public class OAuthServiceImpl implements OAuthService, UserDetailsService {
         RequestBuilder<String> requestBuilder = new HttpRequestBuilder<>(authConfiguration.getGENERATE_TOKEN_ENDPOINT());
         Map<String,Object> body = new HashMap<>();
         body.put("name",userEmail);
-        Map<String,String> headers = new HashMap<>();
+        Map<String,String> headers = new HashMap<>(); 
         ResponseEntity<String> response = requestBuilder.sendPostRequest(headers,body);
         String tmpBody = response.getBody();
+        this.authenticate(tmpBody);
         return null;
     }
 
@@ -40,9 +41,12 @@ public class OAuthServiceImpl implements OAuthService, UserDetailsService {
 
     }
 
-    @Override
     public ResponseEntity<String> authenticate(String token) {
-        return ResponseEntity.status(200).body("{\"token\":\"ahoj_svete\"}");
+        RequestBuilder<String> requestBuilder = new HttpRequestBuilder<>(authConfiguration.getVERIFY_TOKEN_ENDPOINT());
+        Map<String,String> headers = new HashMap<>();
+        headers.put("Authorization","Bearer "+token);
+        ResponseEntity<String> response = requestBuilder.sendPostRequest(headers,new HashMap<>());
+        return response;
     }
 
     @Override

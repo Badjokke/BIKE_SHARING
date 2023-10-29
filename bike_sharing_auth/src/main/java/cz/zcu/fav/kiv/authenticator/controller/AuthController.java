@@ -1,5 +1,6 @@
 package cz.zcu.fav.kiv.authenticator.controller;
 
+import com.google.gson.Gson;
 import cz.zcu.fav.kiv.authenticator.dials.StatusCodes;
 import cz.zcu.fav.kiv.authenticator.entit.User;
 import cz.zcu.fav.kiv.authenticator.service.IAuth;
@@ -14,6 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Endpoints of authenticator application
  * @version 1.0
@@ -25,8 +30,12 @@ public class AuthController {
     /**
      * Instance of oAuth service
      */
-    @Autowired
-    private IAuth oAuth;
+    private final IAuth oAuth;
+
+    public AuthController(IAuth oAuth){
+        this.oAuth = oAuth;
+    }
+
 
     /**
      * endpoint for login user
@@ -37,8 +46,8 @@ public class AuthController {
      */
     @PostMapping("/login")
     ResponseEntity<String> handleSingIn(@RequestBody User user) {
-
-        return oAuth.generateJwt(user.getName(), false);
+        Map<String,String> body = this.generateTokens(user);
+        return ResponseEntity.status(200).body(new Gson().toJson(body));
     }
 
     /**
@@ -50,13 +59,8 @@ public class AuthController {
      */
     @PostMapping(value = "/authenticate", produces =  MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> authenticate(@RequestHeader HttpHeaders headers) {
-        final String authHeader = headers.getFirst(HttpHeaders.AUTHORIZATION);
-        if(authHeader == null || !authHeader.startsWith("Bearer")) {
-            //user request does not have authorization-bearer key value pair - kill it
-            return ResponseEntity.status(HttpStatus.valueOf(StatusCodes.USER_TOKEN_INVALID.getStatusCode()))
-                    .body(StatusCodes.USER_TOKEN_INVALID.getLabel());
-        }
-        return oAuth.validateJwt(authHeader);
+        StatusCodes validationResult =  oAuth.validateJwt(headers);
+        return ResponseEntity.status(validationResult.getStatusCode()).body(new Gson().toJson(validationResult.getLabel()));
     }
 
     /**
@@ -68,7 +72,8 @@ public class AuthController {
      */
     @PostMapping(value="/logout",produces = "application/json")
     ResponseEntity<String> logout(@RequestBody User user) {
-        return oAuth.logout(user);
+        StatusCodes validationResult =  oAuth.logout(user);
+        return ResponseEntity.status(validationResult.getStatusCode()).body(new Gson().toJson(validationResult.getLabel()));
     }
 
     /**
@@ -79,8 +84,21 @@ public class AuthController {
      *                      401               - send token is in valid
      */
     @GetMapping(value = "/refresh", produces = "application/json")
-    ResponseEntity<String> refreshToken(@RequestHeader HttpHeaders headers) {
-        return oAuth.refreshToken(headers);
+    ResponseEntity<String> refreshToken(@RequestHeader HttpHeaders headers, User user) {
+        Map<String,String> body = this.generateTokens(user);
+        return ResponseEntity.status(200).body(new Gson().toJson(body));
     }
+
+
+
+    private Map<String,String> generateTokens(User user){
+        List<String> tokens = oAuth.generateJwt(user.getName(), true);
+        Map<String,String> body = new HashMap<>();
+        body.put("token",tokens.get(0));
+        body.put("refresh_token",tokens.get(1));
+        return body;
+    }
+
+
 
 }
