@@ -27,6 +27,8 @@ servers:
 tags:
   - name: user
     description: Operations about user
+  - name: oauth2
+    description: Oauth login
 paths:
   /user/register:
     post:
@@ -94,6 +96,20 @@ paths:
         default:
           description: successful operation
 
+  /oauth2/login/google:
+    get:
+      tags:
+        - oauth2
+      summary: Login via google oauth service
+      description: Login with google service
+      operationId: oauth2login
+      responses:
+        '200':
+          description: successful login via google
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLoggedIn'
 components:
   schemas:
     User:

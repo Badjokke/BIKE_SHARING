@@ -4,7 +4,10 @@ public class WhiteList {
 
         public static final String[] NO_AUTHORIZATION_NEEDED = new String[]{
                 "/user/register",
-                "/user/login"
+                "/user/login",
+                "/login/google",
+                "/login",
+                "/favicon.ico"
 
         };
 }
