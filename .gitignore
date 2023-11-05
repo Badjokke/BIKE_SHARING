@@ -1,6 +1,7 @@
 HELP.md
 bike_sharing/target/
 bike_sharing_auth/target/
+bike_sharing_location/target/
 bike_sharing_ui/node_modules
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

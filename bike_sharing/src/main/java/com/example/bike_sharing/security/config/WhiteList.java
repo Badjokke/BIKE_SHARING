@@ -7,7 +7,8 @@ public class WhiteList {
                 "/user/login",
                 "/login/google",
                 "/login",
-                "/favicon.ico"
+                "/favicon.ico",
+                "/gs-guide-websocket"
 
         };
 }
