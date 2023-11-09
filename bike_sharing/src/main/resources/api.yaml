@@ -96,6 +96,24 @@ paths:
         default:
           description: successful operation
 
+  /user/change_role:
+    put:
+      tags:
+        - user
+      summary: Changes role of user
+      description: Changes the current role of user (regular or serviceman)
+      requestBody:
+        description: User role change dto. Email is the email of the user, role maps to enum (1) serviceman 0 regular
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserChangeRole'
+      responses:
+        '200':
+          description: successful operation
+        '401':
+          description: unauthorized
+
   /oauth2/login/google:
     get:
       tags:
@@ -173,6 +191,16 @@ components:
         password:
           example: "12345"
           type: string
+    UserChangeRole:
+      type: object
+      properties:
+        email:
+          example: "user@user.com"
+          type: string
+        role:
+          example: 1
+          type: integer
+
     UserLoggedIn:
       type: object
       properties:
