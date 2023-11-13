@@ -2,18 +2,13 @@ package cz.zcu.fav.kiv.authenticator.service;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
+import com.google.gson.Gson;
 import com.sun.security.auth.UserPrincipal;
 import cz.zcu.fav.kiv.authenticator.dials.StatusCodes;
-import cz.zcu.fav.kiv.authenticator.token.JwtTokenProvider;
 import cz.zcu.fav.kiv.authenticator.entit.User;
+import cz.zcu.fav.kiv.authenticator.http_util.HttpRequestBuilder;
+import cz.zcu.fav.kiv.authenticator.http_util.RequestBuilder;
 import cz.zcu.fav.kiv.authenticator.token.TokenProvider;
-import cz.zcu.fav.kiv.authenticator.utils.JSONBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,12 +31,8 @@ public class Auth implements IAuth {
      * Class which manage JWT token
      */
     private final TokenProvider jwtTokenProvider;
-    private final HttpTransport httpTransport;
-    private final JsonFactory JsonFactory ;
     public Auth(TokenProvider jwtTokenProvider){
         this.jwtTokenProvider = jwtTokenProvider;
-        this.httpTransport = new NetHttpTransport();
-        this.JsonFactory = GsonFactory.getDefaultInstance();
     }
 
 
@@ -78,12 +69,16 @@ public class Auth implements IAuth {
     }
 
     private StatusCodes validateGoogleToken(String token) throws GeneralSecurityException, IOException {
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(this.httpTransport,this.JsonFactory).setAudience(List.of("286479622083-89aferh4mb7o51r4sbtsbcekf18177c6.apps.googleusercontent.com")).build();
-        GoogleIdToken googleToken = verifier.verify(token);
-        if(googleToken != null){
-            return StatusCodes.USER_TOKEN_VALID;
+        final String GOOGLE_OAUTH_TOKEN_URL = "https://www.googleapis.com/oauth2/v3/tokeninfo?access_token="+token;
+        RequestBuilder<String> requestBuilder = new HttpRequestBuilder<>(GOOGLE_OAUTH_TOKEN_URL);
+        Map<String,Object> params = new HashMap<>();
+        params.put("access_token",token);
+        ResponseEntity<String> response = requestBuilder.sendGetRequest(new HashMap<>(),params);
+        Map<String,String> body = new Gson().fromJson(response.getBody(), Map.class);
+        if(body == null || body.isEmpty() || body.containsKey("error_description")){
+            return StatusCodes.USER_TOKEN_INVALID;
         }
-        return StatusCodes.USER_TOKEN_INVALID;
+        return StatusCodes.USER_TOKEN_VALID;
     }
 
     /**
