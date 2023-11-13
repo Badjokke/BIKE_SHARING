@@ -21,6 +21,6 @@ public class OAuth2Service extends DefaultOAuth2UserService {
         OAuth2User user =  super.loadUser(userRequest);
         String token = userRequest.getAccessToken().getTokenValue();
         oAuthService.authenticate(token);
-        return new OathUser(user);
+        return new OathUser(user,token);
     }
 }

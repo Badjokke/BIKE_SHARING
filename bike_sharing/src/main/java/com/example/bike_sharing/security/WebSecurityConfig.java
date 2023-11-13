@@ -3,6 +3,7 @@ package com.example.bike_sharing.security;
 
 import com.example.bike_sharing.authentication.OAuth2Service;
 import com.example.bike_sharing.authentication.OAuthService;
+import com.example.bike_sharing.model.OathUser;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,7 +41,8 @@ public class WebSecurityConfig {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)  {
                         try {
-                            response.getWriter().write("ahoooooooj");
+                            OathUser user = (OathUser) authentication.getPrincipal();
+                            response.getWriter().write(user.getAccessToken());
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }

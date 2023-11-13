@@ -8,8 +8,10 @@ import java.util.Map;
 
 public class OathUser implements OAuth2User {
     private final OAuth2User oauth2User;
-    public OathUser(OAuth2User oauth2User) {
+    private final String accessToken;
+    public OathUser(OAuth2User oauth2User, String accessToken) {
         this.oauth2User = oauth2User;
+        this.accessToken = accessToken;
     }
     @Override
     public Map<String, Object> getAttributes() {
@@ -28,4 +30,5 @@ public class OathUser implements OAuth2User {
     public String getEmail() {
         return oauth2User.getAttribute("email");
     }
+    public String getAccessToken(){return this.accessToken;}
 }
