@@ -15,15 +15,6 @@ public class OathController implements Oauth2Api{
     public ResponseEntity<UserLoggedIn> oauth2login() {
         return null;
     }
-    @RequestMapping("/login")
-    public String renderLogin(){
-        return "<div>\n" +
-                "    <h2>Please Login</h2>\n" +
-                "    <br/>\n" +
-                "</div>\n" +
-                "<div>\n" +
-                "    <h4><a th:href=\"/@{/oauth2/login/google}\">Login with Google</a></h4>   \n" +
-                "</div>\n";
-    }
+
 
 }

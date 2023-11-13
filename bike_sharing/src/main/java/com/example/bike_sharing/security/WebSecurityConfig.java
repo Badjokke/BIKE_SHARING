@@ -39,7 +39,11 @@ public class WebSecurityConfig {
                 .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer.userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oAuth2Service)).successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)  {
-                        System.out.println("fjdklgjsdklgdfjlgdjdfgkl");
+                        try {
+                            response.getWriter().write("ahoooooooj");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

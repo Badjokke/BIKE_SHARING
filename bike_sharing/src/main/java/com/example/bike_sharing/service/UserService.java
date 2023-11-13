@@ -13,6 +13,7 @@ public interface UserService {
 
 
     UserServiceStatus registerUser(String email, String userName, String password);
+
     UserServiceStatus loginUser(String email, String password);
     UserServiceStatus logoutUser(String token);
     BikeSharingUser fetchUserByEmail(String emailAddress);

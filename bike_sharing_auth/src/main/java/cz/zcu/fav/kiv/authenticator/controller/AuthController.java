@@ -59,7 +59,7 @@ public class AuthController {
      */
     @PostMapping(value = "/authenticate", produces =  MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> authenticate(@RequestHeader HttpHeaders headers) {
-        StatusCodes validationResult =  oAuth.validateJwt(headers);
+        StatusCodes validationResult =  oAuth.validateToken(headers);
         return ResponseEntity.status(validationResult.getStatusCode()).body(new Gson().toJson(validationResult.getLabel()));
     }
 

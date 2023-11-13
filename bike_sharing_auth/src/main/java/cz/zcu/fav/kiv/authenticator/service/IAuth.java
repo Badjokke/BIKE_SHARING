@@ -9,8 +9,7 @@ import java.util.List;
 
 public interface IAuth {
 
-    StatusCodes validateJwt(HttpHeaders headers);
-
+    StatusCodes validateToken(HttpHeaders headers);
     List<String> generateJwt(String userName, boolean refreshToken);
 
     StatusCodes logout(User user);

@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService{
         }
         password = engine.generateHash(password);
         this.userRepository.save(new BikeSharingUser(userName,email, BikeSharingUser.Role.REGULAR,password));
-        String token = this.oAuthService.generateToken(userName,email);
+        //String token = this.oAuthService.generateToken(userName,email);
         return UserServiceStatus.USER_CREATED;
     }
 
