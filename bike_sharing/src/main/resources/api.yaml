@@ -114,6 +114,33 @@ paths:
         '401':
           description: unauthorized
 
+  /user/rides:
+      get:
+        tags:
+          - user
+        summary: returns all rides of user
+        description: get request for ride history
+          called by user service
+        operationId: userRidesList
+        parameters:
+          - in: query
+            name: userEmail
+            required: true
+            schema:
+              type: string
+            description: email of user whose ride history is requested
+        responses:
+          '200':
+            description: successful fetch of user rides
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Rides'
+          '401':
+            description: User is not logged in
+
+
+
   /oauth2/login/google:
     get:
       tags:
@@ -198,8 +225,10 @@ components:
           example: "user@user.com"
           type: string
         role:
-          example: 1
+          example: RIDEABLE
           type: integer
+          enum: [ 0, 1 ]
+          x-enum-varnames: [RIDEABLE, SERVICE]
 
     UserLoggedIn:
       type: object
@@ -207,3 +236,57 @@ components:
         token:
           type: "string"
           example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+
+    Bike:
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        location:
+          type: object
+          properties:
+            longitude:
+              type: number
+              example: 4,23
+            latitude:
+              type: number
+              example: 5
+        state:
+          type: integer
+          enum: [ 0, 1 ]
+          x-enum-varnames: [ RIDEABLE, SERVICE ]
+
+    Ride:
+      properties:
+        bike:
+          $ref: '#/components/schemas/Bike'
+        startStand:
+          $ref: '#/components/schemas/ObjectLocation'
+        endStand:
+          $ref: '#/components/schemas/ObjectLocation'
+        duration:
+          type: string
+          example: date
+
+
+    ObjectLocation:
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        location:
+          type: object
+          properties:
+            longitude:
+              type: number
+              example: 4,23
+            latitude:
+              type: number
+              example: 5
+
+    Rides:
+      type: array
+      items:
+        $ref: '#/components/schemas/Ride'

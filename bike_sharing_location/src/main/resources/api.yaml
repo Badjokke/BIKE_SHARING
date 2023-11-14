@@ -189,31 +189,6 @@ paths:
                     type: string
                     example: "Cannot ride bike {bikeId}. Bike is being serviced or someone else is using it."
 
-  /ride/list:
-    get:
-      tags:
-        - bikes
-      summary: Returns location of stand on map
-      description: get request for fetching location of concrete stand or all of them
-        WEB SOCKET ENDPOINT
-      operationId: userRidesList
-      parameters:
-        - in: query
-          name: userEmail
-          required: true
-          schema:
-            type: string
-          description: email of user whose ride history is requested
-      responses:
-        '200':
-          description: successful fetch of user rides
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Rides'
-        '401':
-          description: User is not logged in
-
 
 components:
   schemas:
@@ -248,7 +223,8 @@ components:
           example: 2
         state:
           type: integer
-          enum: [RIDEABLE, SERVICE]
+          enum: [ 0, 1 ]
+          x-enum-varnames: [ RIDEABLE, SERVICE ]
 
 
     ObjectLocation:
@@ -283,25 +259,13 @@ components:
               example: 5
         state:
           type: integer
-          enum: [RIDEABLE, SERVICE]
+          enum: [ 0, 1 ]
+          x-enum-varnames: [ RIDEABLE, SERVICE ]
     Bikes:
       type: array
       items:
         $ref: '#/components/schemas/Bike'
 
-    Ride:
-      properties:
-        bike:
-          $ref: '#/components/schemas/Bike'
-        startStand:
-          $ref: '#/components/schemas/ObjectLocation'
-        endStand:
-          $ref: '#/components/schemas/ObjectLocation'
-
-    Rides:
-      type: array
-      items:
-        $ref: '#/components/schemas/Ride'
 
     ObjectsLocation:
       type: array
