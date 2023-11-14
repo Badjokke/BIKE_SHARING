@@ -1,14 +1,15 @@
-package com.example.bike_sharing.service;
+package com.example.bike_sharing.service.user;
 
-import com.example.bike_sharing.authentication.OAuthService;
-import com.example.bike_sharing.configuration.AuthConfiguration;
+import com.example.bike_sharing.mappers.BikeUserToUser;
+import com.example.bike_sharing.mappers.ModelToDto;
+import com.example.bike_sharing.model.User;
+import com.example.bike_sharing.service.authentication.OAuthService;
 import com.example.bike_sharing.crypto.DefaultEncryption;
 import com.example.bike_sharing.crypto.EncryptionEngine;
 import com.example.bike_sharing.domain.BikeSharingUser;
 import com.example.bike_sharing.enums.UserServiceStatus;
-import com.example.bike_sharing.model.UserCreate;
-import com.example.bike_sharing.model.UserLogin;
 import com.example.bike_sharing.repository.UserRepository;
+import com.example.bike_sharing.service.location.LocationService;
 import com.example.bike_sharing.validator.EmailValidator;
 import org.springframework.stereotype.Service;
 
@@ -20,40 +21,41 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final OAuthService oAuthService;
     private final EncryptionEngine engine;
-    UserServiceImpl(UserRepository userRepository, OAuthService oAuthService){
+    private final LocationService locationService;
+    UserServiceImpl(UserRepository userRepository, OAuthService oAuthService, LocationService locationService){
         this.oAuthService = oAuthService;
         this.userRepository = userRepository;
         this.engine = new DefaultEncryption();
+        this.locationService = locationService;
     }
 
 
 
     @Override
-    public UserServiceStatus registerUser(String email, String userName, String password ) {
+    public String registerUser(String email, String userName, String password ) {
         //nonsense email - kill the request
         if(!isUserEmailValid(email)){
-            return UserServiceStatus.INVALID_USER_ARGUMENTS;
+            return null;
         }
         if(userExists(email)){
-            return UserServiceStatus.USER_EXISTS;
+            return null;
         }
         password = engine.generateHash(password);
         this.userRepository.save(new BikeSharingUser(userName,email, BikeSharingUser.Role.REGULAR,password));
-        //String token = this.oAuthService.generateToken(userName,email);
-        return UserServiceStatus.USER_CREATED;
+        return this.oAuthService.generateToken(userName,email);
     }
 
     @Override
-    public UserServiceStatus loginUser(String email, String password) {
+    public String loginUser(String email, String password) {
         BikeSharingUser user = this.userRepository.findUserByEmailAddress(email);
         if(user == null)
-            return UserServiceStatus.USER_LOGIN_FAILED;
+            return null;
 
         final String passwordHash = engine.generateHash(password);
         if(!passwordHash.equals(user.getPassword()))
-            return UserServiceStatus.USER_LOGIN_FAILED;
+            return null;
 
-        return UserServiceStatus.USER_LOGGED_IN;
+        return this.oAuthService.generateToken(user.getName(),email);
     }
 
     @Override
@@ -81,28 +83,48 @@ public class UserServiceImpl implements UserService{
     }
     @Override
     /**
-     *
      * @param emailAddress
      * @return
      */
     public BikeSharingUser fetchUserByEmail(String emailAddress){
         return this.userRepository.findUserByEmailAddress(emailAddress);
     }
-
+    private List<BikeSharingUser> fetchUsers(BikeSharingUser.Role role){
+       return this.userRepository.findBikeSharingUserByRole(role);
+    }
     @Override
-    public List<BikeSharingUser> fetchAllRegularUsers() {
-        return null;
+    public List<User> fetchAllRegularUsers() {
+        ModelToDto<BikeSharingUser,User> dtoMapper = new BikeUserToUser();
+        List<BikeSharingUser> bikeSharingUsers = this.fetchUsers(BikeSharingUser.Role.REGULAR);
+        return dtoMapper.mapToDto(bikeSharingUsers);
     }
 
     @Override
-    public List<BikeSharingUser> fetchAllServiceman() {
-        return null;
+    public List<User> fetchAllServiceman() {
+        ModelToDto<BikeSharingUser,User> dtoMapper = new BikeUserToUser();
+        List<BikeSharingUser> bikeSharingUsers = this.fetchUsers(BikeSharingUser.Role.SERVICEMAN);
+        return dtoMapper.mapToDto(bikeSharingUsers);
     }
 
     @Override
-    public UserServiceStatus changeUserRole(BikeSharingUser.Role role) {
-        return null;
+    public UserServiceStatus changeUserRole(String userEmail, BikeSharingUser.Role role) {
+        if(userEmail == null || role == null){
+            return UserServiceStatus.INVALID_CHANGE_ROLE_ARGUMENTS;
+        }
+        BikeSharingUser userInfo = this.fetchUserByEmail(userEmail);
+        if(userInfo.getRole() == role){
+            return UserServiceStatus.USER_ROLE_CHANGED;
+        }
+        int rowsAffected = this.userRepository.changeUserRole(userInfo.getId(),role);
+        if(rowsAffected == 0){
+            return UserServiceStatus.ROLE_CHANGE_FAILED;
+        }
+
+        return UserServiceStatus.USER_ROLE_CHANGED;
     }
+
+
+
 
 
 }

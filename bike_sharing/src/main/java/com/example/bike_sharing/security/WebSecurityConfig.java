@@ -1,10 +1,9 @@
 package com.example.bike_sharing.security;
 
 
-import com.example.bike_sharing.authentication.OAuth2Service;
-import com.example.bike_sharing.authentication.OAuthService;
+import com.example.bike_sharing.service.authentication.OAuth2Service;
+import com.example.bike_sharing.service.authentication.OAuthService;
 import com.example.bike_sharing.model.OathUser;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +35,6 @@ public class WebSecurityConfig {
         http
                 .csrf(csfr->csfr.disable())
                 .cors(cors->cors.disable())
-                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry.requestMatchers("/oauth2/*","/gs-guide-websocket").permitAll())
                 .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer.userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oAuth2Service)).successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)  {

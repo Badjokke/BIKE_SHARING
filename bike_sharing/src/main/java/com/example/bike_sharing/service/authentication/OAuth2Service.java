@@ -1,7 +1,7 @@
-package com.example.bike_sharing.authentication;
+package com.example.bike_sharing.service.authentication;
 
 import com.example.bike_sharing.model.OathUser;
-import com.example.bike_sharing.service.UserService;
+import com.example.bike_sharing.service.user.UserService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;

@@ -95,7 +95,6 @@ public class AuthController {
         List<String> tokens = oAuth.generateJwt(user.getName(), true);
         Map<String,String> body = new HashMap<>();
         body.put("token",tokens.get(0));
-        body.put("refresh_token",tokens.get(1));
         return body;
     }
 

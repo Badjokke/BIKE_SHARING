@@ -97,10 +97,18 @@ public class BikeSharingUser {
         /**
          * Regular user
          */
-        REGULAR,
+        REGULAR("REGULAR"),
         /**
          * Serviceman, can do everything that regular users but also maintains bikes
          */
-        SERVICEMAN,
+        SERVICEMAN("SERVICEMAN");
+        private final String value;
+
+        Role(String value){
+            this.value = value;
+        }
+        public String getValue(){
+            return this.value;
+        }
     }
 }

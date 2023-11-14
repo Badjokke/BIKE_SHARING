@@ -49,7 +49,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserCreated'
+                $ref: '#/components/schemas/UserLoggedIn'
         '409':
           description: user exists
           content:
@@ -139,6 +139,28 @@ paths:
           '401':
             description: User is not logged in
 
+  /user/list:
+    get:
+      tags:
+        - user
+      summary: returns all users
+      operationId: userList
+      parameters:
+        - in: query
+          name: serviceMen
+          required: true
+          schema:
+            type: integer
+          description: 1/0 flag if only servicemen should be fetched. 1 = true - fetches serviceman
+      responses:
+        '200':
+          description: successful fetch of user rides
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        '401':
+          description: User is not logged in
 
 
   /oauth2/login/google:
@@ -170,16 +192,13 @@ components:
         email:
           type: string
           example: john@email.com
-        password:
-          type: string
-          example: '12345'
         role:
-          type: integer
-          description: status of user of bike sharing system
-          format: int32
-          example: 1
-      xml:
-        name: user
+          example: "SERVICEMAN"
+          type: string
+          enum: [ "SERVICEMAN", "REGULAR" ]
+          x-enum-varnames: [ SERVICEMAN, REGULAR ]
+
+
     UserCreate:
       type: object
       required:
@@ -197,18 +216,14 @@ components:
         password:
           type: string
           example: '12345'
-    UserCreated:
-      type: object
-      properties:
-        message:
-          type: string
-          example: "user username created"
+
     UserExists:
       type: object
       properties:
         message:
           type: string
           example: "user with email user@user.com exists"
+
     UserLogin:
       type: object
       properties:
@@ -218,6 +233,7 @@ components:
         password:
           example: "12345"
           type: string
+
     UserChangeRole:
       type: object
       properties:
@@ -225,10 +241,10 @@ components:
           example: "user@user.com"
           type: string
         role:
-          example: RIDEABLE
-          type: integer
-          enum: [ 0, 1 ]
-          x-enum-varnames: [RIDEABLE, SERVICE]
+          example: "SERVICEMAN"
+          type: string
+          enum: [ "SERVICEMAN", "REGULAR" ]
+          x-enum-varnames: [ SERVICEMAN, REGULAR ]
 
     UserLoggedIn:
       type: object
@@ -253,8 +269,8 @@ components:
               type: number
               example: 5
         state:
-          type: integer
-          enum: [ 0, 1 ]
+          type: string
+          enum: [ "RIDEABLE", "SERVICE" ]
           x-enum-varnames: [ RIDEABLE, SERVICE ]
 
     Ride:
@@ -290,3 +306,8 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Ride'
+
+    Users:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'

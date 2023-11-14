@@ -1,9 +1,9 @@
-package com.example.bike_sharing.authentication;
+package com.example.bike_sharing.service.authentication;
 
 import com.example.bike_sharing.configuration.AuthConfiguration;
-import com.example.bike_sharing.domain.BikeSharingUser;
 import com.example.bike_sharing.http_util.HttpRequestBuilder;
 import com.example.bike_sharing.http_util.RequestBuilder;
+import com.google.gson.Gson;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -32,8 +31,9 @@ public class OAuthServiceImpl implements OAuthService, UserDetailsService {
         Map<String,String> headers = new HashMap<>(); 
         ResponseEntity<String> response = requestBuilder.sendPostRequest(headers,body);
         String tmpBody = response.getBody();
-        this.authenticate(tmpBody);
-        return null;
+        Map<String,String> responseBody = new Gson().fromJson(tmpBody,Map.class);
+
+        return responseBody.get("token");
     }
 
     @Override

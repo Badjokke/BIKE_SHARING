@@ -8,14 +8,13 @@ public enum UserServiceStatus {
 
     INVALID_USER_ARGUMENTS("Invalid user arguments for registration",400),
     USER_EXISTS("User exists",400),
-    HASH_FAILED("Error occurred while creating user",500),
     USER_CREATED("User successfully created",201),
     USER_LOGGED_IN("User logged in successfully",200),
     USER_LOGIN_FAILED("User login failed",401),
-    USER_CREATION_FAILED("Error occurred while creating user",503),
     USER_LOGGED_OUT("User logged out.",200),
-    TOKEN_REFRESHED("User token refreshed.",200),
-    TOKEN_EXPIRED("User token is expired.",401);
+    INVALID_CHANGE_ROLE_ARGUMENTS("Arguments for role change are invalid!",400),
+    USER_ROLE_CHANGED("Role of user has been changed",200),
+    ROLE_CHANGE_FAILED("Role of a user failed to chagne",500);
 
     private final String label;
     private final int statusCode;

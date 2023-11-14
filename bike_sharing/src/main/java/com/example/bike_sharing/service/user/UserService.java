@@ -1,9 +1,10 @@
-package com.example.bike_sharing.service;
+package com.example.bike_sharing.service.user;
 
 import com.example.bike_sharing.domain.BikeSharingUser;
 import com.example.bike_sharing.domain.BikeSharingUser.Role;
 
 import com.example.bike_sharing.enums.UserServiceStatus;
+import com.example.bike_sharing.model.User;
 import com.example.bike_sharing.model.UserCreate;
 import com.example.bike_sharing.model.UserLogin;
 
@@ -12,15 +13,15 @@ import java.util.List;
 public interface UserService {
 
 
-    UserServiceStatus registerUser(String email, String userName, String password);
+    String registerUser(String email, String userName, String password);
 
-    UserServiceStatus loginUser(String email, String password);
+    String loginUser(String email, String password);
     UserServiceStatus logoutUser(String token);
     BikeSharingUser fetchUserByEmail(String emailAddress);
 
-    List<BikeSharingUser> fetchAllRegularUsers();
-    List<BikeSharingUser> fetchAllServiceman();
+    List<User> fetchAllRegularUsers();
+    List<User> fetchAllServiceman();
 
-    UserServiceStatus changeUserRole(Role role);
+    UserServiceStatus changeUserRole(String userEmail, Role role);
 
 }
