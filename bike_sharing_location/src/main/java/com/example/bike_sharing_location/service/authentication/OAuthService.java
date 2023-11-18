@@ -1,4 +1,4 @@
-package com.example.bike_sharing_location.service;
+package com.example.bike_sharing_location.service.authentication;
 
 import org.springframework.http.ResponseEntity;
 

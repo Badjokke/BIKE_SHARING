@@ -9,7 +9,8 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/bikeservice
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=verysecret
-      - AUTH_URL=ahojsvete
+      - AUTH_SERVICE_URL=http://authenticator:8080
+      - LOCATION_SERVICE_URL=http://location:8080
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID=286479622083-89aferh4mb7o51r4sbtsbcekf18177c6.apps.googleusercontent.com
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET=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
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_SCOPE=email,profile
@@ -29,10 +30,28 @@ services:
       context: bike_sharing_auth
     networks:
       - auth-network
+    ports:
+      - '8083:8080'
+    restart: always
+
+  location:
+    build:
+        context: bike_sharing_location
+    environment:
+      - MYSQL_HOST=db
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/bikeservice
+      - SPRING_DATASOURCE_USERNAME=root
+      - AUTH_SERVICE_URL=http://authenticator:8080
+      - SPRING_DATASOURCE_PASSWORD=verysecret
+    networks:
+      - auth-network
+      - spring-mysql
+      - react-spring
     depends_on:
       - db
+      - authenticator
     ports:
-      - '8082:8080'
+      - '8084:8080'
     restart: always
 
   db:
@@ -67,6 +86,7 @@ services:
 
 volumes:
   db-data: {}
+  db2-data: {}
 
 networks:
   react-spring: {}

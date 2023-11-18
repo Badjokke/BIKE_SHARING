@@ -1,4 +1,4 @@
-package com.example.bike_sharing_location.service;
+package com.example.bike_sharing_location.service.authentication;
 
 import com.example.bike_sharing_location.configuration.AuthConfiguration;
 import com.example.bike_sharing_location.http_util.HttpRequestBuilder;

@@ -2,7 +2,7 @@ package com.example.bike_sharing_location.security;
 
 
 import com.example.bike_sharing_location.security.config.WhiteList;
-import com.example.bike_sharing_location.service.OAuthService;
+import com.example.bike_sharing_location.service.authentication.OAuthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

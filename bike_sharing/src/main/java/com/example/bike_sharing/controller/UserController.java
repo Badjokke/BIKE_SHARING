@@ -23,7 +23,7 @@ public class UserController implements UserApi {
 
     @Override
     @PutMapping("/change_role")
-    public ResponseEntity<Void> userChangeRolePut(UserChangeRole userChangeRole) {
+    public ResponseEntity<Void> changeRole(UserChangeRole userChangeRole) {
         BikeSharingUser.Role role = BikeSharingUser.Role.valueOf(userChangeRole.getRole().getValue());
 
         String email = userChangeRole.getEmail();

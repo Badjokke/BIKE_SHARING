@@ -102,6 +102,7 @@ paths:
         - user
       summary: Changes role of user
       description: Changes the current role of user (regular or serviceman)
+      operationId: changeRole
       requestBody:
         description: User role change dto. Email is the email of the user, role maps to enum (1) serviceman 0 regular
         content:
