@@ -6,7 +6,7 @@ services:
       context: bike_sharing
     environment:
       - MYSQL_HOST=db
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/bikeservice
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/bikeservice?createDatabaseIfNotExist=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=verysecret
       - AUTH_SERVICE_URL=http://authenticator:8080
@@ -21,6 +21,7 @@ services:
     depends_on:
       - db
       - authenticator
+
     ports:
       - '8081:8080'
     restart: always

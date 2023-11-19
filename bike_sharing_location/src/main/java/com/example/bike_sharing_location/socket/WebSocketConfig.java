@@ -13,16 +13,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
-        config.setApplicationDestinationPrefixes("/app");
+        config.enableSimpleBroker("/bike_location");
+        config.enableSimpleBroker("/bike_ride");
+        config.setApplicationDestinationPrefixes("/bike_sharing");
     }
 
    
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/bike").setAllowedOrigins("*");
-        registry.addEndpoint("/stand").setAllowedOrigins("*");
-
+        registry.addEndpoint("/ride").setAllowedOrigins("*");
     }
 
 

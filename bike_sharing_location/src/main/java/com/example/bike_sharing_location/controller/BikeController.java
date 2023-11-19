@@ -26,8 +26,8 @@ public class BikeController implements BikeApi {
         return BikeApi.super.fetchBikes();
     }
 
-    @MessageMapping("/stand")
-    @SendTo("/topic/greetings")
+    @MessageMapping("/bike")
+    @SendTo("/bike_location/location")
     public String greeting(StompMessageWrapper message) throws Exception {
         Thread.sleep(1000); // simulated delay
         return "message";
