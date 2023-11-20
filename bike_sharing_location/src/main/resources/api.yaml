@@ -63,33 +63,33 @@ paths:
                 $ref: '#/components/schemas/StandNotFound'
 
 
-  /bike/change_state:
-    put:
-      tags:
-        - bikes
-      summary: Changes state of bike to serviced/unserviced
-      operationId: changeBikeState
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BikeState'
-      responses:
-        '200':
-          description: successful change of bike state (operation/service)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "State of bike {bike_id} changed to {state}"
-        '401':
-          description: unauthorized attempt to change bike state.
-            User is not a serviceman.
-
+#  /bike/change_state:
+#    put:
+#      tags:
+#        - bikes
+#      summary: Changes state of bike to serviced/unserviced
+#      operationId: changeBikeState
+#      requestBody:
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/BikeState'
+#      responses:
+#        '200':
+#          description: successful change of bike state (operation/service)
+#          content:
+#            application/json:
+#              schema:
+#                type: object
+#                properties:
+#                  message:
+#                    type: string
+#                    example: "State of bike {bike_id} changed to {state}"
+#        '401':
+#          description: unauthorized attempt to change bike state.
+#            User is not a serviceman.
+#
 
   /bike/list:
     get:
@@ -114,8 +114,8 @@ paths:
     get:
       tags:
         - bikes
-      summary: Returns location of stand on map
-      description: get request for fetching location of concrete stand or all of them
+      summary: Returns location of bike(s) on map
+      description: get request for fetching location of concrete bike or all of them
         WEB SOCKET ENDPOINT
       operationId: fetchBikeLocations
       parameters:
@@ -134,7 +134,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ObjectsLocation'
         '404':
-          description: stand with id standId not found
+          description: bike with id bikeId not found
           content:
             application/json:
               schema:
