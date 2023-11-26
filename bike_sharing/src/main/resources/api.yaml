@@ -163,6 +163,32 @@ paths:
         '401':
           description: User is not logged in
 
+  /user/user_info:
+    get:
+        tags:
+          - user
+        summary: returns information about user
+        operationId: userInfo
+        parameters:
+          - in: query
+            name: userEmail
+            required: true
+            schema:
+              type: string
+            description: email of user whose information will be fetched
+        responses:
+          '200':
+            description: user found, sending information
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+          '401':
+            description: Unauthorized request
+          '404':
+            description: user not found
+          '400':
+            description: invalid user email
 
   /oauth2/login/google:
     get:
@@ -276,15 +302,32 @@ components:
 
     Ride:
       properties:
-        bike:
-          $ref: '#/components/schemas/Bike'
-        startStand:
-          $ref: '#/components/schemas/ObjectLocation'
-        endStand:
-          $ref: '#/components/schemas/ObjectLocation'
-        duration:
+        rideId:
+          type: integer
+          format: int64
+          example: 1
+        userId:
+          type: integer
+          format: int64
+          example: 1
+        bikeId:
+          type: integer
+          format: int64
+          example: 1
+        startStandId:
+          type: integer
+          format: int64
+          example: 1
+        endStandId:
+          type: integer
+          format: int64
+          example: 2
+        rideStart:
           type: string
-          example: date
+          format: date-time
+        rideEnd:
+          type: string
+          format: date-time
 
 
     ObjectLocation:

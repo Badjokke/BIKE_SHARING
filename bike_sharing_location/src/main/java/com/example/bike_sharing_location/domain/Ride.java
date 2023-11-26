@@ -15,15 +15,18 @@ public class Ride {
     private Long id;
     @NotNull
     private Long userId;
-    @OneToOne
+    @ManyToOne
+    @NotNull
     @JoinColumn(name="bikeId",referencedColumnName = "id")
     private Bike bike;
 
-    @OneToOne
+    @ManyToOne
+    @NotNull
     @JoinColumn(name="startStandId",referencedColumnName = "id")
     private Stand startStand;
 
-    @OneToOne
+    @ManyToOne
+    @NotNull
     @JoinColumn(name="endStandId",referencedColumnName = "id")
     private Stand endStand;
 

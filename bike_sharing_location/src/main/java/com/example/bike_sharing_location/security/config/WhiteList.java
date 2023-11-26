@@ -4,7 +4,10 @@ public class WhiteList {
 
         public static final String[] NO_AUTHORIZATION_NEEDED = new String[]{
                 "/bike",
-                "/stand"
+                "/stand",
+                "/stand/location",
+                "/ride/list",
+                "/ride/start"
 
         };
 }

@@ -25,7 +25,7 @@ public class OAuthServiceImpl implements OAuthService, UserDetailsService {
 
     @Override
     public String generateToken(String username, String userEmail) {
-        RequestBuilder<String> requestBuilder = new HttpRequestBuilder<>(authConfiguration.getGENERATE_TOKEN_ENDPOINT());
+        RequestBuilder<String> requestBuilder = new HttpRequestBuilder(authConfiguration.getGENERATE_TOKEN_ENDPOINT());
         Map<String,Object> body = new HashMap<>();
         body.put("name",userEmail);
         Map<String,String> headers = new HashMap<>(); 
@@ -42,7 +42,7 @@ public class OAuthServiceImpl implements OAuthService, UserDetailsService {
     }
 
     public ResponseEntity<String> authenticate(String token) {
-        RequestBuilder<String> requestBuilder = new HttpRequestBuilder<>(authConfiguration.getVERIFY_TOKEN_ENDPOINT());
+        RequestBuilder<String> requestBuilder = new HttpRequestBuilder(authConfiguration.getVERIFY_TOKEN_ENDPOINT());
         Map<String,String> headers = new HashMap<>();
         headers.put("Authorization","Bearer "+token);
         ResponseEntity<String> response = requestBuilder.sendPostRequest(headers,new HashMap<>());

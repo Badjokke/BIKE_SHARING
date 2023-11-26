@@ -2,6 +2,7 @@ package com.example.bike_sharing.service.user;
 
 import com.example.bike_sharing.mappers.BikeUserToUser;
 import com.example.bike_sharing.mappers.ModelToDto;
+import com.example.bike_sharing.model.Ride;
 import com.example.bike_sharing.model.User;
 import com.example.bike_sharing.service.authentication.OAuthService;
 import com.example.bike_sharing.crypto.DefaultEncryption;
@@ -104,6 +105,20 @@ public class UserServiceImpl implements UserService{
         ModelToDto<BikeSharingUser,User> dtoMapper = new BikeUserToUser();
         List<BikeSharingUser> bikeSharingUsers = this.fetchUsers(BikeSharingUser.Role.SERVICEMAN);
         return dtoMapper.mapToDto(bikeSharingUsers);
+    }
+
+    @Override
+    public List<Ride> fetchUserRides(String userEmail) {
+        BikeSharingUser user = this.userRepository.findUserByEmailAddress(userEmail);
+        if(user == null){
+            return null;
+        }
+        return locationService.fetchUserRides(user.getId());
+    }
+
+    @Override
+    public BikeSharingUser fetchUserInfo(String userEmail) {
+        return this.userRepository.findUserByEmailAddress(userEmail);
     }
 
     @Override

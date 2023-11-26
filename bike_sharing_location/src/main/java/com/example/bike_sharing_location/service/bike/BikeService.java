@@ -11,11 +11,16 @@ public interface BikeService {
     List<Bike> getRideableBikes();
     List<Bike> getAllBikes();
 
+    List<Bike> getAllCurrentBikes();
+    Bike getCurrentBike(Long bikeId);
     boolean updateBikeLocation(long bikeId,Location location);
-    boolean updateBikesLocation(List<Long> bikeIds, List<Location> locations);
+    boolean updateBikesLocation(List<Bike> bikes);
 
     boolean markBikeAsServiced(long bikeId);
 
     boolean markBikesAsServiced(List<Long> bikeIds);
     InMemoryBikeStorage getInMemoryBikeStorage();
+
+    boolean isBikeRideable(Bike bike);
+     void claimBike(Bike bike);
 }

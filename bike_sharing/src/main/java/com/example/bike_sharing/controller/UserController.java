@@ -15,10 +15,26 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController implements UserApi {
     private final UserService userService;
+    @Override
+    @GetMapping("/user_info")
+    public ResponseEntity<User> userInfo(String userEmail) {
+        BikeSharingUser u = this.userService.fetchUserInfo(userEmail);
+        if(u == null || u.getId() == 0){
+            return ResponseEntity.badRequest().build();
+        }
+        User user = new User();
+        user.username(u.getName()).id(u.getId()).email(u.getEmailAddress()).role(User.RoleEnum.valueOf(u.getRole().name()));
+        return ResponseEntity.ok(user);
+    }
 
     @Override
+    @GetMapping("/rides")
     public ResponseEntity<List<Ride>> userRidesList(String userEmail) {
-        return UserApi.super.userRidesList(userEmail);
+        List<Ride> userRides = userService.fetchUserRides(userEmail);
+        if(userRides == null){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(userRides);
     }
 
     @Override

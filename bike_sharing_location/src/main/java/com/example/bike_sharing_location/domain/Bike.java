@@ -1,5 +1,6 @@
 package com.example.bike_sharing_location.domain;
 
+import com.example.bike_sharing_location.model.Location;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

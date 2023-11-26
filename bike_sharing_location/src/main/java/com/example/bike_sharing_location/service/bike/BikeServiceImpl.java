@@ -9,21 +9,24 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.*;
 
 @Service
 public class BikeServiceImpl implements BikeService{
-    private final BikeServiceConfiguration bikeServiceConfiguration;
     private final BikeRepository bikeRepository;
     private final double bikeServiceInterval;
-
+    private final long bikeUpdateInterval;
+    private final ScheduledExecutorService executorService;
     private final InMemoryBikeStorage bikeStorage;
 
-    public BikeServiceImpl(BikeServiceConfiguration bikeServiceConfiguration, BikeRepository bikeRepository, InMemoryBikeStorage bikeStorage){
+    public BikeServiceImpl(BikeServiceConfiguration bikeServiceConfiguration, BikeRepository bikeRepository){
         this.bikeRepository = bikeRepository;
-        this.bikeServiceConfiguration = bikeServiceConfiguration;
-        this.bikeServiceInterval = this.bikeServiceConfiguration.getBIKE_SERVICE_INTERVAL();
-        this.bikeStorage = bikeStorage;
-
+        this.bikeServiceInterval = bikeServiceConfiguration.getBIKE_SERVICE_INTERVAL();
+        this.bikeUpdateInterval = bikeServiceConfiguration.getBIKE_SERVICE_UPDATE_INTERVAL();
+        this.bikeStorage = new InMemoryBikeStorage();
+        this.executorService = Executors.newSingleThreadScheduledExecutor();
+        initStorage();
+        initBikeLocationThread();
     }
     @Override
     public List<Bike> getBikesDueForService() {
@@ -41,25 +44,35 @@ public class BikeServiceImpl implements BikeService{
     }
 
     @Override
-    @Transactional
-    public boolean updateBikeLocation(long bikeId, Location location) {
-        int updatedBikes = this.bikeRepository.updateBikeLocation(bikeId,location);
-        return updatedBikes == 1;
+    public List<Bike> getAllCurrentBikes() {
+        List<Bike> bikes = this.bikeStorage.getAllBikes();
+        return bikes;
+    }
+
+    @Override
+    public Bike getCurrentBike(Long bikeId) {
+        return this.bikeStorage.getBike(bikeId);
     }
 
     @Override
     @Transactional
-    public boolean updateBikesLocation(List<Long> bikeIds, List<Location> locations) {
-        int batchSize = bikeIds.size();
-        if(batchSize != locations.size()){
-            return false;
+    public boolean updateBikeLocation(long bikeId, Location location) {
+        int updatedBikes = this.bikeRepository.updateBikeLocation(bikeId, location.getLongitude(), location.getLatitude());
+        return updatedBikes == 1;
+    }
+
+    @Override
+    public boolean updateBikesLocation(List<Bike> bikes) {
+        int batchSize = bikes.size();
+        if(batchSize == 0){
+            return true;
         }
         int bikesUpdated = 0;
-        for(int i = 0; i < batchSize; i++){
-            bikesUpdated += this.bikeRepository.updateBikeLocation(bikeIds.get(i),locations.get(i));
+        for(Bike b : bikes){
+            bikesUpdated += this.bikeRepository.updateBikeLocation(b.getId(),b.getLongitude(),b.getLatitude());
         }
-        System.out.println(bikesUpdated);
-        return batchSize == bikesUpdated;
+        return bikesUpdated == batchSize;
+
     }
 
     @Override
@@ -82,5 +95,32 @@ public class BikeServiceImpl implements BikeService{
         return this.bikeStorage;
     }
 
+    @Override
+    public synchronized boolean isBikeRideable(Bike bike) {
+        return this.bikeStorage.isBikeUsed(bike);
+    }
 
+    @Override
+    public synchronized void claimBike(Bike bike) {
+        this.bikeStorage.useBike(bike);
+    }
+
+
+    private void initStorage(){
+        List<Bike> bikes = this.getRideableBikes();
+        this.bikeStorage.fillMemoryStorage(bikes);
+    }
+
+    private void initBikeLocationThread(){
+
+        Runnable updateBikeLocationTask = () -> {
+            List<Bike> affectedBikes = this.bikeStorage.getModifiedBikes();
+            boolean updateOkay = updateBikesLocation(affectedBikes);
+            if(!updateOkay){
+                System.out.println("bike location update failed");
+            }
+        };
+        executorService.scheduleAtFixedRate(updateBikeLocationTask,bikeUpdateInterval,bikeUpdateInterval,TimeUnit.SECONDS);
+
+    }
 }

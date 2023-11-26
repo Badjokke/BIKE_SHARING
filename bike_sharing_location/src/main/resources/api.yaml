@@ -43,9 +43,9 @@ paths:
       parameters:
         - in: query
           name: standId
-          required: false
+          required: true
           schema:
-            type: integer
+            type: number
           description: Numeric ID of the stand to get
       responses:
         '200':
@@ -190,6 +190,34 @@ paths:
                     example: "Cannot ride bike {bikeId}. Bike is being serviced or someone else is using it."
 
 
+  /ride/list:
+    get:
+      tags:
+        - ride
+      summary: fetches all rides of user
+      description: get request for list of user rides
+      operationId: rideList
+      parameters:
+          - in: query
+            name: userId
+            required: true
+            schema:
+              type: integer
+            description: id of user whose rides will be fetched
+      responses:
+        '200':
+          description: 'Fetched user rides'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRides'
+        '401':
+          description: Unauthorized request.
+        '404':
+          description: User rides not found.
+
+
+
 components:
   schemas:
     StandNotFound:
@@ -206,6 +234,9 @@ components:
 
     RideStart:
       properties:
+        userEmail:
+          type: string
+          example: "hello@world.com"
         startStandId:
           type: integer
           example: 1
@@ -266,9 +297,60 @@ components:
       items:
         $ref: '#/components/schemas/Bike'
 
+    UserRide:
+      properties:
+        rideId:
+          type: integer
+          format: int64
+          example: 1
+        userId:
+          type: integer
+          format: int64
+          example: 1
+        bikeId:
+          type: integer
+          format: int64
+          example: 1
+        startStandId:
+          type: integer
+          format: int64
+          example: 1
+        endStandId:
+          type: integer
+          format: int64
+          example: 2
+        rideStart:
+          type: string
+          format: date-time
+        rideEnd:
+          type: string
+          format: date-time
+
+    UserRides:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserRide'
 
     ObjectsLocation:
       type: array
       items:
         $ref: '#/components/schemas/ObjectLocation'
 
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        username:
+          type: string
+          example: theUser
+        email:
+          type: string
+          example: john@email.com
+        role:
+          example: "SERVICEMAN"
+          type: string
+          enum: [ "SERVICEMAN", "REGULAR" ]
+          x-enum-varnames: [ SERVICEMAN, REGULAR ]

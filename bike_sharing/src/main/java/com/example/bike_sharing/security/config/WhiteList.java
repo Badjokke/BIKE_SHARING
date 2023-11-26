@@ -8,6 +8,8 @@ public class WhiteList {
                 "/user/change_role",
                 "/login",
                 "/favicon.ico",
-                "/user/list"
+                "/user/list",
+                "/user/user_info",
+                "/user/rides"
         };
 }

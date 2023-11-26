@@ -4,6 +4,7 @@ import com.example.bike_sharing.domain.BikeSharingUser;
 import com.example.bike_sharing.domain.BikeSharingUser.Role;
 
 import com.example.bike_sharing.enums.UserServiceStatus;
+import com.example.bike_sharing.model.Ride;
 import com.example.bike_sharing.model.User;
 import com.example.bike_sharing.model.UserCreate;
 import com.example.bike_sharing.model.UserLogin;
@@ -22,6 +23,8 @@ public interface UserService {
     List<User> fetchAllRegularUsers();
     List<User> fetchAllServiceman();
 
+    List<Ride> fetchUserRides(String userEmail);
+    BikeSharingUser fetchUserInfo(String userEmail);
     UserServiceStatus changeUserRole(String userEmail, Role role);
 
 }

@@ -13,9 +13,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/bike_locations");
-        config.enableSimpleBroker("/bike_location");
-        config.enableSimpleBroker("/bike_ride");
+        config.enableSimpleBroker("/bike_location","/bike_ride");
         config.setApplicationDestinationPrefixes("/bike_sharing");
     }
 
