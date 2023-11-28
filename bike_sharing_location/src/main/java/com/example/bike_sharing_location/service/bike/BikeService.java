@@ -22,5 +22,5 @@ public interface BikeService {
     InMemoryBikeStorage getInMemoryBikeStorage();
 
     boolean isBikeRideable(Bike bike);
-     void claimBike(Bike bike);
+     int claimBike(Bike bike);
 }

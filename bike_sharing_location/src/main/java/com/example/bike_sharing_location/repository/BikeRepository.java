@@ -29,4 +29,8 @@ public interface BikeRepository extends JpaRepository<Bike, Long> {
     @Modifying
     int updateBikesServiceTime(List<Long> bikeIds);
 
+    @Query("UPDATE Bike bike set bike.stand = NULL where bike.id = ?1")
+    @Transactional
+    @Modifying
+    int removeBikeFromStand(long bikeId);
 }

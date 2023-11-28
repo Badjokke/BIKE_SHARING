@@ -12,6 +12,7 @@ public class BikeRide {
     private Long startStandId;
 
     private Long endStandId;
+    private String rideToken;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private OffsetDateTime rideStart;
@@ -22,13 +23,14 @@ public class BikeRide {
     public BikeRide() {
     }
 
-    public BikeRide(Long userId, Long bikeId, Long startStandId, Long endStandId, OffsetDateTime rideStart) {
+    public BikeRide(Long userId, Long bikeId, Long startStandId, Long endStandId, OffsetDateTime rideStart, String token) {
         this.userId = userId;
         this.bikeId = bikeId;
         this.startStandId = startStandId;
         this.endStandId = endStandId;
         this.rideStart = rideStart;
         this.rideEnd = null;
+        this.rideToken = token;
     }
 
     public Long getUserId() {
@@ -78,4 +80,5 @@ public class BikeRide {
     public void setRideEnd(OffsetDateTime rideEnd) {
         this.rideEnd = rideEnd;
     }
+    public String getRideToken(){return this.rideToken;}
 }

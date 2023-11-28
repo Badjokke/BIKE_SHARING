@@ -53,7 +53,7 @@ public class InMemoryBikeStorage {
     private void markBikeAsModified(Bike bike){
         this.modifiedBikes.add(bike);
     }
-    public void updateBikeLocation(long bikeId, Location location){
+    public Bike updateBikeLocation(long bikeId, Location location){
         Bike bike = this.bikeMemoryStorage.get(bikeId);
         if(bike == null){
             throw new RuntimeException("Invalid bikeId provided");
@@ -61,6 +61,7 @@ public class InMemoryBikeStorage {
         bike.setLatitude(location.getLatitude());
         bike.setLongitude(location.getLongitude());
         markBikeAsModified(bike);
+        return bike;
     }
 
 

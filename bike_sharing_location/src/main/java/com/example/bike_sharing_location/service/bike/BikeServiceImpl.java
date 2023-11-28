@@ -101,8 +101,12 @@ public class BikeServiceImpl implements BikeService{
     }
 
     @Override
-    public synchronized void claimBike(Bike bike) {
+    public synchronized int claimBike(Bike bike) {
+        if(bike == null || bike.getId() == 0 || this.bikeStorage.isBikeUsed(bike)){
+            return 0;
+        }
         this.bikeStorage.useBike(bike);
+        return this.bikeRepository.removeBikeFromStand(bike.getId());
     }
 
 
@@ -119,6 +123,7 @@ public class BikeServiceImpl implements BikeService{
             if(!updateOkay){
                 System.out.println("bike location update failed");
             }
+            System.out.println("updated locations of: "+affectedBikes.size()+" bikes.");
         };
         executorService.scheduleAtFixedRate(updateBikeLocationTask,bikeUpdateInterval,bikeUpdateInterval,TimeUnit.SECONDS);
 

@@ -163,6 +163,8 @@ paths:
                   rideId:
                     type: integer
                     example: 1
+                  token:
+                    type: string
                   message:
                     type: string
                     example: "Ride {rideId} on a bike {bikeId} from stand {startId} to stand {endId} from user {userEmail} started."

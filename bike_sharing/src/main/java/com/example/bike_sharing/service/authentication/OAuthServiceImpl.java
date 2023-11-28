@@ -30,6 +30,9 @@ public class OAuthServiceImpl implements OAuthService, UserDetailsService {
         body.put("name",userEmail);
         Map<String,String> headers = new HashMap<>(); 
         ResponseEntity<String> response = requestBuilder.sendPostRequest(headers,body);
+        if(response == null){
+            throw new RuntimeException("Auth service down.");
+        }
         String tmpBody = response.getBody();
         Map<String,String> responseBody = new Gson().fromJson(tmpBody,Map.class);
 

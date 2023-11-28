@@ -1,21 +1,16 @@
 package com.example.bike_sharing_location.controller;
-
 import com.example.bike_sharing_location.domain.Bike;
 import com.example.bike_sharing_location.mapper.BikeToBikeLocationDto;
 import com.example.bike_sharing_location.mapper.DomainToDto;
 import com.example.bike_sharing_location.model.ObjectLocation;
-import com.example.bike_sharing_location.model.StompBikeLocationWrapper;
+import com.example.bike_sharing_location.model.StompBikeLocationMessageWrapper;
+import com.example.bike_sharing_location.model.StompBikeRideMessageWrapper;
 import com.example.bike_sharing_location.service.bike.BikeService;
 import com.google.gson.Gson;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,7 +25,7 @@ public class BikeController implements BikeApi {
     }
 
     @MessageMapping("/bike")
-    public void fetchBikeLocations(StompBikeLocationWrapper bikeLocationMessage) {
+    public void fetchBikeLocations(StompBikeLocationMessageWrapper bikeLocationMessage) {
         long bikeId = bikeLocationMessage.getBikeId();
         DomainToDto<Bike,ObjectLocation> mapper = new BikeToBikeLocationDto();
         String json;
@@ -44,17 +39,11 @@ public class BikeController implements BikeApi {
             ObjectLocation location = mapper.mapDomainToDto(subscribedbike);
             json = new Gson().toJson(location);
         }
-        String communicationChannel = "/bike_ride/location/"+bikeId;
-        /*this.bikeService.getInMemoryBikeStorage().updateBikeLocation(bikeLocationMessage.getBikeId(),bikeLocationMessage.getLocation());
-        List<Bike> updatedbikes = this.bikeService.getInMemoryBikeStorage().getModifiedBikes();
-        String json = new Gson().toJson(updatedbikes);*/
+        String communicationChannel = "/bike_location/location/"+bikeId;
+
         this.simpMessagingTemplate.convertAndSend(communicationChannel,json);
     }
 
-    /*@Override
-    public ResponseEntity<List<Bike>> fetchBikes() {
-        return BikeApi.super.fetchBikes();
-    }*/
 
 
 }
