@@ -100,7 +100,7 @@ paths:
       operationId: fetchBikes
       responses:
         '200':
-          description: successful fetch of bike location - available to all
+          description: successful fetch rideable bikes - available to all
             users of the website regardless of their role
           content:
             application/json:
@@ -108,6 +108,48 @@ paths:
                 $ref: '#/components/schemas/Bikes'
         '401':
           description: User is not logged in
+
+  /bike/service:
+    put:
+      tags:
+        - bikes
+      summary: marks bike as serviced
+      operationId: changeBikeState
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BikeState'
+      responses:
+        '200':
+          description: successful change of bike state (operation/service)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "State of bike {bike_id} changed to {state}"
+        '401':
+          description: unauthorized attempt to change bike state.
+            User is not a serviceman.
+    get:
+      tags:
+        - bikes
+      summary: return all bikes up for service
+      description: get request for fetching bikes due for service
+      operationId: fetchServiceableBikes
+      responses:
+        '200':
+          description: successful fetch of bikes up for service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bikes'
+        '401':
+          description: User is not logged in or is not a serviceman
 
 
   /bike/location:
@@ -251,13 +293,16 @@ components:
 
     BikeState:
       properties:
+        userEmail:
+          type: string
+          example: "hello@world.com"
         bike_id:
           type: integer
           example: 2
-        state:
-          type: integer
-          enum: [ 0, 1 ]
-          x-enum-varnames: [ RIDEABLE, SERVICE ]
+        serviced_stamp:
+          type: string
+          format: date-time
+          example: "2023-11-16 14:20:00.000000"
 
 
     ObjectLocation:
@@ -275,7 +320,7 @@ components:
             latitude:
               type: number
               example: 5
-    Bike:
+    BikeDto:
       properties:
         id:
           type: integer
@@ -290,14 +335,11 @@ components:
             latitude:
               type: number
               example: 5
-        state:
-          type: integer
-          enum: [ 0, 1 ]
-          x-enum-varnames: [ RIDEABLE, SERVICE ]
+
     Bikes:
       type: array
       items:
-        $ref: '#/components/schemas/Bike'
+        $ref: '#/components/schemas/BikeDto'
 
     UserRide:
       properties:

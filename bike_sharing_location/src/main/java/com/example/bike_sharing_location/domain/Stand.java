@@ -12,9 +12,9 @@ public class Stand {
     @NotNull
     private String name;
     @NotNull
-    double longitude;
+    Double longitude;
     @NotNull
-    double latitude;
+    Double latitude;
 
     public Stand() {
     }
@@ -35,19 +35,19 @@ public class Stand {
         this.name = name;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
