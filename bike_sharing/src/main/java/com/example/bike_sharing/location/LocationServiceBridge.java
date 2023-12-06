@@ -56,6 +56,7 @@ public class LocationServiceBridge implements BikeLocationService {
 
     @Override
     public List<Ride> fetchUserRides(long userId) {
+        System.out.println("SENDING REQUEST TO"+this.locationServiceUrl);
         final RequestBuilder<String> requestBuilder = new HttpRequestBuilder(this.locationServiceUrl);
         Map<String,Object> body = new HashMap<>();
         body.put("userId", String.valueOf(userId));

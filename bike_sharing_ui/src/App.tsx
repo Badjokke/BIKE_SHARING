@@ -7,6 +7,7 @@ import ServicePage from './pages/service/ServicePage';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import RideListPage from './pages/Rides/RideListPage';
 import MapPage from './pages/map/MapPage';
+import RidePage from './pages/Ride/RidePage';
 import "./static/css/App.css";
 function App() {
   const data = [
@@ -41,6 +42,7 @@ function App() {
         <Route path='/service' element={<ServicePage/>}/>
         <Route path='/rides' element={<RideListPage/>}/>
         <Route path='/map' element={<MapPage data={data}/>}/>
+        <Route path='/ride' element={<RidePage/>}/>
       </Routes>
     </Router>     
   );

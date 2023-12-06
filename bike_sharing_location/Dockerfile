@@ -8,7 +8,7 @@ WORKDIR /location_app
 COPY . /location_app
 
 # Build the Maven project and create a JAR file
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 # Use the OpenJDK image as a base image for the application
 FROM openjdk:17

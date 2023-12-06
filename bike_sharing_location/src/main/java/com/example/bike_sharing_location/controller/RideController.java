@@ -41,6 +41,7 @@ public class RideController implements RideApi {
 
     @GetMapping("/list")
     public ResponseEntity<List<UserRide>> rideList(Long userId) {
+        System.out.println("GET_MAPPING: "+userId);
         if(userId == null){
             return new ResponseEntity<>(HttpStatusCode.valueOf(400));
         }

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(name="/stand")
+@RequestMapping("/stand")
 public class StandController implements StandApi{
     private final StandService standService;
     public StandController(StandService standService){

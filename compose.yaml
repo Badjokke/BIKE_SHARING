@@ -5,11 +5,7 @@ services:
     build:
       context: bike_sharing
     environment:
-      - MYSQL_HOST=db
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/bikeservice?createDatabaseIfNotExist=true
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=verysecret
-      - AUTH_SERVICE_URL=http://authenticator:8080
+      - SPRING_PROFILES_ACTIVE=docker
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID=286479622083-89aferh4mb7o51r4sbtsbcekf18177c6.apps.googleusercontent.com
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET=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
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_SCOPE=email,profile
@@ -22,7 +18,7 @@ services:
       - authenticator
 
     ports:
-      - '8081:8080'
+      - '8080:8080'
     restart: always
 
   authenticator:
@@ -31,28 +27,24 @@ services:
     networks:
       - auth-network
     ports:
-      - '8083:8080'
+      - '8081:8080'
     restart: always
 
-#  location:
-#    build:
-#        context: bike_sharing_location
-#    environment:
-#      - MYSQL_HOST=db
-#      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/bikeservice
-#      - SPRING_DATASOURCE_USERNAME=root
-#      - AUTH_SERVICE_URL=http://authenticator:8080
-#      - SPRING_DATASOURCE_PASSWORD=verysecret
-#    networks:
-#      - auth-network
-#      - spring-mysql
-#      - react-spring
-#    depends_on:
-#      - db
-#      - authenticator
-#    ports:
-#      - '8084:8080'
-#    restart: always
+  location:
+    build:
+      context: bike_sharing_location
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - auth-network
+      - spring-mysql
+      - react-spring
+    depends_on:
+      - db
+      - authenticator
+    ports:
+      - '8084:8080'
+    restart: always
 
   db:
     image: 'mysql:latest'
@@ -68,21 +60,19 @@ services:
       - spring-mysql
     ports:
       - '3307:3306'
-#  frontend:
-#    build:
-#      context: 'bike_sharing_ui'
-#      args:
-#        REACT_APP_API_BASE_URL:  http://127.0.0.1:8080/
-#
-#    ports:
-#      - '3000:80'
-#    volumes:
-#      - /var/run/docker.sock:/var/run/docker.sock
-#    networks:
-#      - react-spring
-#    depends_on:
-#      - backend
-#    restart: always
+
+  frontend:
+    build:
+      context: 'bike_sharing_ui'
+    ports:
+      - '3001:80'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - react-spring
+    depends_on:
+      - backend
+    restart: always
 
 volumes:
   db-data: {}
