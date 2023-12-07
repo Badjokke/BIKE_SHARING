@@ -11,8 +11,8 @@ import java.util.List;
 
 @Repository
 public interface BikeRepository extends JpaRepository<Bike, Long> {
-    @Query("SELECT bike FROM Bike bike WHERE FUNCTION('TIMESTAMPDIFF', MONTH, bike.lastService, CURRENT_DATE()) < ?1")
-    List<Bike> fetchAllBikesNotDueForService(double serviceInterval);
+    @Query("SELECT bike FROM Bike bike WHERE FUNCTION('TIMESTAMPDIFF', MONTH, bike.lastService, CURRENT_DATE()) < ?1 AND bike.stand.id IS NOT NULl")
+    List<Bike> fetchAllBikesRideableBikes(double serviceInterval);
     @Query("SELECT bike FROM Bike bike WHERE FUNCTION('TIMESTAMPDIFF', MONTH, bike.lastService, CURRENT_DATE()) >= ?1")
     List<Bike> fetchAllBikesDueForService(double serviceInterval);
     @Query("UPDATE Bike bike SET bike.latitude = ?3, bike.longitude = ?2 WHERE bike.id = ?1")

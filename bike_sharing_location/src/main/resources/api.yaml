@@ -98,6 +98,13 @@ paths:
       summary: Returns all bikes with metadata about them
       description: get request for fetching information's about bikes
       operationId: fetchBikes
+      parameters:
+        - name: Authorization
+          in: header
+          description: Access token for authentication
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: successful fetch rideable bikes - available to all
@@ -326,15 +333,10 @@ components:
           type: integer
           format: int64
           example: 1
-        location:
-          type: object
-          properties:
-            longitude:
-              type: number
-              example: 4,23
-            latitude:
-              type: number
-              example: 5
+        bikeStandId:
+          type: integer
+          format: int64
+          example: 1
 
     Bikes:
       type: array

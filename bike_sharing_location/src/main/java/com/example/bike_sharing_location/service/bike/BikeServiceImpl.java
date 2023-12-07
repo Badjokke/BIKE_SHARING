@@ -35,7 +35,7 @@ public class BikeServiceImpl implements BikeService{
 
     @Override
     public List<Bike> getRideableBikes() {
-        return this.bikeRepository.fetchAllBikesNotDueForService(this.bikeServiceInterval);
+        return this.bikeRepository.fetchAllBikesRideableBikes(this.bikeServiceInterval);
     }
 
     @Override

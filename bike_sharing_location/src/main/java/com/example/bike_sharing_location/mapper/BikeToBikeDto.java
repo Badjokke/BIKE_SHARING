@@ -23,11 +23,11 @@ public class BikeToBikeDto implements DomainToDto<Bike, BikeDto> {
     public BikeDto mapDomainToDto(Bike from) {
         BikeDto dto = new BikeDto();
         Stand bikeStand = from.getStand();
-        ObjectLocationLocation standLocation = new ObjectLocationLocation();
-        standLocation.longitude(BigDecimal.valueOf(bikeStand.getLongitude())).latitude(BigDecimal.valueOf(bikeStand.getLatitude()));
+        Long standId = bikeStand != null? bikeStand.getId() :  null;
+
         dto
                 .id(from.getId())
-                .location(standLocation);
+                .bikeStandId(standId);
         return dto;
     }
 }

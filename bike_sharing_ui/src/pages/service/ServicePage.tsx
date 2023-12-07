@@ -5,19 +5,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 interface Bike {
   id: number;
-  location: {
-    longitude: number;
-    latitude: number;
-  };
+  bikeStandId: number | null
 }
 
 const ServicePage: React.FC = () => {
   const bikeData: Bike[] = [
-    { id: 1, location: { longitude: 15.0, latitude: 10.0 } },
-    { id: 2, location: { longitude: 15.0, latitude: 10.0 } },
-    { id: 3, location: { longitude: 15.0, latitude: 10.0 } },
-    { id: 4, location: { longitude: 15.0, latitude: 10.0 } },
-    { id: 5, location: { longitude: 15.0, latitude: 10.0 } },
+    { id: 1, bikeStandId:1 },
+    { id: 2, bikeStandId:2  },
+    { id: 3, bikeStandId:3  },
+    { id: 4, bikeStandId:4  },
+    { id: 5, bikeStandId:null  },
   ];
 
   const handleMarkAsServiced = (bikeId: number) => {
@@ -31,9 +28,8 @@ const ServicePage: React.FC = () => {
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Longitude</th>
-            <th>Latitude</th>
+            <th>Bike identifier</th>
+            <th>Bike stand identifier</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -41,13 +37,13 @@ const ServicePage: React.FC = () => {
           {bikeData.map((bike) => (
             <tr key={bike.id}>
               <td>{bike.id}</td>
-              <td>{bike.location.longitude}</td>
-              <td>{bike.location.latitude}</td>
+              <td>{bike.bikeStandId == null? "Currently on a road" : bike.bikeStandId}</td>
               <td>
               <Button
                   variant="outline-success"
                   size="sm"
                   onClick={() => handleMarkAsServiced(bike.id)}
+                  disabled={bike.bikeStandId == null}
                 >
                   <FontAwesomeIcon icon={faCheckCircle} className="mr-2" />
                   Mark as Serviced

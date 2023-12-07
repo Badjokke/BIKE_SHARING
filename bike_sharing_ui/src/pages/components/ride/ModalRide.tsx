@@ -34,6 +34,14 @@ const handleIdChange = (id: number) => {
     setSelectedEndStand(id);
   };
 
+  const startRide = () =>{
+    console.log(`starting ride with bike ${selectedBikeId} to stand ${selectedEndStand}`);
+    
+
+  }
+
+
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -80,7 +88,7 @@ const handleIdChange = (id: number) => {
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="primary" onClick={handleClose}>
+        <Button variant="primary" onClick={startRide}>
           Start ride
         </Button>
       </Modal.Footer>
