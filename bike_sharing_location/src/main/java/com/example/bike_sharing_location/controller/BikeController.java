@@ -38,7 +38,7 @@ public class BikeController implements BikeApi {
         return ResponseEntity.ok(response);
     }
 
-    //@Override
+    @Override
     @GetMapping("/list")
     public ResponseEntity<List<BikeDto>> fetchBikes(@RequestHeader(name="Authorization") String token) {
         List<Bike> rideableBikes = this.bikeService.getRideableBikes();
