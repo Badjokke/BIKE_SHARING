@@ -15,20 +15,62 @@ const RidePage: React.FC = () => {
 
   const rideData = [
     {
-      id: 1,
-      location: {
-        longitude: 15.0,
-        latitude: 10.0,
-      },
+        "id": 2,
+        "Stand": {
+            "id": 1,
+            "location": {
+                "longitude": 16.0,
+                "latitude": 11.0
+            }
+        }
     },
-    // Add other data objects here
-  ];
+    {
+        "id": 4,
+        "Stand": {
+            "id": 2,
+            "location": {
+                "longitude": 15.0,
+                "latitude": 10.0
+            }
+        }
+    },
+    {
+        "id": 1,
+        "Stand": {
+            "id": 3,
+            "location": {
+                "longitude": 15.0,
+                "latitude": 10.0
+            }
+        }
+    },
+    {
+        "id": 5,
+        "Stand": {
+            "id": 4,
+            "location": {
+                "longitude": 15.0,
+                "latitude": 10.0
+            }
+        }
+    },
+    {
+        "id": 3,
+        "Stand": {
+            "id": 5,
+            "location": {
+                "longitude": 15.0,
+                "latitude": 10.0
+            }
+        }
+    }
+];
   const standData = [
     {
       id: 1,
       location: {
-        longitude: 15.0,
-        latitude: 10.0,
+        longitude: 200.0,
+        latitude: 500.0,
       },
     },
   ];
@@ -46,7 +88,7 @@ const RidePage: React.FC = () => {
         </Col>
       </Row>
 
-      <ModalRide show={showModal} handleClose={handleCloseModal} data={rideData} endStandData={standData} />
+      <ModalRide show={showModal} handleClose={handleCloseModal} bikeData={rideData} endStandData={standData} />
     </Container>
   );
 };

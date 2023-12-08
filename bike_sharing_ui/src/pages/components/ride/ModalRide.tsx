@@ -1,42 +1,70 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form, Dropdown  } from 'react-bootstrap';
+
+interface BikeObject  {
+    id: number;
+    Stand: {
+      id : number;
+      location: {
+        longitude: number;
+        latitude: number;
+      }
+    }
+}
+interface StandObject {
+  id: number;
+  location: {
+    longitude: number;
+    latitude: number;
+  };
+}
 
 interface RideModalProps {
     show: boolean;
     handleClose: () => void;
-    data: {
-      id: number;
-      location: {
-        longitude: number;
-        latitude: number;
-      };
-    }[];
-    endStandData: {
-      id: number;
-      location: {
-        longitude: number;
-        latitude: number;
-      };
-    }[];
+    bikeData: BikeObject[];
+    endStandData: StandObject[];
   }
 
-const ModalRide: React.FC<RideModalProps> = ({ show, handleClose, data, endStandData }) => {
+const ModalRide: React.FC<RideModalProps> = ({ show, handleClose, bikeData, endStandData }) => {
   // Add your modal form logic here
 
-  const [selectedEndStand, setSelectedEndStand] = useState<number | null>(null);
-  const [selectedBikeId, setSelectedBikeId] = useState<number | null>(null);
-
-const handleIdChange = (id: number) => {
-    setSelectedBikeId(id);
-};
-
-  const handleEndStandChange = (id: number) => {
-    setSelectedEndStand(id);
+  const [selectedEndStand, setSelectedEndStand] = useState<StandObject | null>(null);
+  const [selectedBike, setSelectedBike] = useState<BikeObject | null>(null);
+  const [distance, setDistance] = useState<number | null>(null);
+  const [rideToken,setRideToken] = useState<string|null>(null);
+  const handleIdChange = (bike: BikeObject) => {
+    setSelectedBike(bike);
   };
 
+  useEffect(()=>{
+    if(selectedEndStand == null ||  selectedBike == null)
+      return;
+    setDistance(calculateDistance(selectedEndStand.location, selectedBike.Stand.location));
+
+  },[selectedEndStand,selectedBike,setSelectedBike,setSelectedEndStand])
+
+  const handleEndStandChange = (stand: StandObject) => {
+    setSelectedEndStand(stand);
+  };
+
+  const calculateDistance = (location1:{longitude:number,latitude:number},location2:{longitude:number,latitude:number}) => {
+    const deltaLongitude = location1.longitude - location2.longitude;
+    const deltaLatitude = location1.latitude - location2.latitude; 
+
+    return Math.sqrt((deltaLongitude * deltaLongitude) + (deltaLatitude * deltaLatitude));
+  }
+
   const startRide = () =>{
-    console.log(`starting ride with bike ${selectedBikeId} to stand ${selectedEndStand}`);
-    
+    if(selectedBike === null || selectedEndStand === null){
+      return;
+    }
+     // Calculate the distance between the starting stand and the selected end stand
+     const startStandId = selectedBike.Stand.id;
+     const endStandId = selectedEndStand.id;
+ 
+     console.log(`starting ride with bike ${selectedBike.id} from stand ${startStandId} to stand ${endStandId}`);
+     console.log(`Distance: ${distance} units`);
 
   }
 
@@ -53,13 +81,12 @@ const handleIdChange = (id: number) => {
   <Form.Label>Bike</Form.Label>
   <Dropdown>
     <Dropdown.Toggle variant="success" id="dropdown-id">
-      {selectedBikeId ? `Bike ${selectedBikeId}` : 'Select bike'}
+      {selectedBike ? `Bike ${selectedBike.id}` : 'Select bike'}
     </Dropdown.Toggle>
     <Dropdown.Menu>
-      {data.map((bike) => (
+      {bikeData.map((bike) => (
        <Dropdown.Item key={bike.id} onClick={() => {
-        console.log("hello");
-        handleIdChange(bike.id);}}>
+        handleIdChange(bike);}}>
        Bike {bike.id}
      </Dropdown.Item>
       ))}
@@ -71,16 +98,24 @@ const handleIdChange = (id: number) => {
             <Form.Label>End Stand</Form.Label>
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-endstand">
-                {selectedEndStand ? `Stand ${selectedEndStand}` : 'Select End Stand'}
+                {selectedEndStand ? `Stand ${selectedEndStand.id}` : 'Select End Stand'}
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {endStandData.map((stand) => (
-                  <Dropdown.Item key={stand.id} onClick={() => handleEndStandChange(stand.id)}>
+                  <Dropdown.Item key={stand.id} onClick={() => handleEndStandChange(stand)}>
                     Stand {stand.id}
                   </Dropdown.Item>
                 ))}
               </Dropdown.Menu>
             </Dropdown>
+          </Form.Group>
+          <Form.Group controlId="formStartStand">
+            <Form.Label>Starting Stand</Form.Label>
+            <Form.Control type="text" readOnly value={selectedBike ? selectedBike.Stand.id : ''} />
+          </Form.Group>
+          <Form.Group controlId="formDistance">
+            <Form.Label>Distance</Form.Label>
+            <Form.Control type="text" readOnly value={distance !== null ? `${distance} units` : ''} />
           </Form.Group>
         </Form>
       </Modal.Body>

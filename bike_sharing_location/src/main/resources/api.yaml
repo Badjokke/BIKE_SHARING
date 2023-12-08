@@ -333,10 +333,8 @@ components:
           type: integer
           format: int64
           example: 1
-        bikeStandId:
-          type: integer
-          format: int64
-          example: 1
+        Stand:
+          $ref: '#/components/schemas/ObjectLocation'
 
     Bikes:
       type: array
