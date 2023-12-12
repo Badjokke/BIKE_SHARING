@@ -232,6 +232,7 @@ components:
         - username
         - email
         - password
+        - usertype
       properties:
         username:
           type: string
@@ -243,9 +244,15 @@ components:
         password:
           type: string
           example: '12345'
+        usertype:
+          example: "SERVICEMAN"
+          type: string
+          enum: [ "SERVICEMAN", "REGULAR" ]
+          x-enum-varnames: [ SERVICEMAN, REGULAR ]
 
     UserExists:
       type: object
+
       properties:
         message:
           type: string
@@ -253,6 +260,9 @@ components:
 
     UserLogin:
       type: object
+      required:
+        - email
+        - password
       properties:
         email:
           example: "user@user.com"

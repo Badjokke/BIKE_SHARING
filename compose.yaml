@@ -64,6 +64,8 @@ services:
   frontend:
     build:
       context: 'bike_sharing_ui'
+    env_file:
+      - bike_sharing_ui/docker/.env
     ports:
       - '3001:80'
     volumes:

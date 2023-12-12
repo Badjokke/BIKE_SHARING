@@ -75,11 +75,15 @@ public class UserController implements UserApi {
     @PostMapping("/register")
     @Override
     public ResponseEntity<UserLoggedIn> createUser(UserCreate userCreate) {
+
         final String email = userCreate.getEmail();
         final String userName = userCreate.getUsername();
         final String password = userCreate.getPassword();
-
-        String token = this.userService.registerUser(email,userName,password);
+        final UserCreate.UsertypeEnum type = userCreate.getUsertype();
+        if(type == null){
+            return sendRegisterResponse(400,null);
+        }
+        String token = this.userService.registerUser(email,userName,password,BikeSharingUser.Role.valueOf(type.name()));
         return sendRegisterResponse(token == null?409:200,token);
     }
     @PostMapping("/login")

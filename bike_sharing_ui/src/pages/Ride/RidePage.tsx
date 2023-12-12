@@ -1,10 +1,23 @@
 import React, { useState } from 'react';
 import { Button, Container, Row, Col } from 'react-bootstrap';
-import ModalRide from '../components/ride/ModalRide';
+import ModalRide, { BikeObject, StandObject } from '../components/ride/ModalRide';
+import MapPage, { MapObject } from '../map/MapPage';
+import { LatLngTuple } from 'leaflet';
+
+export interface SelectedRide {
+  stand : StandObject,
+  bike: BikeObject,
+  rideToken: string
+
+}
+
 
 const RidePage: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
-
+  const [selectedRide, setSelectedRide] = useState<SelectedRide | null>(null);
+  const [selectedStand,setSelectedStand] = useState<MapObject>();
+  const [selectedBike, setSelectedBike] = useState<MapObject>();
+  const [bikeToStandPath,setBikeToStandPath] = useState<LatLngTuple[]|null>(null)
   const handleButtonClick = () => {
     setShowModal(true);
   };
@@ -75,8 +88,35 @@ const RidePage: React.FC = () => {
     },
   ];
 
+  const setUserSelectedRide = (selectedRide: SelectedRide) =>{
+      setSelectedRide(selectedRide);
+      setShowModal(false);
+
+      const standMapObject: MapObject = {
+        id: selectedRide.stand.id,
+        location: selectedRide.stand.location
+      }
+      const bikeData = rideData.filter((bikeObject)=>bikeObject.id === selectedRide.bike.id);
+
+      const bikeMapObject: MapObject = {
+        id: selectedRide.bike.id,
+        location: bikeData[0].Stand.location
+      }
+      const bikeToStandPath: LatLngTuple[] = 
+      [
+        [bikeMapObject.location.latitude, bikeMapObject.location.longitude],
+        [standMapObject.location.latitude, standMapObject.location.longitude],
+      ];
+
+      setSelectedStand(standMapObject);
+      setSelectedBike(bikeMapObject);
+      setBikeToStandPath(bikeToStandPath);
+
+  }
+
   return (
-    <Container className="d-flex align-items-center justify-content-center" style={{ height: '100vh' }}>
+    (!selectedStand || !selectedBike || !bikeToStandPath)?
+  (  <Container className="d-flex align-items-center justify-content-center" style={{ height: '100vh' }}>
       <Row>
         <Col>
           <div className="text-center">
@@ -88,9 +128,14 @@ const RidePage: React.FC = () => {
         </Col>
       </Row>
 
-      <ModalRide show={showModal} handleClose={handleCloseModal} bikeData={rideData} endStandData={standData} />
+      <ModalRide show={showModal} handleClose={handleCloseModal} bikeData={rideData} endStandData={standData} setTokenState={setUserSelectedRide} />
     </Container>
-  );
+  )
+  :
+  (<MapPage bikeData={[selectedBike]} standData={[selectedStand]} paths={bikeToStandPath}/>)
+  )
+  
+  
 };
 
 export default RidePage;

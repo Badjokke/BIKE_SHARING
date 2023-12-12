@@ -1,7 +1,9 @@
 // src/components/RegisterForm.tsx
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-
+import { registerUser } from '../../api/user_service_api/UserApiCaller';
+import { saveUserInfo } from '../../token_manager/LocalStorageManager';
+import { toast } from 'react-toastify';
 const Register: React.FC = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -24,10 +26,18 @@ const Register: React.FC = () => {
     setUserType(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // You can add your registration logic here
-    console.log('Username:', username, 'Email:', email, 'Password:', password, 'User Type:', userType);
+    const response = await registerUser(username,email,password,userType);
+    const responseMessage = response.message;
+    const data = response.data.token;
+    if(data != null){
+      saveUserInfo(email,data);
+      //toast.success(responseMessage,{autoClose:1500})
+    }
+    else{
+      //toast.error(responseMessage,{autoClose:1500});
+    }
   };
 
   return (

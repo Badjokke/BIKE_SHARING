@@ -14,7 +14,7 @@ import java.util.List;
 public interface UserService {
 
 
-    String registerUser(String email, String userName, String password);
+    String registerUser(String email, String userName, String password,BikeSharingUser.Role role);
 
     String loginUser(String email, String password);
     UserServiceStatus logoutUser(String token);

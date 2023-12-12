@@ -8,43 +8,43 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import RideListPage from './pages/Rides/RideListPage';
 import MapPage from './pages/map/MapPage';
 import RidePage from './pages/Ride/RidePage';
+import OauthLogin from './pages/components/oauth2/OauthLogin';
 import "./static/css/App.css";
+import BikeSharingMap from './pages/map/BikeSharingMap';
+import {Navigate} from "react-router-dom";
+
 function App() {
-  const data = [
-    {
-      id: 1,
-      location: { longitude: 420.0, latitude: 420.0 },
-    },
-    {
-      id: 2,
-      location: { longitude: -74.006, latitude: 40.7128 },
-    },
-    {
-      id: 3,
-      location: { longitude: -118.2437, latitude: 34.0522 },
-    },
-    {
-      id: 4,
-      location: { longitude: -87.6298, latitude: 41.8781 },
-    },
-    {
-      id: 5,
-      location: { longitude: -0.1278, latitude: 51.5074 },
-    },
-  ];
+
+  const PrivateRoute = ({ Component }:any) => {
+    const isAuthenticated = false;//useIsAuthenticated();
+    //const auth = isAuthenticated();
+    return isAuthenticated ? <Component /> : <Navigate to="/login" />;
+  };
+
+    
+
   return (
+    <div>
     <Router>
       <Navbar/>
     <Routes>
         <Route path='/' element={<HomePage/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>
-        <Route path='/service' element={<ServicePage/>}/>
+        <Route path='/oauth_login' element={<OauthLogin/>}/>
+        <Route path='/service' element={
+          <PrivateRoute loginPath={"/login"}>
+            <ServicePage/>
+          </PrivateRoute>
+        
+        
+        }/>
         <Route path='/rides' element={<RideListPage/>}/>
-        <Route path='/map' element={<MapPage data={data}/>}/>
+        <Route path='/map' element={<BikeSharingMap/>}/>
         <Route path='/ride' element={<RidePage/>}/>
       </Routes>
-    </Router>     
+    </Router>
+    </div>
   );
 }
 

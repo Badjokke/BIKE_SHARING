@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public String registerUser(String email, String userName, String password ) {
+    public String registerUser(String email, String userName, String password,BikeSharingUser.Role role ) {
         //nonsense email - kill the request
         if(!isUserEmailValid(email)){
             return null;
@@ -42,12 +42,15 @@ public class UserServiceImpl implements UserService{
             return null;
         }
         password = engine.generateHash(password);
-        this.userRepository.save(new BikeSharingUser(userName,email, BikeSharingUser.Role.REGULAR,password));
+        this.userRepository.save(new BikeSharingUser(userName,email, role,password));
         return this.oAuthService.generateToken(userName,email);
     }
 
     @Override
     public String loginUser(String email, String password) {
+        if(email == null || password == null){
+            return null;
+        }
         BikeSharingUser user = this.userRepository.findUserByEmailAddress(email);
         if(user == null)
             return null;

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form, Dropdown  } from 'react-bootstrap';
+import { SelectedRide } from '../../Ride/RidePage';
 
-interface BikeObject  {
+export interface BikeObject  {
     id: number;
     Stand: {
       id : number;
@@ -11,7 +12,7 @@ interface BikeObject  {
       }
     }
 }
-interface StandObject {
+export interface StandObject {
   id: number;
   location: {
     longitude: number;
@@ -24,15 +25,17 @@ interface RideModalProps {
     handleClose: () => void;
     bikeData: BikeObject[];
     endStandData: StandObject[];
+    setTokenState: (selectedRide:SelectedRide)=> void;
   }
 
-const ModalRide: React.FC<RideModalProps> = ({ show, handleClose, bikeData, endStandData }) => {
-  // Add your modal form logic here
+const ModalRide: React.FC<RideModalProps> = ({ show, handleClose, bikeData, endStandData,setTokenState }) => {
+
 
   const [selectedEndStand, setSelectedEndStand] = useState<StandObject | null>(null);
   const [selectedBike, setSelectedBike] = useState<BikeObject | null>(null);
   const [distance, setDistance] = useState<number | null>(null);
-  const [rideToken,setRideToken] = useState<string|null>(null);
+
+
   const handleIdChange = (bike: BikeObject) => {
     setSelectedBike(bike);
   };
@@ -65,7 +68,15 @@ const ModalRide: React.FC<RideModalProps> = ({ show, handleClose, bikeData, endS
  
      console.log(`starting ride with bike ${selectedBike.id} from stand ${startStandId} to stand ${endStandId}`);
      console.log(`Distance: ${distance} units`);
+     //todo api call
+     const rideToken : string = "abcdd";
+     const selectedRide:SelectedRide = {
+        bike : selectedBike,
+        stand: selectedEndStand,
+        rideToken : rideToken
+     }
 
+     setTokenState(selectedRide);
   }
 
 

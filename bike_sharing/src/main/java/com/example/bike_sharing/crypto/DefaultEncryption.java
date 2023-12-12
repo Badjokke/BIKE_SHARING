@@ -21,6 +21,9 @@ public class DefaultEncryption implements EncryptionEngine {
 
     @Override
     public String generateHash(String text) {
+        if(text == null){
+            return null;
+        }
         MessageDigest digest = null;
         try{
             digest = MessageDigest.getInstance("SHA3-256");

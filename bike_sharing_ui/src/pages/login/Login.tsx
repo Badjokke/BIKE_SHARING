@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { loginUser } from '../../api/user_service_api/UserApiCaller';
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,10 +15,10 @@ const Login: React.FC = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // You can add your authentication logic here
-    console.log('Email:', email, 'Password:', password);
+    const response = await loginUser(email,password);
   };
 
   return (
@@ -51,7 +52,7 @@ const Login: React.FC = () => {
               Login
             </Button>
             <a
-              href="http://localhost:8080/oauth2/authorization/google"
+              href={`${process.env.REACT_APP_USER_SERVICE_URL}/oauth2/authorization/google`}
               className="btn btn-google text-white float-right"
               style={{ backgroundColor: '#4285F4' }}
             >
