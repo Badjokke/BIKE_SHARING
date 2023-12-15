@@ -90,9 +90,6 @@ public class BikeRideService implements RideService{
             return null;
         }
         Bike bike = this.bikeService.getCurrentBike((long) bikeId);
-        if(this.bikeService.isBikeRideable(bike)){
-            return null;
-        }
         boolean bikeClaimed = this.bikeService.claimBike(bike) != 0;
         if(!bikeClaimed){
             return null;

@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import ModalRide, { BikeObject, StandObject } from '../components/ride/ModalRide';
 import MapPage, { MapObject } from '../map/MapPage';
 import { LatLngTuple } from 'leaflet';
+import { connectRideSocket,disconnectSocket,sendBikeLocation,subscribeToRide } from '../../socket/Ride/RideSocket';
+import Stomp from "stompjs";
 
 export interface SelectedRide {
   stand : StandObject,
@@ -11,13 +13,14 @@ export interface SelectedRide {
 
 }
 
-
 const RidePage: React.FC = () => {
+  const [timeOutHandler,setHandler] = useState<NodeJS.Timeout>();
   const [showModal, setShowModal] = useState(false);
   const [selectedRide, setSelectedRide] = useState<SelectedRide | null>(null);
   const [selectedStand,setSelectedStand] = useState<MapObject>();
   const [selectedBike, setSelectedBike] = useState<MapObject>();
   const [bikeToStandPath,setBikeToStandPath] = useState<LatLngTuple[]|null>(null)
+  const [socketConnected,setSocketConnected] = useState<boolean>(false);
   const handleButtonClick = () => {
     setShowModal(true);
   };
@@ -88,6 +91,93 @@ const RidePage: React.FC = () => {
     },
   ];
 
+
+
+  const bikeLocationUpdate = (message: Stomp.Message) => {
+    if(!selectedStand){
+      return;
+    }
+    const body = JSON.parse(message.body) as MapObject;
+    console.log(`new bike location: ${body}`);
+    const bikeToStandPath: LatLngTuple[] = 
+      [
+        [body.location.latitude, body.location.longitude],
+        [selectedStand.location.latitude, selectedStand.location.longitude],
+      ];
+      setSelectedBike(body);
+      setBikeToStandPath(bikeToStandPath);
+    
+  }
+
+  const sendLocation = (updateInterval:number=500) => {
+    if(!selectedBike){
+      console.log("selected bike is undefined");
+      return;
+    }
+      const tmp = setInterval(()=>{
+        const longitude = Math.random();
+        const latitude = Math.random();
+        selectedBike.location.longitude = longitude;
+        selectedBike.location.latitude = latitude;
+        sendBikeLocation(selectedBike);
+      },updateInterval);
+      setHandler(tmp);
+  }
+
+
+  const socketConnectedCallback = (frame: Stomp.Frame | undefined) =>{
+    console.log("bike socket connected");
+    setSocketConnected(true);
+    subscribeToRide(bikeLocationUpdate);
+    sendLocation();
+
+  }
+
+  const rideFinishedCallback = (message:Stomp.Message) =>{
+    if(!selectedRide){
+      console.log("no ride is started");
+      return;
+    }
+    console.log("ride is over");
+    disconnectSocket();
+    setSocketConnected(false);
+    clearTimeout(timeOutHandler);
+  }
+
+  const connectToRide = (bikeToken:string) =>{
+    connectRideSocket(socketConnectedCallback,rideFinishedCallback,bikeToken);
+  }
+
+  useEffect(()=>{
+    
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      // Your cleanup logic or any actions before the user leaves
+      // You might want to return a string message to display a confirmation prompt
+      const confirmationMessage = 'Are you sure you want to leave?';
+      event.returnValue = confirmationMessage; // Standard for most browsers
+      return confirmationMessage; // For some older browsers
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      // Cleanup: Remove the event listener when the component is unmounted
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      clearTimeout(timeOutHandler);
+      disconnectSocket();
+    };
+  },[]);
+
+
+
+  useEffect(()=>{
+    if(!selectedRide || !selectedBike || socketConnected)
+      return;
+    connectToRide(selectedRide.rideToken);
+
+  },[selectedRide,setSelectedRide])
+
+
   const setUserSelectedRide = (selectedRide: SelectedRide) =>{
       setSelectedRide(selectedRide);
       setShowModal(false);
@@ -96,6 +186,8 @@ const RidePage: React.FC = () => {
         id: selectedRide.stand.id,
         location: selectedRide.stand.location
       }
+      
+      //const startingStandData = standData.filter((standObject)=>standObject.id === selectedRide.bike.Stand.id);
       const bikeData = rideData.filter((bikeObject)=>bikeObject.id === selectedRide.bike.id);
 
       const bikeMapObject: MapObject = {
@@ -111,7 +203,6 @@ const RidePage: React.FC = () => {
       setSelectedStand(standMapObject);
       setSelectedBike(bikeMapObject);
       setBikeToStandPath(bikeToStandPath);
-
   }
 
   return (

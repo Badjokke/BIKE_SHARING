@@ -13,6 +13,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -62,16 +63,10 @@ public class BikeController implements BikeApi {
         long bikeId = bikeLocationMessage.getBikeId();
         DomainToDto<Bike,ObjectLocation> mapper = new BikeToBikeLocationDto();
         String json;
-        if(bikeId == 0){
-            List<Bike> bikes = this.bikeService.getAllCurrentBikes();
-            List<ObjectLocation>  locations = mapper.mapDomainToDtos(bikes);
-            json = new Gson().toJson(locations);
-        }
-        else {
-            Bike subscribedbike = this.bikeService.getCurrentBike(bikeId);
-            ObjectLocation location = mapper.mapDomainToDto(subscribedbike);
-            json = new Gson().toJson(location);
-        }
+        List<Bike>bikes = bikeId == 0?this.bikeService.getAllCurrentBikes(): Arrays.asList(this.bikeService.getCurrentBike(bikeId));
+        List<ObjectLocation>  locations = mapper.mapDomainToDtos(bikes);
+        json = new Gson().toJson(locations);
+
         String communicationChannel = "/bike_location/location/"+bikeId;
 
         this.simpMessagingTemplate.convertAndSend(communicationChannel,json);

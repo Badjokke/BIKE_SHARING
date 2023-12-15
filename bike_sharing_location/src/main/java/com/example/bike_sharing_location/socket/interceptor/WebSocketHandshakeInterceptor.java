@@ -1,4 +1,4 @@
-package com.example.bike_sharing_location.socket;
+package com.example.bike_sharing_location.socket.interceptor;
 
 import com.example.bike_sharing_location.service.ride.RideService;
 import org.springframework.http.server.ServerHttpRequest;

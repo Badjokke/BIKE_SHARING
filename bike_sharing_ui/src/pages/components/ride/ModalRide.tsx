@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form, Dropdown  } from 'react-bootstrap';
 import { SelectedRide } from '../../Ride/RidePage';
-
+import { startUserRide,BikeStartObject,RideStartResponse,RideStartFailureResponse} from '../../../api/ride_api/RideApi';
 export interface BikeObject  {
     id: number;
     Stand: {
@@ -58,7 +58,7 @@ const ModalRide: React.FC<RideModalProps> = ({ show, handleClose, bikeData, endS
     return Math.sqrt((deltaLongitude * deltaLongitude) + (deltaLatitude * deltaLatitude));
   }
 
-  const startRide = () =>{
+  const startRide = async () =>{
     if(selectedBike === null || selectedEndStand === null){
       return;
     }
@@ -68,15 +68,38 @@ const ModalRide: React.FC<RideModalProps> = ({ show, handleClose, bikeData, endS
  
      console.log(`starting ride with bike ${selectedBike.id} from stand ${startStandId} to stand ${endStandId}`);
      console.log(`Distance: ${distance} units`);
-     //todo api call
-     const rideToken : string = "abcdd";
-     const selectedRide:SelectedRide = {
-        bike : selectedBike,
-        stand: selectedEndStand,
-        rideToken : rideToken
-     }
 
-     setTokenState(selectedRide);
+      const rideObject: BikeStartObject = {
+        bikeId:selectedBike.id,
+        startStandId: selectedBike.Stand.id,
+        endStandId: selectedEndStand.id
+      }
+     const response = await startUserRide(rideObject);
+
+      if(!response){
+        console.log("user information is not stored in local storage, unable to proceed");
+        //redirect to login
+        return;
+      }
+      if('token' in response){
+        const res = response as RideStartResponse;
+
+        const selectedRide:SelectedRide = {
+          bike : selectedBike,
+          stand: selectedEndStand,
+          rideToken : res.token
+       }
+       setTokenState(selectedRide);
+       return;
+      }
+      const res = response as RideStartFailureResponse;
+      console.log(res.message);
+      if(res.redirectTo){
+        //todo redirect
+      } 
+
+
+
   }
 
 

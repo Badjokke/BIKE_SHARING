@@ -1,4 +1,4 @@
-package com.example.bike_sharing_location.socket;
+package com.example.bike_sharing_location.socket.interceptor;
 
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;

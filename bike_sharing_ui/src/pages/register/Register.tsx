@@ -85,7 +85,7 @@ const Register: React.FC = () => {
                   Select User Type
                 </option>
                 <option value="serviceman">Serviceman</option>
-                <option value="user">User</option>
+                <option value="regular">User</option>
               </Form.Select>
             </Form.Group>
 

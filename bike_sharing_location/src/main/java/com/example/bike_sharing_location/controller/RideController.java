@@ -63,11 +63,11 @@ public class RideController implements RideApi {
             return;
         }
         String message;
-        if(this.rideService.rideFinished(bikeRideToken)){
+        /*if(this.rideService.rideFinished(bikeRideToken)){
             message = "{" + "message: "+bikeRideToken+" successfully finished"+"}";
             this.simpMessagingTemplate.convertAndSend("/bike_ride/close/"+bikeRideToken,message);
             return;
-        }
+        }*/
         ObjectLocation location = mapper.mapDomainToDto(bike);
         message = new Gson().toJson(location);
         this.simpMessagingTemplate.convertAndSend("/bike_ride/"+bikeRideToken,message);

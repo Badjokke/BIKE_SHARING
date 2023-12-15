@@ -4,10 +4,15 @@ import { MapContainer, TileLayer, Marker, Popup,Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L, { LatLngTuple } from 'leaflet';
 import 'leaflet/dist/images/marker-icon.png';
+import { Button } from 'react-bootstrap';
 
 export interface Location {
   longitude: number;
   latitude: number;
+}
+export interface ObjectClickFunctions {
+  onStandClick?: (object:MapObject) => any,
+  onBikeClick?: (object:MapObject) => any,
 }
 
 export interface MapObject {
@@ -32,8 +37,9 @@ const bikeIcon = new L.Icon({
   });
 
 
-
-const MapPage: React.FC<{ bikeData: MapObject[], standData: MapObject[], paths?: LatLngTuple[] }> = ({ bikeData,standData,paths }) => {
+const MapPage: React.FC<{ bikeData: MapObject[], standData: MapObject[], paths?: LatLngTuple[], onObjectClick?: ObjectClickFunctions }> = ({ bikeData,standData,paths,onObjectClick }) => {
+  const onBikeClickFunction = onObjectClick?.onBikeClick;
+  const onStandClickFunction = onObjectClick?.onStandClick;
 
   return (
     <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
@@ -47,7 +53,11 @@ const MapPage: React.FC<{ bikeData: MapObject[], standData: MapObject[], paths?:
           position={[object.location.latitude, object.location.longitude]}
           icon={bikeIcon}
         >
-          <Popup>{`Bike id: ${object.id}. Location: ${object.location.longitude}, ${object.location.latitude}`}</Popup>
+          <Popup>
+              {`Bike id: ${object.id}. Location: ${object.location.longitude}, ${object.location.latitude}`}
+              {onBikeClickFunction&&<Button onClick={()=>{onBikeClickFunction(object)}}>Subscribe</Button>}
+              
+          </Popup>
         </Marker>
       ))}
 
@@ -57,7 +67,10 @@ const MapPage: React.FC<{ bikeData: MapObject[], standData: MapObject[], paths?:
           position={[object.location.latitude, object.location.longitude]}
           icon={standIcon}
         >
-          <Popup>{`Stand id: ${object.id}. Location: ${object.location.longitude}, ${object.location.latitude}`}</Popup>
+          <Popup>
+            {`Stand id: ${object.id}. Location: ${object.location.longitude}, ${object.location.latitude}`}
+            {onStandClickFunction&&<Button onClick={()=>{onStandClickFunction(object)}}>Subscribe</Button>}
+            </Popup>
         </Marker>
       ))}{
         paths&&<Polyline pathOptions={{ color: 'blue' }} positions={paths} />

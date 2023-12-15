@@ -12,11 +12,9 @@ console.log("process env: "+process.env.REACT_APP_RIDE_SERVICE_URL);
 console.log("process env: "+process.env.REACT_APP_USER_SERVICE_URL);
 
 root.render(
-  <React.StrictMode>
     <I18nextProvider i18n={i18n}>
       <App />
     </I18nextProvider>
-  </React.StrictMode>
 );
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

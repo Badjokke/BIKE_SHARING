@@ -1,6 +1,6 @@
-const USER_SERVICE_URL = `${process.env.REACT_APP_USER_SERVICE_URL}/user`;
-
 import { HTTP_METHOD,performFetch } from "../GenericApi";
+
+const USER_SERVICE_URL = `${process.env.REACT_APP_USER_SERVICE_URL}/user`;
 
 export interface USER_API_RESPONSE{
     message: string,
@@ -48,13 +48,13 @@ export const registerUser = async (username:string, email: string, password: str
 
 
 
-export const loginUser = async(username: string, password:string) =>{
+export const loginUser = async(email: string, password:string) =>{
     const method = HTTP_METHOD.POST;
     const body = {
-        username,password
+        email,password
     }
     const apiResponse: USER_API_RESPONSE = {
-        message: `User ${username} logged in`,
+        message: `User ${email} logged in`,
         data: {token:null}
     }
     const response = await performFetch(`${USER_SERVICE_URL}/login`,body,method);
@@ -67,7 +67,7 @@ export const loginUser = async(username: string, password:string) =>{
         apiResponse.redirectTo = "/";
     }
     else if (response.status === 404){
-        apiResponse.message = `User ${username} not logged in`;
+        apiResponse.message = `User ${email} not logged in`;
     }
     return apiResponse;
 

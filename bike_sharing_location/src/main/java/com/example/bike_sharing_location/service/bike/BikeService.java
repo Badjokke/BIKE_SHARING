@@ -21,6 +21,5 @@ public interface BikeService {
     boolean markBikesAsServiced(List<Long> bikeIds);
     InMemoryBikeStorage getInMemoryBikeStorage();
 
-    boolean isBikeRideable(Bike bike);
      int claimBike(Bike bike);
 }
