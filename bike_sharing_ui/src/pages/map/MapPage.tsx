@@ -1,6 +1,6 @@
 // src/components/MapPage.tsx
-import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup,Polyline } from 'react-leaflet';
+import React, { ReactNode } from 'react';
+import { MapContainer, TileLayer, Marker, Popup,Polyline,useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L, { LatLngTuple } from 'leaflet';
 import 'leaflet/dist/images/marker-icon.png';
@@ -40,7 +40,21 @@ const bikeIcon = new L.Icon({
 const MapPage: React.FC<{ bikeData: MapObject[], standData: MapObject[], paths?: LatLngTuple[], onObjectClick?: ObjectClickFunctions }> = ({ bikeData,standData,paths,onObjectClick }) => {
   const onBikeClickFunction = onObjectClick?.onBikeClick;
   const onStandClickFunction = onObjectClick?.onStandClick;
-
+  
+  const handleMapClick = (event: L.LeafletMouseEvent) => {
+    const { latlng } = event;
+    console.log(`Clicked at: ${latlng.lat}, ${latlng.lng}`);
+    return null;
+    // You can do something with the latitude and longitude here
+  };
+  const ClickComponent = (): null=>{
+    const map = useMapEvents({
+      click(e) {                                
+        handleMapClick(e);             
+      },   
+    })
+    return null;
+  }
   return (
     <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
   <TileLayer
@@ -75,7 +89,7 @@ const MapPage: React.FC<{ bikeData: MapObject[], standData: MapObject[], paths?:
       ))}{
         paths&&<Polyline pathOptions={{ color: 'blue' }} positions={paths} />
       }
-      
+   <ClickComponent/>
 </MapContainer>
   );
 };
