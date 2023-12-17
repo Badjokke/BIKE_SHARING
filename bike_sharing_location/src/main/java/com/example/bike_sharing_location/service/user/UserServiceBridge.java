@@ -33,12 +33,14 @@ public class UserServiceBridge implements UserLocationService{
     }
 
     @Override
-    public User fetchUserInfo(String email) {
+    public User fetchUserInfo(String email,String authorization) {
         final String userInfoUrl = this.userServiceConfiguration.getUSER_INFO_URL();
         final RequestBuilder<String> requestBuilder = new HttpRequestBuilder(userInfoUrl);
         Map<String,Object> body = new HashMap<>();
         body.put("userEmail", String.valueOf(email));
-        ResponseEntity<String> entity = requestBuilder.sendGetRequest(new HashMap<>(),body);
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization",authorization);
+        ResponseEntity<String> entity = requestBuilder.sendGetRequest(headers,body);
         //invalid userId
         if(entity.getStatusCode().is4xxClientError()){
             return null;

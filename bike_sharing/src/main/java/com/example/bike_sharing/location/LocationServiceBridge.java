@@ -55,12 +55,14 @@ public class LocationServiceBridge implements BikeLocationService {
     }
 
     @Override
-    public List<Ride> fetchUserRides(long userId) {
+    public List<Ride> fetchUserRides(long userId, String authorization) {
         System.out.println("SENDING REQUEST TO"+this.locationServiceUrl);
         final RequestBuilder<String> requestBuilder = new HttpRequestBuilder(this.locationServiceUrl);
         Map<String,Object> body = new HashMap<>();
         body.put("userId", String.valueOf(userId));
-        ResponseEntity<String> entity = requestBuilder.sendGetRequest(new HashMap<>(),body);
+        Map<String,String> headers = new HashMap<>();
+        headers.put("Authorization",authorization);
+        ResponseEntity<String> entity = requestBuilder.sendGetRequest(headers,body);
         //invalid userId
         if(entity.getStatusCode().is4xxClientError()){
             return null;

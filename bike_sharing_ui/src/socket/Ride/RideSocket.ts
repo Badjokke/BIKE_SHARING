@@ -59,7 +59,7 @@ export const subscribeToRide = (subscribeCallback:(message:Stomp.Message)=>any) 
 
     const channel = socket.subscribe(`/bike_ride/close/${token}`,(message:Stomp.Message)=>{
         rideFinished(message);
-        socket?.unsubscribe(channel.id);
+        disconnectSocket();
     })
 }
 

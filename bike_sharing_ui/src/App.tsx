@@ -16,10 +16,14 @@ import {Navigate} from "react-router-dom";
 function App() {
 
   const PrivateRoute = ({ Component }:any) => {
-    const isAuthenticated = false;//useIsAuthenticated();
+    const isAuthenticated = true;//useIsAuthenticated();
     //const auth = isAuthenticated();
     return isAuthenticated ? <Component /> : <Navigate to="/login" />;
   };
+
+  const ServiceManRoute = ({Component}: any) =>{
+
+  }
 
     
 
@@ -33,11 +37,7 @@ function App() {
         <Route path='/register' element={<Register/>}/>
         <Route path='/oauth_login' element={<OauthLogin/>}/>
         <Route path='/service' element={
-          <PrivateRoute loginPath={"/login"}>
             <ServicePage/>
-          </PrivateRoute>
-        
-        
         }/>
         <Route path='/rides' element={<RideListPage/>}/>
         <Route path='/map' element={<BikeSharingMap/>}/>

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AuthConfiguration {
+public class AuthServiceConfiguration {
     @Value("${AUTH_URL}")
     private String AUTH_BASE_URL;
     @Value("${AUTH_URL}/authenticate")

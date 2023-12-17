@@ -13,11 +13,11 @@ public class UserServiceImpl implements UserService {
         this.userServiceBridge = new UserServiceBridge(userServiceConfiguration);
     }
     @Override
-    public User fetchUserInfo(String email) {
+    public User fetchUserInfo(String email,String authorization) {
         if(email == null){
             return null;
         }
-        User userInfo = userServiceBridge.fetchUserInfo(email);
+        User userInfo = userServiceBridge.fetchUserInfo(email,authorization);
         return userInfo;
     }
 }

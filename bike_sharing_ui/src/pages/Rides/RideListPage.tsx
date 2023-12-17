@@ -1,7 +1,10 @@
 // src/components/RideListPage.tsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table } from 'react-bootstrap';
-
+import { useState } from 'react';
+import { fetchUserRides,Ride,USER_RIDES_RESPONSE} from '../../api/user_service_api/UserApiCaller';
+import { useNavigate } from 'react-router-dom';
+/*
 interface Ride {
   rideId: number;
   userId: number;
@@ -10,10 +13,12 @@ interface Ride {
   endStandId: number;
   rideStart: string;
   rideEnd: string;
-}
+}*/
 
 const RideListPage: React.FC = () => {
-  const rideData: Ride[] = [
+ const [rideData,setRideData] = useState<Ride[]|null|undefined>(undefined);
+ const navigate = useNavigate();
+  /* const rideData: Ride[] = [
     {
       rideId: 1,
       userId: 1,
@@ -32,7 +37,31 @@ const RideListPage: React.FC = () => {
       rideStart: '2023-11-23T23:00:00Z',
       rideEnd: '2023-11-24T23:30:00Z',
     },
-  ];
+  ];*/
+
+  const fetchRides = async () => {
+    const response = await fetchUserRides();
+    if(response == null){
+      return;
+    }
+    //
+    if (response.redirectTo){
+        console.log("invalid request");
+        navigate(response.redirectTo);
+        return;
+    }
+    
+    const userRideData = response.rides;
+    userRideData.length == 0? setRideData(null):setRideData(userRideData);
+  }
+
+
+  useEffect(()=>{
+    fetchRides();
+  },[])
+
+
+
 
   const calculateRideDuration = (ride: Ride): string => {
     const rideStart = new Date(ride.rideStart);
@@ -47,7 +76,7 @@ const RideListPage: React.FC = () => {
   };
 
   return (
-    <div className="container mt-4">
+    (rideData)? ( <div className="container mt-4">
       <h1>Ride List</h1>
       <Table striped bordered hover>
         <thead>
@@ -78,7 +107,10 @@ const RideListPage: React.FC = () => {
         </tbody>
       </Table>
     </div>
-  );
+          ):
+
+          (rideData===null?(<h1>User has no rides</h1>):(<h1>loading user rides</h1>))
+  )
 };
 
 export default RideListPage;

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface LocationService {
 
-    List<Ride> fetchUserRides(long userId);
+    List<Ride> fetchUserRides(long userId,String authorization);
 
 
 }

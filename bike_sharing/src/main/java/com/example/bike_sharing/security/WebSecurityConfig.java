@@ -1,7 +1,6 @@
 package com.example.bike_sharing.security;
-
-
 import com.example.bike_sharing.configuration.ClientAppConfiguration;
+import com.example.bike_sharing.configuration.LocationServiceConfiguration;
 import com.example.bike_sharing.service.authentication.OAuth2Service;
 import com.example.bike_sharing.service.authentication.OAuthService;
 import com.example.bike_sharing.model.OathUser;
@@ -26,10 +25,12 @@ import java.util.Arrays;
 @EnableWebSecurity(debug = true)
 public class WebSecurityConfig {
     private final JwtAuthFilter jwtAuthenticationFilter;
+    private final HeaderFilter headerFilter;
     private final ClientAppConfiguration clientAppConfiguration;
     private final OAuth2Service oAuth2Service;
-    public WebSecurityConfig(OAuthService oAuthService, OAuth2Service oAuth2Service, ClientAppConfiguration clientAppConfiguration){
-        this.jwtAuthenticationFilter = new JwtAuthFilter(oAuthService);
+    public WebSecurityConfig(OAuthService oAuthService, OAuth2Service oAuth2Service, ClientAppConfiguration clientAppConfiguration, LocationServiceConfiguration locationServiceConfiguration){
+        this.jwtAuthenticationFilter = new JwtAuthFilter(oAuthService,locationServiceConfiguration);
+        this.headerFilter = new HeaderFilter();
         this.oAuth2Service = oAuth2Service;
         this.clientAppConfiguration = clientAppConfiguration;
     }
@@ -47,13 +48,14 @@ public class WebSecurityConfig {
                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)  {
                         try {
                             OathUser user = (OathUser) authentication.getPrincipal();
-                            response.sendRedirect(clientAppConfiguration.getRedirectUrl()+"?token="+user.getAccessToken()+"&email="+user.getEmail());
+                            response.sendRedirect(clientAppConfiguration.getRedirectUrl()+"?token="+user.getAccessToken()+"&email="+user.getEmail()+"&role=REGULAR");
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
                     }
                 }))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                //.addFilterAfter(headerFilter, JwtAuthFilter.class);
 
 
 

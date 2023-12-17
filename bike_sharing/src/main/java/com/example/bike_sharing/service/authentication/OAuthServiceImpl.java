@@ -1,6 +1,6 @@
 package com.example.bike_sharing.service.authentication;
 
-import com.example.bike_sharing.configuration.AuthConfiguration;
+import com.example.bike_sharing.configuration.AuthServiceConfiguration;
 import com.example.bike_sharing.http_util.HttpRequestBuilder;
 import com.example.bike_sharing.http_util.RequestBuilder;
 import com.google.gson.Gson;
@@ -17,9 +17,9 @@ import java.util.Map;
 
 @Service
 public class OAuthServiceImpl implements OAuthService, UserDetailsService {
-    private final AuthConfiguration authConfiguration;
+    private final AuthServiceConfiguration authConfiguration;
 
-    public OAuthServiceImpl(AuthConfiguration authConfiguration){
+    public OAuthServiceImpl(AuthServiceConfiguration authConfiguration){
         this.authConfiguration = authConfiguration;
     }
 

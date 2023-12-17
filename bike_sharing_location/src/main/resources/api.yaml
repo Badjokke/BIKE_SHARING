@@ -122,6 +122,14 @@ paths:
         - bikes
       summary: marks bike as serviced
       operationId: changeBikeState
+      parameters:
+        - name: Authorization
+          in: header
+          description: Access token for authentication
+          required: true
+          schema:
+            type: string
+
       requestBody:
         required: true
         content:
@@ -195,6 +203,13 @@ paths:
       summary: starts a ride on a bike for logged in user
       description: post request when user starts a ride on a bike from a stand to a stand
       operationId: rideStart
+      parameters:
+        - name: Authorization
+          in: header
+          description: Access token for authentication
+          required: true
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -303,13 +318,10 @@ components:
         userEmail:
           type: string
           example: "hello@world.com"
-        bike_id:
+        bikeId:
           type: integer
           example: 2
-        serviced_stamp:
-          type: string
-          format: date-time
-          example: "2023-11-16 14:20:00.000000"
+
 
 
     ObjectLocation:
@@ -333,6 +345,10 @@ components:
           type: integer
           format: int64
           example: 1
+        lastServiced:
+          type: string
+          format: date-time
+          example: "2023-11-19 12:30:00.000000"
         Stand:
           $ref: '#/components/schemas/ObjectLocation'
 

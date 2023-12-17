@@ -9,10 +9,12 @@ public class UserServiceConfiguration {
     private String USER_SERVICE_URL;
     @Value("${USER_URL}/user/user_info")
     private String USER_INFO_URL;
-
+    @Value("${user.service.code}")
+    private String USER_SERVICE_HASH;
     public String getUSER_SERVICE_URL() {
         return USER_SERVICE_URL;
     }
+    public String getUSER_SERVICE_HASH(){return this.USER_SERVICE_HASH;}
 
     public String getUSER_INFO_URL() {
         return USER_INFO_URL;

@@ -50,6 +50,7 @@ public class HttpRequestBuilder implements RequestBuilder<String>{
         for(String key : headers.keySet()){
             httpHeaders.set(key,headers.get(key));
         }
+        httpHeaders.set("x-service","3f3b08eca62c21d76256e6e1d0b8bf99f4efbe376f64335b72f4163a8fc50dba");
         HttpEntity<String> requestBody = null;
         if(method == HttpMethod.GET){
             StringBuilder sb = new StringBuilder();
@@ -58,9 +59,7 @@ public class HttpRequestBuilder implements RequestBuilder<String>{
             }
             url += "?"+ sb;
         }
-        else{
-            requestBody = new HttpEntity<>(new Gson().toJson(body),httpHeaders);
-        }
+        requestBody = new HttpEntity<>(method!=HttpMethod.GET?new Gson().toJson(body):null,httpHeaders);
         ResponseEntity<String> response = null;
        //Object o =  restTemplate.getForEntity(url+"?userId=1",Object.class);
         try{

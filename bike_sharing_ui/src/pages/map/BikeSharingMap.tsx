@@ -6,7 +6,7 @@ import {connectBikeSocket,disconnectSocket,fetchBikeData,unsubscribeFromChannel}
 import Stomp from "stompjs";
 import { ObjectClickFunctions } from './MapPage';
 import { Toast,Button } from 'react-bootstrap';
-
+import { fetchStands } from '../../api/stand_api/StandApi';
 const mockbikeData = [
     {
       id: 1,
@@ -82,8 +82,15 @@ const bikeLocationRecieved = (message:Stomp.Message)=>{
   }
 
   useEffect(() => {
-    connectBikeSocket(connectedCallback);
+    fetchStands().then((stands)=>{
+      if(stands === null){
+        console.log("no stands");
+        return;
+      }
+      setStandData(stands);    
+    });
 
+    connectBikeSocket(connectedCallback);
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       // Your cleanup logic or any actions before the user leaves
       // You might want to return a string message to display a confirmation prompt
@@ -100,6 +107,9 @@ const bikeLocationRecieved = (message:Stomp.Message)=>{
       disconnectSocket();
 
     };
+
+  
+
   }, []); // Empty dependency array ensures the effect runs once when the component mounts
 
 

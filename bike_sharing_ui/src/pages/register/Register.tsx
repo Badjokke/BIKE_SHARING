@@ -3,12 +3,16 @@ import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { registerUser } from '../../api/user_service_api/UserApiCaller';
 import { saveUserInfo } from '../../token_manager/LocalStorageManager';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 const Register: React.FC = () => {
+
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('');
+  const navigate = useNavigate();
+
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -30,9 +34,10 @@ const Register: React.FC = () => {
     e.preventDefault();
     const response = await registerUser(username,email,password,userType);
     const responseMessage = response.message;
-    const data = response.data.token;
-    if(data != null){
-      saveUserInfo(email,data);
+    const data = response.data;
+    if(data && data.token && data.role){
+      saveUserInfo(email,data.token,data.role);
+      navigate("/");
       //toast.success(responseMessage,{autoClose:1500})
     }
     else{

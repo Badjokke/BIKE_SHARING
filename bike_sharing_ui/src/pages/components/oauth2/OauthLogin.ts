@@ -12,8 +12,10 @@ const OauthLogin = () => {
     
     const token = urlParams.get("token");
     const email = urlParams.get("email");
-    if(email&&token){
-        saveUserInfo(email,token);
+    const role = urlParams.get("role");
+
+    if(email&&token&&role){
+        saveUserInfo(email,token,role);
     }
     useEffect(() => {
         // Redirect to "/" when component mounts

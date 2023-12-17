@@ -123,6 +123,7 @@ paths:
         description: get request for ride history
           called by user service
         operationId: userRidesList
+
         parameters:
           - in: query
             name: userEmail
@@ -130,6 +131,15 @@ paths:
             schema:
               type: string
             description: email of user whose ride history is requested
+
+          -   name: Authorization
+              in: header
+              description: Access token for authentication
+              required: true
+              schema:
+                type: string
+
+
         responses:
           '200':
             description: successful fetch of user rides
@@ -289,7 +299,9 @@ components:
         token:
           type: "string"
           example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-
+        role:
+          type: "string"
+          example: "REGULAR"
     Bike:
       properties:
         id:

@@ -31,14 +31,14 @@ public class JwtTokenProvider implements TokenProvider {
      * Life spawn of token, now 10 min
      */
     @Value("${ACCESS_TOKEN_EXPIRATION}")
-    private static long JWT_EXPIRATION; // 600 sec = 10 min
+    private long JWT_EXPIRATION; // 600 sec = 10 min
     @Value("${REFRESH_TOKEN_EXPIRATION}")
-    private static long REFRESH_TOKEN_EXPIRATION;
+    private long REFRESH_TOKEN_EXPIRATION;
     /**
      * Life spawn of refreshed token, 1 hour
      */
     @Value("${EXTENDED_ACCESS_TOKEN_EXPIRATON}")
-    private static long JWT_EXPIRATION_EXTENDED; // 3600 sec = 60 min
+    private long JWT_EXPIRATION_EXTENDED; // 3600 sec = 60 min
     /**
      * method to generate JWT token from username
      * @param authentication    wrapper of user credentials

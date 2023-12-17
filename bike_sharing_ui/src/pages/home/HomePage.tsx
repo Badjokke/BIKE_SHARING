@@ -1,41 +1,17 @@
 // src/components/Homepage.tsx
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col,Button } from 'react-bootstrap';
 import { useTranslation } from "react-i18next";
-import { createConnection } from '../../socket/SocketClient';
-import { SocketConnectionParams } from '../../socket/SocketClient';
-import Stomp from 'stompjs';
+import { useNavigate } from 'react-router-dom';
 const Homepage: React.FC = () => {
   const { t } = useTranslation();
-  /*
-  const subscribeCallback = (message: Stomp.Message) =>{
-      console.log(message.body);
-  }
-
-  const errorCallback = (error:string | Stomp.Frame)=>{
-    console.log(error);
-  }
-  const connectCallback = function(frame: Stomp.Frame | undefined) {
-    // called back after the client is connected and authenticated to the STOMP server
-    console.log("hello");
-    const bikeId = 0;
-    client.subscribe("/bike_ride/location/"+bikeId,subscribeCallback);
-    client.publish({
-      destination:"/bike_sharing/bike",
-      body:JSON.stringify({bikeId})
-    });
-    /*setInterval(()=>{
-      client.push("/bike_sharing/bike",{},JSON.stringify({bikeId:bikeId}));
-  
-    },2500);
-  };*/
-
+  const navigate = useNavigate();
     return (
         <div>
           <div className="bg-primary text-white text-center p-5">
             <h1>{t("Welcome to BikeShare")}</h1>
             <p>{t("Your go-to platform for convenient and eco-friendly bike sharing!")}</p>
-            <a href="/login" className="btn btn-light">{t("Get Started")}</a>
+            <Button onClick={(()=>{navigate("/login")})} className="btn btn-light">{t("Get Started")}</Button>
           </div>
     
           <Container className="mt-4">
@@ -61,7 +37,7 @@ const Homepage: React.FC = () => {
           <Container fluid className="bg-light mt-4 p-5 text-center">
             <h2>{t("Join BikeShare Today!")}</h2>
             <p>{t("Sign up now to start your biking adventure.")}</p>
-            <a href="/register" className="btn btn-primary">{t("Sign Up")}</a>
+            <Button onClick={(()=>{navigate("/register")})} className="btn btn-primary">{t("Sign Up")}</Button>
           </Container>
         </div>
       );

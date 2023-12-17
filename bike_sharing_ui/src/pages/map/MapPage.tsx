@@ -1,5 +1,5 @@
 // src/components/MapPage.tsx
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup,Polyline,useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L, { LatLngTuple } from 'leaflet';
@@ -13,12 +13,18 @@ export interface Location {
 export interface ObjectClickFunctions {
   onStandClick?: (object:MapObject) => any,
   onBikeClick?: (object:MapObject) => any,
+  onMapClick?:(object: MapClickObject) => any
 }
 
 export interface MapObject {
   id: number;
   location: Location;
 }
+export interface MapClickObject {
+  location:Location
+}
+
+
 const bikeIcon = new L.Icon({
   iconUrl: 'https://cdn-icons-png.flaticon.com/512/3198/3198344.png ',
   iconSize: [25, 41],
@@ -40,9 +46,12 @@ const bikeIcon = new L.Icon({
 const MapPage: React.FC<{ bikeData: MapObject[], standData: MapObject[], paths?: LatLngTuple[], onObjectClick?: ObjectClickFunctions }> = ({ bikeData,standData,paths,onObjectClick }) => {
   const onBikeClickFunction = onObjectClick?.onBikeClick;
   const onStandClickFunction = onObjectClick?.onStandClick;
-  
+  const onMapClick = onObjectClick?.onMapClick;
   const handleMapClick = (event: L.LeafletMouseEvent) => {
     const { latlng } = event;
+    if(onMapClick){
+      onMapClick({location:{latitude:latlng.lat,longitude:latlng.lng}});
+    }
     console.log(`Clicked at: ${latlng.lat}, ${latlng.lng}`);
     return null;
     // You can do something with the latitude and longitude here

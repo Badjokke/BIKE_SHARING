@@ -41,9 +41,9 @@ public class BikeRideService implements RideService{
     }
 
     @Override
-    public BikeRide createUserRide(RideStart rideStart) {
+    public BikeRide createUserRide(RideStart rideStart,String authorization) {
         String userEmail = rideStart.getUserEmail();
-        User userInfo = this.fetchUserInfo(userEmail);
+        User userInfo = this.fetchUserInfo(userEmail,authorization);
         //invalid user email - user doesnt exist
         if(userInfo == null){
             return null;
@@ -76,8 +76,8 @@ public class BikeRideService implements RideService{
         return this.rideManager.updateBikeLocation(rideToken,bikeLocation);
     }
 
-    private User fetchUserInfo(String userEmail){
-        User userInfo = this.userService.fetchUserInfo(userEmail);
+    private User fetchUserInfo(String userEmail,String authorization){
+        User userInfo = this.userService.fetchUserInfo(userEmail,authorization);
         return userInfo;
     }
     private BikeRide startRide(int startStandId, int endStandId, int bikeId, User userInfo){

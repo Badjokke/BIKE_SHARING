@@ -7,7 +7,11 @@ import com.example.bike_sharing_location.model.ObjectLocation;
 import com.example.bike_sharing_location.model.ObjectLocationLocation;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BikeToBikeDto implements DomainToDto<Bike, BikeDto> {
@@ -18,6 +22,16 @@ public class BikeToBikeDto implements DomainToDto<Bike, BikeDto> {
         for(Bike b : from)
             dtos.add(mapDomainToDto(b));
         return dtos;
+    }
+    OffsetDateTime convertDateToOffsetDateTime(Date date){
+        Instant instant = date.toInstant();
+
+        // Specify a time zone offset, for example, UTC
+        ZoneOffset offset = ZoneOffset.UTC;
+
+        // Create OffsetDateTime from Instant and time zone offset
+        OffsetDateTime offsetDateTime = OffsetDateTime.ofInstant(instant, offset);
+        return offsetDateTime;
     }
 
     @Override
@@ -40,6 +54,7 @@ public class BikeToBikeDto implements DomainToDto<Bike, BikeDto> {
         }
         dto
                 .id(from.getId())
+                .lastServiced(convertDateToOffsetDateTime(from.getLastService()))
                 .setStand(standLocation);
         return dto;
     }

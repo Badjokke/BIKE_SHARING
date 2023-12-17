@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface RideService {
     List<Ride> fetchUserRides(long userId);
-    BikeRide createUserRide(RideStart rideWrapper);
+    BikeRide createUserRide(RideStart rideWrapper, String authorization);
     boolean rideExists(String rideToken);
     boolean rideFinished(String rideToken);
     Bike updateLocation(String rideToken, Location bikeLocation);

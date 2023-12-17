@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface BikeLocationService {
 
-    List<Ride> fetchUserRides(long userId);
+    List<Ride> fetchUserRides(long userId, String authorization);
 }

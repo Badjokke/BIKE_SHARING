@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -27,10 +28,12 @@ public class UserController implements UserApi {
         return ResponseEntity.ok(user);
     }
 
+
+
     @Override
     @GetMapping("/rides")
-    public ResponseEntity<List<Ride>> userRidesList(String userEmail) {
-        List<Ride> userRides = userService.fetchUserRides(userEmail);
+    public ResponseEntity<List<Ride>> userRidesList(String userEmail,String authorization) {
+        List<Ride> userRides = userService.fetchUserRides(userEmail,authorization);
         if(userRides == null){
             return ResponseEntity.badRequest().build();
         }
@@ -81,24 +84,33 @@ public class UserController implements UserApi {
         final String password = userCreate.getPassword();
         final UserCreate.UsertypeEnum type = userCreate.getUsertype();
         if(type == null){
-            return sendRegisterResponse(400,null);
+            return sendRegisterResponse(400,null, null);
         }
         String token = this.userService.registerUser(email,userName,password,BikeSharingUser.Role.valueOf(type.name()));
-        return sendRegisterResponse(token == null?409:200,token);
+        return sendRegisterResponse(token == null?409:200,token, type.name());
     }
     @PostMapping("/login")
     @Override
     public ResponseEntity<UserLoggedIn> loginUser(UserLogin userLogin) {
         String email = userLogin.getEmail();
         String password = userLogin.getPassword();
-        String token  = this.userService.loginUser(email,password);
-        return sendRegisterResponse(token == null?404:200, token);
+        Map<String,String> userLoginInfo  = this.userService.loginUser(email,password);
+        String token = null;
+        String role = null;
+        int code = 404;
+        if(userLoginInfo != null){
+            token = userLoginInfo.get("token");
+            role = userLoginInfo.get("role");
+            code = 200;
+        }
+        return sendRegisterResponse(code,token,role);
     }
 
 
-    private ResponseEntity<UserLoggedIn> sendRegisterResponse(int code, String token){
+    private ResponseEntity<UserLoggedIn> sendRegisterResponse(int code, String token, String role){
         UserLoggedIn responseBody = new UserLoggedIn();
         responseBody.setToken(token);
+        responseBody.setRole(role);
         return new ResponseEntity<>(responseBody, HttpStatusCode.valueOf(code));
     }
 

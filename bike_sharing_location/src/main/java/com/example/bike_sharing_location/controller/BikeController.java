@@ -28,11 +28,16 @@ public class BikeController implements BikeApi {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
+
+
+
     @Override
     @PutMapping("/service")
-    public ResponseEntity<ChangeBikeState200Response> changeBikeState(BikeState bikeState) {
+    public ResponseEntity<ChangeBikeState200Response> changeBikeState(String authorization,BikeState bikeState) {
+        if(bikeState.getBikeId() == null || bikeState.getUserEmail() == null){
+            return ResponseEntity.badRequest().body(null);
+        }
         long bikeId = bikeState.getBikeId();
-        OffsetDateTime bikeStandStamp = bikeState.getServicedStamp();
         this.bikeService.markBikeAsServiced(bikeId);
         ChangeBikeState200Response response = new ChangeBikeState200Response();
         response.message("Bike with id: "+bikeId+" marked as serviced");

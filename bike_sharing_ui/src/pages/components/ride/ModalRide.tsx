@@ -10,7 +10,8 @@ export interface BikeObject  {
         longitude: number;
         latitude: number;
       }
-    }
+    },
+    lastServiced?:string
 }
 export interface StandObject {
   id: number;

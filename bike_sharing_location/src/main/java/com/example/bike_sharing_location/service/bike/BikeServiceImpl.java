@@ -106,7 +106,7 @@ public class BikeServiceImpl implements BikeService{
 
 
     private void initStorage(){
-        List<Bike> bikes = this.getRideableBikes();
+        List<Bike> bikes = this.getAllBikes();
         this.bikeStorage.fillMemoryStorage(bikes);
     }
 

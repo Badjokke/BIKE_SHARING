@@ -14,7 +14,9 @@ import com.example.bike_sharing.service.location.LocationService;
 import com.example.bike_sharing.validator.EmailValidator;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -47,7 +49,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String loginUser(String email, String password) {
+    public Map<String,String> loginUser(String email, String password) {
         if(email == null || password == null){
             return null;
         }
@@ -58,8 +60,12 @@ public class UserServiceImpl implements UserService{
         final String passwordHash = engine.generateHash(password);
         if(!passwordHash.equals(user.getPassword()))
             return null;
-
-        return this.oAuthService.generateToken(user.getName(),email);
+        String token = this.oAuthService.generateToken(user.getName(),email);
+        String userRole = user.getRole().getValue();
+        Map<String,String> userInfo = new HashMap<>();
+        userInfo.put("token",token);
+        userInfo.put("role",userRole);
+        return userInfo;
     }
 
     @Override
@@ -111,12 +117,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public List<Ride> fetchUserRides(String userEmail) {
+    public List<Ride> fetchUserRides(String userEmail, String authorization) {
         BikeSharingUser user = this.userRepository.findUserByEmailAddress(userEmail);
         if(user == null){
             return null;
         }
-        return locationService.fetchUserRides(user.getId());
+        return locationService.fetchUserRides(user.getId(),authorization);
     }
 
     @Override

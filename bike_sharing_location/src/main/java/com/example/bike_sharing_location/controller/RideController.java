@@ -15,6 +15,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -27,10 +28,13 @@ public class RideController implements RideApi {
         this.rideService = rideService;
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
+
+
+
     @Override
     @PostMapping("/start")
-    public ResponseEntity<RideStart201Response> rideStart(RideStart rideStart) {
-        BikeRide rideStarted = this.rideService.createUserRide(rideStart);
+    public ResponseEntity<RideStart201Response> rideStart(String authorization,RideStart rideStart) {
+        BikeRide rideStarted = this.rideService.createUserRide(rideStart, authorization);
         if(rideStarted == null){
             return ResponseEntity.badRequest().build();
         }
@@ -39,13 +43,15 @@ public class RideController implements RideApi {
         return new ResponseEntity<>(response,HttpStatusCode.valueOf(201));
     }
 
+
+
+    @Override
     @GetMapping("/list")
-    public ResponseEntity<List<UserRide>> rideList(Long userId) {
-        System.out.println("GET_MAPPING: "+userId);
+    public ResponseEntity<List<UserRide>> rideList(Integer userId) {
         if(userId == null){
             return new ResponseEntity<>(HttpStatusCode.valueOf(400));
         }
-        List<Ride> rides = this.rideService.fetchUserRides(userId);
+        List<Ride> rides = this.rideService.fetchUserRides(Long.valueOf(userId));
         DomainToDto<Ride,UserRide> mapper = new RideToUserRide();
         List<UserRide> userRides = mapper.mapDomainToDtos(rides);
         return ResponseEntity.ok(userRides);
@@ -63,11 +69,11 @@ public class RideController implements RideApi {
             return;
         }
         String message;
-        /*if(this.rideService.rideFinished(bikeRideToken)){
+        if(this.rideService.rideFinished(bikeRideToken)){
             message = "{" + "message: "+bikeRideToken+" successfully finished"+"}";
             this.simpMessagingTemplate.convertAndSend("/bike_ride/close/"+bikeRideToken,message);
             return;
-        }*/
+        }
         ObjectLocation location = mapper.mapDomainToDto(bike);
         message = new Gson().toJson(location);
         this.simpMessagingTemplate.convertAndSend("/bike_ride/"+bikeRideToken,message);

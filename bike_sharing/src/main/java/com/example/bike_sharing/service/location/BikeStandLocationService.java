@@ -15,8 +15,8 @@ public class BikeStandLocationService implements  LocationService{
         this.bikeLocationService = new LocationServiceBridge(locationServiceConfiguration.getUSER_RIDES_URL());
     }
     @Override
-    public List<Ride> fetchUserRides(long userId) {
-        List<Ride> responseRides = this.bikeLocationService.fetchUserRides(userId);
+    public List<Ride> fetchUserRides(long userId, String authorization) {
+        List<Ride> responseRides = this.bikeLocationService.fetchUserRides(userId,authorization);
         return responseRides;
     }
 }

@@ -3,10 +3,12 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { loginUser } from '../../api/user_service_api/UserApiCaller';
+import { saveUserInfo } from '../../token_manager/LocalStorageManager';
+import { useNavigate } from 'react-router-dom';
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const navigate = useNavigate();
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
@@ -17,8 +19,16 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // You can add your authentication logic here
     const response = await loginUser(email,password);
+    const data = response.data;
+
+    if(data && data.token && data.role){
+      saveUserInfo(email,data.token,data.role);
+      if(response.redirectTo)
+        navigate(response.redirectTo); 
+    }
+
+
   };
 
   return (

@@ -2,6 +2,7 @@ package com.example.bike_sharing_location.security;
 
 
 import com.example.bike_sharing_location.configuration.ClientAppConfiguration;
+import com.example.bike_sharing_location.configuration.UserServiceConfiguration;
 import com.example.bike_sharing_location.service.authentication.OAuthService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,9 +22,11 @@ import java.util.Arrays;
 public class WebSecurityConfig {
     private final JwtAuthFilter jwtAuthenticationFilter;
     private final ClientAppConfiguration clientAppConfiguration;
-    public WebSecurityConfig(OAuthService oAuthService, ClientAppConfiguration clientAppConfiguration){
-        this.jwtAuthenticationFilter = new JwtAuthFilter(oAuthService);
+    private final UserServiceConfiguration userServiceConfiguration;
+    public WebSecurityConfig(OAuthService oAuthService, ClientAppConfiguration clientAppConfiguration, UserServiceConfiguration userServiceConfiguration){
+        this.jwtAuthenticationFilter = new JwtAuthFilter(oAuthService,userServiceConfiguration);
         this.clientAppConfiguration = clientAppConfiguration;
+        this.userServiceConfiguration = userServiceConfiguration;
     }
 
 
