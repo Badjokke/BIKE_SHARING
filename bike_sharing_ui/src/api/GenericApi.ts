@@ -63,7 +63,7 @@ export const performFetch = async (url: string, data:{}, method:HTTP_METHOD,toke
         }
     }
     catch(fetchException){
-        console.log("expection while fetching",fetchException);
+        console.error("expection while fetching",fetchException);
     }
     
     return response;

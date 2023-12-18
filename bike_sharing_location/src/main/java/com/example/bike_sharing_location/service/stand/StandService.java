@@ -8,5 +8,6 @@ import java.util.List;
 public interface StandService {
     List<Stand> fetchStands();
     Stand fetchStand(long standId);
+    Stand getCurrectStand(long standId);
     InMemoryStandStorage getInMemoryStandStorage();
 }

@@ -35,6 +35,9 @@ public class InMemoryBikeStorage {
     public void useBike(Bike bike){
         this.usedBikes.add(bike);
     }
+    public void releaseBike(Bike bike){
+        this.usedBikes.remove(bike);
+    }
     public void clearModifiedBikes(){
         this.modifiedBikes.clear();
     }

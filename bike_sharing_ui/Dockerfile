@@ -1,19 +1,14 @@
 # Stage 1: Development stage
 FROM node AS build
 
-WORKDIR /app
-
-# Copy package files and install dependencies
-COPY package*.json ./
-RUN npm install
-
-# Copy the rest of the code
-COPY . .
+WORKDIR /usr/app
+COPY . /usr/app
+RUN npm ci
 RUN npm run build
 
 # Stage 4: Production stage
 FROM nginx:alpine AS prod
-WORKDIR /usr/share/nginx/html
-COPY --from=build /app/build .
 EXPOSE 80
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /usr/app/build /usr/share/nginx/html
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

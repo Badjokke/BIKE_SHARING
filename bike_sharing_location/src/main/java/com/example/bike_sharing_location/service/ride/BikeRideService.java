@@ -17,6 +17,11 @@ import com.example.bike_sharing_location.utils.BikeStandDistance;
 import com.example.bike_sharing_location.utils.LinAlg;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
@@ -65,7 +70,11 @@ public class BikeRideService implements RideService{
         if(rideToken ==null){
             return false;
         }
-        return this.rideManager.isRideFinished(rideToken);
+        boolean isRideOver = this.rideManager.isRideFinished(rideToken);
+        if(isRideOver)
+            saveRide(rideToken);
+
+        return isRideOver;
     }
 
     @Override
@@ -74,6 +83,34 @@ public class BikeRideService implements RideService{
             return null;
         }
         return this.rideManager.updateBikeLocation(rideToken,bikeLocation);
+    }
+
+    @Override
+    public Ride saveRide(String rideToken) {
+        if(rideToken == null){
+            return null;
+        }
+        BikeRide ride = this.rideManager.getRide(rideToken);
+        if(ride == null){
+            return null;
+        }
+        long bikeId = ride.getBikeId();
+        long startStandId = ride.getStartStandId();
+        long endStandId = ride.getEndStandId();
+
+        Bike b = this.bikeService.getCurrentBike(bikeId);
+        Stand startStand = this.standService.fetchStand(startStandId);
+        Stand endStand = this.standService.fetchStand(endStandId);
+        OffsetDateTime now = OffsetDateTime.of(LocalDateTime.now(), ZoneOffset.UTC);
+        Location standLocation = new Location(endStand.getLongitude(),endStand.getLatitude());
+        Ride finishedRide = new Ride(ride.getUserId(),b,startStand,endStand, Date.from(ride.getRideStart().toInstant()), Date.from(now.toInstant()));
+        Ride r = this.rideRepository.save(finishedRide);
+        this.updateLocation(rideToken,standLocation);
+
+        this.rideManager.endRide(rideToken);
+        int rowsAffected = this.bikeService.updateBikeStand(bikeId,endStandId);
+        this.bikeService.releaseBike(b);
+        return r;
     }
 
     private User fetchUserInfo(String userEmail,String authorization){

@@ -11,7 +11,12 @@ export const saveUserInfo = (email : string, token : string, role:string) => {
     saveToLocalStorage("role",role);
     fireDocumentEvent("userinfochange");
 } 
-
+export const saveChosenLanguage = (lan:string) => {
+    saveToLocalStorage("language",lan);
+}
+export const loadChosenLanguage = ()=>{
+    return readLocalStorage("language");
+}
 export const deleteUserInfo=()=>{
     localStorage.removeItem("email");
     localStorage.removeItem("token");

@@ -24,6 +24,7 @@ const RidePage: React.FC = () => {
   const [rideData, setRideData] = useState<BikeObject[]|null>();
   const [bikeToStandPath,setBikeToStandPath] = useState<LatLngTuple[]|null>(null)
   const [socketConnected,setSocketConnected] = useState<boolean>(false);
+
   const handleButtonClick = () => {
     setShowModal(true);
   };
@@ -31,69 +32,6 @@ const RidePage: React.FC = () => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
-/*
-  const rideData = [
-    {
-        "id": 2,
-        "Stand": {
-            "id": 1,
-            "location": {
-                "longitude": 16.0,
-                "latitude": 11.0
-            }
-        }
-    },
-    {
-        "id": 4,
-        "Stand": {
-            "id": 2,
-            "location": {
-                "longitude": 15.0,
-                "latitude": 10.0
-            }
-        }
-    },
-    {
-        "id": 1,
-        "Stand": {
-            "id": 3,
-            "location": {
-                "longitude": 15.0,
-                "latitude": 10.0
-            }
-        }
-    },
-    {
-        "id": 5,
-        "Stand": {
-            "id": 4,
-            "location": {
-                "longitude": 15.0,
-                "latitude": 10.0
-            }
-        }
-    },
-    {
-        "id": 3,
-        "Stand": {
-            "id": 5,
-            "location": {
-                "longitude": 15.0,
-                "latitude": 10.0
-            }
-        }
-    }
-];*/
- /* const standData = [
-    {
-      id: 1,
-      location: {
-        longitude: 200.0,
-        latitude: 500.0,
-      },
-    },
-  ];*/
-
 
 
   const bikeLocationUpdate = (message: Stomp.Message) => {
@@ -132,22 +70,7 @@ const RidePage: React.FC = () => {
     subscribeToRide(bikeLocationUpdate);
 
   }
-
-  const rideFinishedCallback = (message:Stomp.Message) =>{
-    if(!selectedRide){
-      console.log("no ride is started");
-      return;
-    }
-    alert("ride is over");
-    //disconnectSocket();
-    setSocketConnected(false);
-  }
-
-  const connectToRide = (bikeToken:string) =>{
-    connectRideSocket(socketConnectedCallback,rideFinishedCallback,bikeToken);
-  }
-
-  useEffect(()=>{
+  const prepareRidePage = () => {
 
     fetchStands().then((stands)=>{
       if(stands === null){
@@ -164,6 +87,34 @@ const RidePage: React.FC = () => {
       }
       setRideData(bikes);
     })
+
+    setSocketConnected(false);
+    setSelectedRide(null);
+    setSelectedBike(undefined);
+    setSelectedStand(undefined);
+    setBikeToStandPath(null);
+  
+  }
+
+
+  const rideFinishedCallback = (message:Stomp.Message) =>{
+    if(!selectedRide){
+      console.log("no ride is started");
+      return;
+    }
+    alert("Ride finished. Good job!");
+    //disconnectSocket();
+
+    prepareRidePage();
+  }
+
+  const connectToRide = (bikeToken:string) =>{
+    connectRideSocket(socketConnectedCallback,rideFinishedCallback,bikeToken);
+  }
+
+  useEffect(()=>{
+
+    prepareRidePage();
 
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {

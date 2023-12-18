@@ -19,7 +19,10 @@ public interface BikeRepository extends JpaRepository<Bike, Long> {
     @Modifying
     @Transactional
     int updateBikeLocation(long bikeId, double longitude, double latitude);
-
+    @Query("UPDATE Bike bike SET bike.stand.id = ?2 WHERE bike.id = ?1")
+    @Modifying
+    @Transactional
+    int updateBikeStand(long bikeId, long standId);
     @Query("UPDATE Bike bike set bike.lastService = current date WHERE bike.id = ?1")
     @Transactional
     @Modifying

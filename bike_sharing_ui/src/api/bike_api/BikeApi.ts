@@ -1,22 +1,24 @@
 import { HTTP_METHOD, performFetch } from "../GenericApi";
 import { getUserInfo } from "../../token_manager/LocalStorageManager";
 import { BikeObject } from "../../pages/components/ride/ModalRide";
-import { Location } from "../../pages/map/MapPage";
-import { MapObject } from "../../pages/map/MapPage";
 const BIKE_SERVICE_API = process.env.REACT_APP_RIDE_SERVICE_URL;
 
 export interface BikeStateUpdate{
-    message: string
+    message: string,
+    redirectTo?:string
 }
 
 interface BikeState{
     userEmail: string,
-    bikeId: number
+    bikeId: number,
+    redirectTo?:string
+    
 }
 export interface ServiceableBikeObject{
     bikeId: number,
     standId: number|null,
-    lastServiced: string
+    lastServiced: string,
+    redirectTo?:string
 }
 
 
@@ -43,7 +45,7 @@ export const fetchBikesDueForService = async (): Promise<ServiceableBikeObject[]
         return null;
     }
     const params = {token};
-    const response = await performFetch(`${BIKE_SERVICE_API}/bike/service`,params,HTTP_METHOD.GET,token);
+    const response = await performFetch(`${BIKE_SERVICE_API}/bike/service`,params,HTTP_METHOD.GET,token||"");
     if(response == null){
         throw new Error("bike service down");
     }
@@ -56,13 +58,16 @@ export const fetchBikesDueForService = async (): Promise<ServiceableBikeObject[]
         }
         return servicableBikes;
     }
-    console.log(response);
+    
+    if(response.status == 401){
+
+    }
 
     return null;
 }
 
 
-export const markBikeAsService = async (bikeId: number):Promise<String|null> =>{
+export const markBikeAsService = async (bikeId: number):Promise<BikeStateUpdate|null> =>{
     const {token,email} = getUserInfo();
     if(!token || !email){
         return null;
@@ -74,10 +79,13 @@ export const markBikeAsService = async (bikeId: number):Promise<String|null> =>{
     }
     if(response.ok){
         const responseMessage = await response.json() as BikeStateUpdate;
-        return responseMessage.message;
+        return responseMessage;
+    }
+    if(response.status == 401){
+        return {message:"Unauthorized",redirectTo:"login"};
     }
 
-
+    //different server related error
     return null;
 
 }

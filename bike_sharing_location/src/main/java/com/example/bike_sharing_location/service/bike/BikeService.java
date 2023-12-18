@@ -13,13 +13,12 @@ public interface BikeService {
 
     List<Bike> getAllCurrentBikes();
     Bike getCurrentBike(Long bikeId);
-    boolean updateBikeLocation(long bikeId,Location location);
     boolean updateBikesLocation(List<Bike> bikes);
-
+    int updateBikeStand(long bikeId, long standId);
     boolean markBikeAsServiced(long bikeId);
 
-    boolean markBikesAsServiced(List<Long> bikeIds);
     InMemoryBikeStorage getInMemoryBikeStorage();
 
      int claimBike(Bike bike);
+     void releaseBike(Bike bike);
 }

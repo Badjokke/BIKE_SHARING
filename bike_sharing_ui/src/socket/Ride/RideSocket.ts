@@ -37,6 +37,8 @@ export const disconnectSocket = async () =>{
         console.log("socket not active");
         return;
     }
+    if(!socket.active)
+        return;
     await socket.deactivate()
 }
 

@@ -55,13 +55,6 @@ public class BikeServiceImpl implements BikeService{
     }
 
     @Override
-    @Transactional
-    public boolean updateBikeLocation(long bikeId, Location location) {
-        int updatedBikes = this.bikeRepository.updateBikeLocation(bikeId, location.getLongitude(), location.getLatitude());
-        return updatedBikes == 1;
-    }
-
-    @Override
     public boolean updateBikesLocation(List<Bike> bikes) {
         int batchSize = bikes.size();
         if(batchSize == 0){
@@ -76,19 +69,17 @@ public class BikeServiceImpl implements BikeService{
     }
 
     @Override
+    public int updateBikeStand(long bikeId, long standId) {
+        return this.bikeRepository.updateBikeStand(bikeId,standId);
+    }
+
+    @Override
     @Transactional
     public boolean markBikeAsServiced(long bikeId) {
         int updatedBikes = this.bikeRepository.updateBikeServiceTime(bikeId);
         return updatedBikes == 1;
     }
 
-    @Override
-    @Transactional
-    public boolean markBikesAsServiced(List<Long> bikeIds) {
-        int bikeCount = bikeIds.size();
-        int updatedBikes = this.bikeRepository.updateBikesServiceTime(bikeIds);
-        return updatedBikes == bikeCount;
-    }
 
     @Override
     public InMemoryBikeStorage getInMemoryBikeStorage() {
@@ -102,6 +93,11 @@ public class BikeServiceImpl implements BikeService{
         }
         this.bikeStorage.useBike(bike);
         return this.bikeRepository.removeBikeFromStand(bike.getId());
+    }
+
+    @Override
+    public void releaseBike(Bike bike) {
+        this.bikeStorage.releaseBike(bike);
     }
 
 

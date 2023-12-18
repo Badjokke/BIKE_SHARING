@@ -29,18 +29,18 @@ public class LocationServiceBridge implements BikeLocationService {
 
     public List<Ride> createRideDto(List<Map<String,String>> parsedJson){
         List<Ride> rides = new ArrayList<>();
-        Ride userBikeRide = new Ride();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssX");
         for(Map<String,String> jsonRide : parsedJson){
+            Ride userBikeRide = new Ride();
             long rideId = Long.parseLong( jsonRide.get("rideId"));
             long userId = Long.parseLong(jsonRide.get("userId"));
             long bikeId = Long.parseLong(jsonRide.get("bikeId"));
             long startStandId = Long.parseLong( jsonRide.get("startStandId"));
             long endStandId = Long.parseLong(jsonRide.get("endStandId"));
-            LocalDateTime rideStart = LocalDateTime.parse(jsonRide.get("rideStart"),formatter);
-            LocalDateTime rideEnd = LocalDateTime.parse(jsonRide.get("rideEnd"),formatter);
-            OffsetDateTime rideStartStamp = OffsetDateTime.from(rideStart.atOffset(ZoneOffset.UTC));
-            OffsetDateTime rideEndStamp = OffsetDateTime.from(rideEnd.atOffset(ZoneOffset.UTC));
+            DateTimeFormatter tmp = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+
+            // Parse the string to OffsetDateTime
+            OffsetDateTime rideStartStamp = OffsetDateTime.parse(jsonRide.get("rideStart"), tmp);
+            OffsetDateTime rideEndStamp = OffsetDateTime.parse(jsonRide.get("rideEnd"), tmp);
             userBikeRide
                     .bikeId(bikeId)
                     .rideId(rideId)

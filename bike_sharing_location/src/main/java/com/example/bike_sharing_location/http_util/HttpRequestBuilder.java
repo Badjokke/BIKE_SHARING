@@ -69,8 +69,7 @@ public class HttpRequestBuilder implements RequestBuilder<String>{
             response = new ResponseEntity<>(exception.getStatusCode());
         }
         catch (ResourceAccessException connectionException){
-            //throw new RuntimeException("Microservice "+this.SERVER_URL+" refused connection!");
-            return null;
+            throw new RuntimeException("Microservice "+this.SERVER_URL+" refused connection!");
         }
         return response;
     }

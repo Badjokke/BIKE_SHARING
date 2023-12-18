@@ -10,6 +10,15 @@ import java.util.Date;
 @Entity
 @Table(name="Rides")
 public class Ride {
+    public Ride(Long userId, Bike bike, Stand startStand, Stand endStand, Date startTimestamp, Date endTimestamp) {
+        this.userId = userId;
+        this.bike = bike;
+        this.startStand = startStand;
+        this.endStand = endStand;
+        this.startTimestamp = startTimestamp;
+        this.endTimestamp = endTimestamp;
+    }
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;

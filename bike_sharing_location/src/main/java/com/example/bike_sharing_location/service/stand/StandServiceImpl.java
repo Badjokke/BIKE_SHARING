@@ -31,6 +31,12 @@ public class StandServiceImpl implements StandService{
     }
 
     @Override
+    public Stand getCurrectStand(long standId) {
+        return this.standStorage.getStand(standId);
+    }
+
+
+    @Override
     public InMemoryStandStorage getInMemoryStandStorage() {
         return this.standStorage;
     }

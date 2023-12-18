@@ -30,7 +30,7 @@ const Navbar: React.FC = () => {
 
     document.addEventListener('userinfochange',handleUserInfoChange);
 
-
+    handleUserInfoChange();
 
 
     // Cleanup the event listener when the component is unmounted

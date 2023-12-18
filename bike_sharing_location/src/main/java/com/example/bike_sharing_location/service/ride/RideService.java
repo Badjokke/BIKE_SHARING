@@ -15,4 +15,5 @@ public interface RideService {
     boolean rideFinished(String rideToken);
     Bike updateLocation(String rideToken, Location bikeLocation);
 
+    Ride saveRide(String rideToken);
 }
