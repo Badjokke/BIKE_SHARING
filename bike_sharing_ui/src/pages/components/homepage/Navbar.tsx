@@ -64,16 +64,16 @@ const Navbar: React.FC = () => {
       </button>
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav">
-          <li className="nav-item">
+        {!email&&<li className="nav-item">
             <Link className="nav-link" to="/login">
               {t("Login")}
             </Link>
-          </li>
-          <li className="nav-item">
+          </li>}
+          {!email&&<li className="nav-item">
             <Link className="nav-link" to="/register">
               {t("Register")}
             </Link>
-          </li>
+          </li>}
           <li className="nav-item">
             <Link className="nav-link" to="/ride">
               {t("Start ride")}

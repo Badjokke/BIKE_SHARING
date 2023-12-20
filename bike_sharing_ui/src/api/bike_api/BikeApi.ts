@@ -60,7 +60,7 @@ export const fetchBikesDueForService = async (): Promise<ServiceableBikeObject[]
     }
     
     if(response.status == 401){
-
+            
     }
 
     return null;
