@@ -38,8 +38,12 @@ public class BikeController implements BikeApi {
             return ResponseEntity.badRequest().body(null);
         }
         long bikeId = bikeState.getBikeId();
-        this.bikeService.markBikeAsServiced(bikeId);
+        boolean serviced = this.bikeService.markBikeAsServiced(bikeId, bikeState.getUserEmail(),authorization);
         ChangeBikeState200Response response = new ChangeBikeState200Response();
+
+        if(!serviced){
+            return ResponseEntity.badRequest().body(null);
+        }
         response.message("Bike with id: "+bikeId+" marked as serviced");
         return ResponseEntity.ok(response);
     }

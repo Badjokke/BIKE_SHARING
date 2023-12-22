@@ -3,8 +3,10 @@ package com.example.bike_sharing_location.service.bike;
 import com.example.bike_sharing_location.configuration.BikeServiceConfiguration;
 import com.example.bike_sharing_location.domain.Bike;
 import com.example.bike_sharing_location.model.Location;
+import com.example.bike_sharing_location.model.User;
 import com.example.bike_sharing_location.repository.BikeRepository;
 import com.example.bike_sharing_location.repository.InMemoryBikeStorage;
+import com.example.bike_sharing_location.service.user.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,9 @@ public class BikeServiceImpl implements BikeService{
     private final long bikeUpdateInterval;
     private final ScheduledExecutorService executorService;
     private final InMemoryBikeStorage bikeStorage;
+    private final UserService userService;
 
-    public BikeServiceImpl(BikeServiceConfiguration bikeServiceConfiguration, BikeRepository bikeRepository){
+    public BikeServiceImpl(BikeServiceConfiguration bikeServiceConfiguration, BikeRepository bikeRepository, UserService userService){
         this.bikeRepository = bikeRepository;
         this.bikeServiceInterval = bikeServiceConfiguration.getBIKE_SERVICE_INTERVAL();
         this.bikeUpdateInterval = bikeServiceConfiguration.getBIKE_SERVICE_UPDATE_INTERVAL();
@@ -27,6 +30,7 @@ public class BikeServiceImpl implements BikeService{
         this.executorService = Executors.newSingleThreadScheduledExecutor();
         initStorage();
         initBikeLocationThread();
+        this.userService = userService;
     }
     @Override
     public List<Bike> getBikesDueForService() {
@@ -75,7 +79,10 @@ public class BikeServiceImpl implements BikeService{
 
     @Override
     @Transactional
-    public boolean markBikeAsServiced(long bikeId) {
+    public boolean markBikeAsServiced(long bikeId, String userEmail, String token) {
+        User user = this.userService.fetchUserInfo(userEmail,token);
+        if (user == null || user.getRole() == User.RoleEnum.SERVICEMAN)
+            return false;
         int updatedBikes = this.bikeRepository.updateBikeServiceTime(bikeId);
         return updatedBikes == 1;
     }

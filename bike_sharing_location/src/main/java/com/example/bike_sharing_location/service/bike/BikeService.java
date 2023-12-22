@@ -15,7 +15,7 @@ public interface BikeService {
     Bike getCurrentBike(Long bikeId);
     boolean updateBikesLocation(List<Bike> bikes);
     int updateBikeStand(long bikeId, long standId);
-    boolean markBikeAsServiced(long bikeId);
+    boolean markBikeAsServiced(long bikeId, String email, String token);
 
     InMemoryBikeStorage getInMemoryBikeStorage();
 
