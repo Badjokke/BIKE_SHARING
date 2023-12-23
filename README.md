@@ -35,3 +35,6 @@ Bike sharing aplikace implementující byznys požadavky:  https://github.com/fi
 
   Mikroslužby implementovány pomocí Spring boot frameworku (verze 3.1.5) + Spring security. Databáze zvolena jako MySQL, klientská aplikace implementována v React.js s Typescript příchutí. 
   Jakýsi InMemoryStorage pro kola spřažený s real time streamováním dat je ukuchtěn na klíně - opět pro scale by bylo chtěné mít jej jako separátní proces (na stejném fyzickém clusteru) - případně použít Redis.  
+
+# Rozběhnutí
+  Aplikace je dockerizovaná - stačí pouze spustit docker engine a následně spustit příkazy: docker compose build; docker compose up;
