@@ -4,14 +4,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.OffsetDateTime;
 
+/**
+ * DTO for BikeRide
+ */
 public class BikeRide {
+    //user who is riding the bike
     private Long userId;
-
+    //bike being ridden
     private Long bikeId;
-
+    //from which stand the ride was started
     private Long startStandId;
-
+    //ending stand of the ride (the goal)
     private Long endStandId;
+    //generated token for ride - identifies ride
     private String rideToken;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

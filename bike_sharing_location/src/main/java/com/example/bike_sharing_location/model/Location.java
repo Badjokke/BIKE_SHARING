@@ -1,5 +1,8 @@
 package com.example.bike_sharing_location.model;
 
+/**
+ * DTO for map object
+ */
 public class Location {
     private double longitude;
     private double latitude;

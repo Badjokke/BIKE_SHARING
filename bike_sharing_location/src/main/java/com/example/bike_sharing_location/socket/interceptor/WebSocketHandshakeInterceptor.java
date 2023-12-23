@@ -8,6 +8,9 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import java.util.Map;
 
+/**
+ * Custom handshake interceptor for ride socket endpoints
+ */
 public class WebSocketHandshakeInterceptor implements HandshakeInterceptor {
     private final RideService rideService;
     public WebSocketHandshakeInterceptor(RideService service){
@@ -15,6 +18,8 @@ public class WebSocketHandshakeInterceptor implements HandshakeInterceptor {
 
 
     }
+    //check if token exists in query - if it doesnt, refuse the handshake.
+    // If ride with token in query doesnt exist, handshake is refused.
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
         String query = request.getURI().getQuery();

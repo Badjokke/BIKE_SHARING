@@ -3,6 +3,11 @@ package com.example.bike_sharing_location.configuration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuration class for Authenticator service - provides relevant urls to endpoint
+ * mainly authenticate - verifies if token is valid
+ * login - generates jwt token
+ */
 @Configuration
 public class AuthServiceConfiguration {
     @Value("${AUTH_URL}")

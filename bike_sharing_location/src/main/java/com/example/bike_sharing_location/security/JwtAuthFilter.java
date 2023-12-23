@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 
+/**
+ * Custom filter in security layer for validating JWT token
+ */
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final OAuthService oAuthService;
@@ -49,7 +52,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             String token = authorizationHeader.replace("Bearer ", "");
             String username = null;
             if(userServiceHeader == null) {
-
                 ResponseEntity<String> responseEntity = oAuthService.authenticate(token);
                 //token is not valid
                 if (responseEntity.getStatusCode().is4xxClientError()) {

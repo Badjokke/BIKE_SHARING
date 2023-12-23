@@ -23,12 +23,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public HandshakeInterceptor handshakeInterceptor() {
         return new WebSocketHandshakeInterceptor(service);
     }
-    /**@Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new WebSocketChannelInterceptor());
-    }*/
+
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
+        //brokers for streaming location on global map and a separate one for bike rides
         config.enableSimpleBroker("/bike_location","/bike_ride");
         config.setApplicationDestinationPrefixes("/bike_sharing");
     }
@@ -40,6 +38,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/bike").setAllowedOrigins("*");
+        //ride endpoints are protected by handshake interceptor
         registry.addEndpoint("/ride/**")
                 .addInterceptors(handshakeInterceptor())
                 .setAllowedOrigins("*");

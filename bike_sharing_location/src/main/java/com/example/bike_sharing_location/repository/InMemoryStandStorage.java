@@ -5,6 +5,10 @@ import com.example.bike_sharing_location.domain.Stand;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * in memory storage for stands
+ * the storage is filled ad hoc - when stands are being used (ie a ride exists with that particular end stand)
+ */
 public class InMemoryStandStorage {
     private Map<Long, Stand> standMap;
 

@@ -1,4 +1,5 @@
-insert into bike_service.users(email_address, name, password, role) 
+--password for users is 12345
+insert into bike_service.users(email_address, name, password, role)
   values 
   ('kocka@kocka.cz', 'kocka', '7d4e3eec80026719639ed4dba68916eb94c7a49a053e05c8f9578fe4e5a3d7ea', '1'),
   ('pes@pes.cz', 'pes', '7d4e3eec80026719639ed4dba68916eb94c7a49a053e05c8f9578fe4e5a3d7ea', '0');
