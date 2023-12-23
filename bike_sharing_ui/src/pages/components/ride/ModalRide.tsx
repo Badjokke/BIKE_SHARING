@@ -52,11 +52,26 @@ const ModalRide: React.FC<RideModalProps> = ({ show, handleClose, bikeData, endS
     setSelectedEndStand(stand);
   };
 
-  const calculateDistance = (location1:{longitude:number,latitude:number},location2:{longitude:number,latitude:number}) => {
-    const deltaLongitude = location1.longitude - location2.longitude;
-    const deltaLatitude = location1.latitude - location2.latitude; 
+  const calculateDistance = (stand:{longitude:number,latitude:number},bike:{longitude:number,latitude:number}) => {
+    const EARTH_RADIUS = 6371000;
 
-    return Math.sqrt((deltaLongitude * deltaLongitude) + (deltaLatitude * deltaLatitude));
+    const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
+  
+    const bikeLatitude = toRadians(bike.latitude);
+    const bikeLongitude = toRadians(bike.longitude);
+    const standLatitude = toRadians(stand.latitude);
+    const standLongitude = toRadians(stand.longitude);
+  
+    const longitudeDelta = standLongitude - bikeLongitude;
+    const latitudeDelta = standLatitude - bikeLatitude;
+  
+    let distance =
+      Math.sin(latitudeDelta / 2) * Math.sin(latitudeDelta / 2) +
+      Math.cos(bikeLatitude) * Math.cos(standLatitude) * Math.sin(longitudeDelta / 2) * Math.sin(longitudeDelta / 2);
+  
+    distance = EARTH_RADIUS * (2 * Math.atan2(Math.sqrt(distance), Math.sqrt(1 - distance)));
+  
+    return distance;
   }
 
   const startRide = async () =>{
@@ -68,7 +83,7 @@ const ModalRide: React.FC<RideModalProps> = ({ show, handleClose, bikeData, endS
      const endStandId = selectedEndStand.id;
  
      console.log(`starting ride with bike ${selectedBike.id} from stand ${startStandId} to stand ${endStandId}`);
-     console.log(`Distance: ${distance} units`);
+     console.log(`Distance: ${distance} meters`);
 
       const rideObject: BikeStartObject = {
         bikeId:selectedBike.id,
@@ -150,7 +165,7 @@ const ModalRide: React.FC<RideModalProps> = ({ show, handleClose, bikeData, endS
           </Form.Group>
           <Form.Group controlId="formDistance">
             <Form.Label>Distance</Form.Label>
-            <Form.Control type="text" readOnly value={distance !== null ? `${distance} units` : ''} />
+            <Form.Control type="text" readOnly value={distance !== null ? `${distance} meters` : ''} />
           </Form.Group>
         </Form>
       </Modal.Body>
