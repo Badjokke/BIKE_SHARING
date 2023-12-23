@@ -43,7 +43,8 @@ public class InMemoryBikeStorage {
     }
     public void fillMemoryStorage(List<Bike> bikes){
         if(bikes == null || bikes.size() == 0){
-            throw new RuntimeException("No bikes provided to memory storage.");
+            System.out.println("No bikes provided to memory storage.");
+            return;
         }
         for(Bike b : bikes){
             addBikeToStorage(b);

@@ -81,7 +81,7 @@ public class BikeServiceImpl implements BikeService{
     @Transactional
     public boolean markBikeAsServiced(long bikeId, String userEmail, String token) {
         User user = this.userService.fetchUserInfo(userEmail,token);
-        if (user == null || user.getRole() == User.RoleEnum.SERVICEMAN)
+        if (user == null || user.getRole() == User.RoleEnum.REGULAR)
             return false;
         int updatedBikes = this.bikeRepository.updateBikeServiceTime(bikeId);
         return updatedBikes == 1;
