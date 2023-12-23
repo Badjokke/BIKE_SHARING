@@ -1,6 +1,7 @@
-insert into bike_service.users(email_address, name, password, role) values (
-                                                                             'kocka@kocka.cz', 'kocka', '7d4e3eec80026719639ed4dba68916eb94c7a49a053e05c8f9578fe4e5a3d7ea', '1');
-
+insert into bike_service.users(email_address, name, password, role) 
+  values 
+  ('kocka@kocka.cz', 'kocka', '7d4e3eec80026719639ed4dba68916eb94c7a49a053e05c8f9578fe4e5a3d7ea', '1'),
+  ('pes@pes.cz', 'pes', '7d4e3eec80026719639ed4dba68916eb94c7a49a053e05c8f9578fe4e5a3d7ea', '0');
 insert into bike_location.stands(latitude, longitude,name)
 values
   (51.515579783755925,	-0.13183593750000003,	'stand1'),
