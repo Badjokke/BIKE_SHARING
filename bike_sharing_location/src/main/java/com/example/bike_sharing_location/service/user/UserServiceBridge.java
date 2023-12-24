@@ -11,9 +11,15 @@ import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
+/**
+ * Implementation of user microservice connector
+ */
 public class UserServiceBridge implements UserLocationService{
+    //configuration class for user microservice
     private final UserServiceConfiguration userServiceConfiguration;
+    private final Logger logger = Logger.getLogger(UserServiceBridge.class.getName());
     public UserServiceBridge(UserServiceConfiguration userServiceConfiguration){
         this.userServiceConfiguration = userServiceConfiguration;
     }
@@ -34,6 +40,7 @@ public class UserServiceBridge implements UserLocationService{
 
     @Override
     public User fetchUserInfo(String email,String authorization) {
+        logger.info("Fetching user information for user: "+email);
         final String userInfoUrl = this.userServiceConfiguration.getUSER_INFO_URL();
         final RequestBuilder<String> requestBuilder = new HttpRequestBuilder(userInfoUrl);
         Map<String,Object> body = new HashMap<>();
@@ -43,12 +50,14 @@ public class UserServiceBridge implements UserLocationService{
         ResponseEntity<String> entity = requestBuilder.sendGetRequest(headers,body);
         //invalid userId
         if(entity.getStatusCode().is4xxClientError()){
+            logger.severe("User with email: "+email+ " doesnt exist!");
             return null;
         }
         String userRidesJson = entity.getBody();
         JsonParser<Map<String,String>> parser = new GsonParser<>(new TypeToken<Map<String,String>>(){}.getType());
         Map<String,String> parsedJson = parser.parseJson(userRidesJson);
         //List<Ride> userRides = this.parseUserRides(userRidesJson);
+        logger.info("User information for user: "+email+" fetched successfully.");
         return this.createUserDto(parsedJson);
     }
 }

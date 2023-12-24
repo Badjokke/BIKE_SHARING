@@ -3,10 +3,14 @@ package com.example.bike_sharing_location.utils;
 import com.example.bike_sharing_location.domain.Bike;
 import com.example.bike_sharing_location.domain.Stand;
 
+import java.util.logging.Logger;
+
 public class BikeStandDistance implements LinAlg{
+    private final Logger logger = Logger.getLogger(BikeStandDistance.class.getName());
+
     @Override
     public double computeDistance(Bike bike, Stand stand) {
-
+        logger.info("Calculating distance between bike: "+bike.getId()+" and stand: "+stand.getId());
         final int EARTH_RADIUS = 6371000;
 
         double bikeLatitude = Math.toRadians(bike.getLatitude());
@@ -20,7 +24,7 @@ public class BikeStandDistance implements LinAlg{
         double distance = Math.sin(latitudeDelta / 2) * Math.sin(latitudeDelta / 2) + Math.cos(bikeLatitude) * Math.cos(standLatitude)
                 * Math.sin(longitudeDelta / 2) * Math.sin(longitudeDelta / 2);
         distance = EARTH_RADIUS * (2* Math.atan2(Math.sqrt(distance),Math.sqrt(1-distance)));
-
+        logger.info("Distance between bike: "+bike.getId()+" and stand: "+stand.getId()+" is: "+distance+" meters");
         return distance;
 
     }
