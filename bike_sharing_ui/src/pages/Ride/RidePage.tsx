@@ -8,6 +8,7 @@ import Stomp from "stompjs";
 import { MapClickObject } from '../map/MapPage';
 import { fetchStands } from '../../api/stand_api/StandApi';
 import { fetchRideableBikes } from '../../api/bike_api/BikeApi';
+import { useTranslation } from 'react-i18next';
 export interface SelectedRide {
   stand : StandObject,
   bike: BikeObject,
@@ -16,6 +17,7 @@ export interface SelectedRide {
 }
 
 const RidePage: React.FC = () => {
+  const {t} = useTranslation();
   const [showModal, setShowModal] = useState(false);
   const [selectedRide, setSelectedRide] = useState<SelectedRide | null>(null);
   const [selectedStand,setSelectedStand] = useState<MapObject>();
@@ -102,7 +104,7 @@ const RidePage: React.FC = () => {
       console.log("no ride is started");
       return;
     }
-    alert("Ride finished. Good job!");
+    alert(t("Ride finished. Good job!"));
     //disconnectSocket();
 
     prepareRidePage();
@@ -120,7 +122,7 @@ const RidePage: React.FC = () => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       // Your cleanup logic or any actions before the user leaves
       // You might want to return a string message to display a confirmation prompt
-      const confirmationMessage = 'Are you sure you want to leave?';
+      const confirmationMessage = t('Are you sure you want to leave?');
       event.returnValue = confirmationMessage; // Standard for most browsers
       return confirmationMessage; // For some older browsers
     };
@@ -178,9 +180,9 @@ const RidePage: React.FC = () => {
       <Row>
         <Col>
           <div className="text-center">
-            <h1>Welcome to Bike Rides!</h1>
+            <h1>{t("Welcome to Bike Rides!")}</h1>
             <Button variant="primary" size="lg" onClick={handleButtonClick}>
-              Start Your Ride!
+              {t("Start Your Ride!")}
             </Button>
           </div>
         </Col>

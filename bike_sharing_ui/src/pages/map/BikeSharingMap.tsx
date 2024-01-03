@@ -7,48 +7,11 @@ import Stomp from "stompjs";
 import { ObjectClickFunctions } from './MapPage';
 import { Toast,Button } from 'react-bootstrap';
 import { fetchStands } from '../../api/stand_api/StandApi';
-const mockbikeData = [
-    {
-      id: 1,
-      location: { longitude: 420.0, latitude: 420.0 },
-    },
-    {
-      id: 2,
-      location: { longitude: -74.006, latitude: 40.7128 },
-    },
-    {
-      id: 3,
-      location: { longitude: -118.2437, latitude: 34.0522 },
-    },
-    {
-      id: 4,
-      location: { longitude: -87.6298, latitude: 41.8781 },
-    },
-    {
-      id: 5,
-      location: { longitude: -0.1278, latitude: 51.5074 },
-    },
-  ];
-
-  const mockstandData = [
-    {
-      id: 1,
-      location: { longitude: 15, latitude: 10 },
-    },
-    {
-      id: 2,
-      location: { longitude: 34, latitude: 50 },
-    },
-    {
-      id: 3,
-      location: { longitude: 60, latitude: 80 },
-    }];
-
-
+import { useTranslation } from 'react-i18next';
 
 
 const BikeSharingMap = () =>{
-
+  const {t} = useTranslation();
   const [subscribeMessage,setSubscribeMessage] = useState<string>("ahojky");
   const [showToast, setShowToast] = useState(false);
   const [subscribedBike,setSubscribedBike] = useState<number|null>(null);
@@ -94,7 +57,7 @@ const bikeLocationRecieved = (message:Stomp.Message)=>{
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       // Your cleanup logic or any actions before the user leaves
       // You might want to return a string message to display a confirmation prompt
-      const confirmationMessage = 'Are you sure you want to leave?';
+      const confirmationMessage = t('Are you sure you want to leave?');
       event.returnValue = confirmationMessage; // Standard for most browsers
       return confirmationMessage; // For some older browsers
     };
@@ -118,7 +81,7 @@ const bikeLocationRecieved = (message:Stomp.Message)=>{
         return;
       }
       if(subscribedBike != 0){
-        setSubscribeMessage(`Bike: ${subscribedBike} subscribed`);
+        setSubscribeMessage(t("Bike")+` ${subscribedBike} `+ t("subscribed"));
         setShowToast(true);
       }
       fetchBikeData(subscribedBike,bikeLocationRecieved);
@@ -146,12 +109,12 @@ const bikeLocationRecieved = (message:Stomp.Message)=>{
         }}
       >
         <Toast.Header>
-          <strong className="mr-auto">Subscribe Message</strong>
+          <strong className="mr-auto">{t("Subscribe Message")}</strong>
         </Toast.Header>
         <Toast.Body>
           <p>{subscribeMessage}</p>
           <Button variant="danger" onClick={cancelSubscription}>
-            Cancel Subscription
+            {t("Cancel Subscription")}
           </Button>
         </Toast.Body>
       </Toast>

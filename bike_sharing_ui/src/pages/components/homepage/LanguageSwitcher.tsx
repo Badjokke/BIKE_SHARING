@@ -8,13 +8,13 @@ const LanguageSwitcher: React.FC = () => {
     i18n.changeLanguage(language);
     saveChosenLanguage(language);
   };
-
+  /*
   useEffect(()=>{
       const lang = loadChosenLanguage();
       if(lang)
         changeLanguage(lang);
   },[])
-
+*/
 
   return (
     <div>

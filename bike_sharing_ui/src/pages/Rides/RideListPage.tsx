@@ -2,42 +2,14 @@
 import React, { useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 import { useState } from 'react';
-import { fetchUserRides,Ride,USER_RIDES_RESPONSE} from '../../api/user_service_api/UserApiCaller';
+import { fetchUserRides,Ride} from '../../api/user_service_api/UserApiCaller';
 import { useNavigate } from 'react-router-dom';
-/*
-interface Ride {
-  rideId: number;
-  userId: number;
-  bikeId: number;
-  startStandId: number;
-  endStandId: number;
-  rideStart: string;
-  rideEnd: string;
-}*/
+import { useTranslation } from 'react-i18next';
 
 const RideListPage: React.FC = () => {
+ const {t} = useTranslation();
  const [rideData,setRideData] = useState<Ride[]|null|undefined>(undefined);
  const navigate = useNavigate();
-  /* const rideData: Ride[] = [
-    {
-      rideId: 1,
-      userId: 1,
-      bikeId: 1,
-      startStandId: 5,
-      endStandId: 1,
-      rideStart: '2023-11-23T23:00:00Z',
-      rideEnd: '2023-11-24T23:00:00Z',
-    },
-    {
-      rideId: 2,
-      userId: 1,
-      bikeId: 1,
-      startStandId: 5,
-      endStandId: 1,
-      rideStart: '2023-11-23T23:00:00Z',
-      rideEnd: '2023-11-24T23:30:00Z',
-    },
-  ];*/
 
   const fetchRides = async () => {
     const response = await fetchUserRides();
@@ -77,18 +49,18 @@ const RideListPage: React.FC = () => {
 
   return (
     (rideData)? ( <div className="container mt-4">
-      <h1>Ride List</h1>
+      <h1>{t("Ride List")}</h1>
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>Ride ID</th>
-            <th>User ID</th>
-            <th>Bike ID</th>
-            <th>Start Stand ID</th>
-            <th>End Stand ID</th>
-            <th>Ride Start</th>
-            <th>Ride End</th>
-            <th>Ride Duration</th>
+            <th>{t("Ride")} ID</th>
+            <th>{t("User")} ID</th>
+            <th>{t("Bike")} ID</th>
+            <th>{t("Start")} {t("Stand")} ID</th>
+            <th>{t("End")} {t("Stand")} ID</th>
+            <th>{t("Ride")} {t("Start")}</th>
+            <th>{t("Ride")} {t("End")}</th>
+            <th>{t("Ride")} {t("Duration")}</th>
           </tr>
         </thead>
         <tbody>
@@ -109,7 +81,7 @@ const RideListPage: React.FC = () => {
     </div>
           ):
 
-          (rideData===null?(<h1>User has no rides</h1>):(<h1>loading user rides</h1>))
+          (rideData===null?(<h1>{t("User has no rides")}</h1>):(<h1>{t("Loading user rides")}</h1>))
   )
 };
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form, Dropdown  } from 'react-bootstrap';
 import { SelectedRide } from '../../Ride/RidePage';
 import { startUserRide,BikeStartObject,RideStartResponse,RideStartFailureResponse} from '../../../api/ride_api/RideApi';
+import { useTranslation } from 'react-i18next';
 export interface BikeObject  {
     id: number;
     Stand: {
@@ -31,7 +32,7 @@ interface RideModalProps {
 
 const ModalRide: React.FC<RideModalProps> = ({ show, handleClose, bikeData, endStandData,setTokenState }) => {
 
-
+  const {t} = useTranslation();
   const [selectedEndStand, setSelectedEndStand] = useState<StandObject | null>(null);
   const [selectedBike, setSelectedBike] = useState<BikeObject | null>(null);
   const [distance, setDistance] = useState<number | null>(null);
@@ -123,21 +124,21 @@ const ModalRide: React.FC<RideModalProps> = ({ show, handleClose, bikeData, endS
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Ride Details</Modal.Title>
+        <Modal.Title>{t("Ride Details")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
       <Form.Group controlId="formId">
-  <Form.Label>Bike</Form.Label>
+  <Form.Label>{t("Bike")}</Form.Label>
   <Dropdown>
     <Dropdown.Toggle variant="success" id="dropdown-id">
-      {selectedBike ? `Bike ${selectedBike.id}` : 'Select bike'}
+      {selectedBike ? `${t("Bike")} ${selectedBike.id}` : t('Select bike')}
     </Dropdown.Toggle>
     <Dropdown.Menu>
       {bikeData.map((bike) => (
        <Dropdown.Item key={bike.id} onClick={() => {
         handleIdChange(bike);}}>
-       Bike {bike.id}
+       {t("Bike")} {bike.id}
      </Dropdown.Item>
       ))}
     </Dropdown.Menu>
@@ -145,36 +146,36 @@ const ModalRide: React.FC<RideModalProps> = ({ show, handleClose, bikeData, endS
 </Form.Group>
           {/* Other form fields */}
           <Form.Group controlId="formEndStand">
-            <Form.Label>End Stand</Form.Label>
+            <Form.Label>{t("End Stand")}</Form.Label>
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-endstand">
-                {selectedEndStand ? `Stand ${selectedEndStand.id}` : 'Select End Stand'}
+                {selectedEndStand ? `${t("Stand")} ${selectedEndStand.id}` : t('Select End Stand')}
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {endStandData.map((stand) => (
                   <Dropdown.Item key={stand.id} onClick={() => handleEndStandChange(stand)}>
-                    Stand {stand.id}
+                    {t("Stand")} {stand.id}
                   </Dropdown.Item>
                 ))}
               </Dropdown.Menu>
             </Dropdown>
           </Form.Group>
           <Form.Group controlId="formStartStand">
-            <Form.Label>Starting Stand</Form.Label>
+            <Form.Label>{t("Starting Stand")}</Form.Label>
             <Form.Control type="text" readOnly value={selectedBike ? selectedBike.Stand.id : ''} />
           </Form.Group>
           <Form.Group controlId="formDistance">
-            <Form.Label>Distance</Form.Label>
-            <Form.Control type="text" readOnly value={distance !== null ? `${distance} meters` : ''} />
+            <Form.Label>{t("Distance")}</Form.Label>
+            <Form.Control type="text" readOnly value={distance !== null ? `${distance} ${t("meters")}` : ''} />
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          Close
+          {t("Close")}
         </Button>
         <Button variant="primary" onClick={startRide}>
-          Start ride
+          {t("Start ride")}
         </Button>
       </Modal.Footer>
     </Modal>
