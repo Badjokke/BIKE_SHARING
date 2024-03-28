@@ -62,7 +62,7 @@ jobs:
           cache: maven
 
       - name: Build Bike Sharing
-      - run: |
+        run: |
           cd bike_sharing
           mvn clean install
 
@@ -79,7 +79,7 @@ jobs:
           path: bike_sharing/target/bike_sharing-0.0.1-SNAPSHOT.war
 
       - name: Build Bike Sharing Auth
-      - run: |
+        run: |
           cd bike_sharing_auth
           mvn clean install
 
