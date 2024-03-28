@@ -47,8 +47,9 @@ jobs:
 #      - name: Bike Sharing UI test
 
   build:
-    name: Build all apps
     needs: Test all apps
+    name: Build all apps
+
     runs-on: ubuntu-latest
 
     steps:
