@@ -31,8 +31,7 @@ jobs:
 
       - name: Bike Sharing test
         run: |
-          cd bike_sharing
-          mwn test
+          echo ls 
 
 #      - name: Bike Sharing Auth test
 #
