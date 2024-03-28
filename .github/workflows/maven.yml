@@ -33,6 +33,7 @@ jobs:
         run: |
           cd bike_sharing
           ls
+          mvn test
 
 #      - name: Bike Sharing Auth test
 #
