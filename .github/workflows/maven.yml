@@ -62,40 +62,38 @@ jobs:
           cache: maven
 
       - name: Build Bike Sharing
-        steps:
-        - run: |
-            cd bike_sharing
-            mvn clean install
+      - run: |
+          cd bike_sharing
+          mvn clean install
 
-        - name: print
-          run: |
-            cd bike_sharing 
-            cd target
-            ls
+      - name: print Bike Sharing
+        run: |
+          cd bike_sharing 
+          cd target
+          ls
 
-        - name: Save Artifact from Bike Sharing
-          uses: actions/upload-artifact@v4
-          with:
-            name: Package
-            path: bike_sharing/target/bike_sharing-0.0.1-SNAPSHOT.war
+      - name: Save Artifact from Bike Sharing
+        uses: actions/upload-artifact@v4
+        with:
+          name: Package
+          path: bike_sharing/target/bike_sharing-0.0.1-SNAPSHOT.war
 
       - name: Build Bike Sharing Auth
-        steps:
-          - run: |
-              cd bike_sharing_auth
-              mvn clean install
+      - run: |
+          cd bike_sharing_auth
+          mvn clean install
 
-          - name: print
-            run: |
-              cd bike_sharing_auth
-              cd target
-              ls
+      - name: print Bike Sharing Auth
+        run: |
+          cd bike_sharing_auth
+          cd target
+          ls
 
-          - name: Save Artifact from Bike Sharing Auth
-            uses: actions/upload-artifact@v4
-            with:
-              name: Package
-              path: bike_sharing/target/authenticator-0.0.1-SNAPSHOT.war
+      - name: Save Artifact from Bike Sharing Auth
+        uses: actions/upload-artifact@v4
+        with:
+          name: Package
+          path: bike_sharing/target/authenticator-0.0.1-SNAPSHOT.war
 
 #      # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
 #      - name: Update dependency graph
