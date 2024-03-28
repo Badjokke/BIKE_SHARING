@@ -69,7 +69,6 @@ jobs:
       - name: print
         run: |
           cd bike_sharing 
-          ls
           cd target
           ls
 
@@ -77,7 +76,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Package
-          path: ./target/*.war
+          path: bike_sharing/target/bike_sharing-0.0.1-SNAPSHOT.war
           
 
 #      # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
