@@ -67,7 +67,11 @@ jobs:
           mvn clean install
 
       - name: print
-        run: ls
+        run: |
+          cd bike_sharing 
+          ls
+          cd target
+          ls
 
       - name: Save Artifact
         uses: actions/upload-artifact@v4
