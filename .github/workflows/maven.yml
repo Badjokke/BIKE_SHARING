@@ -63,13 +63,15 @@ jobs:
       - name: Build Bike Sharing
         run: |
           cd bike_sharing
-          mvn clean package 
+          mvn clean package
+          java -jar ./target/bike_sharing-0.0.1-SNAPSHOT.war
 #          ls
 #          ls target
-      - uses: actions/upload-artifact@v4
+      - name: Save Artifact
+        uses: actions/upload-artifact@v4
         with:
           name: my-artifact
-          path: my-1gb-file
+          path: ./target/bike_sharing-0.0.1-SNAPSHOT.war
           
 
 #      # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
