@@ -32,13 +32,18 @@ jobs:
       - name: Bike Sharing test
         run: |
           cd bike_sharing
-          ls
           mvn test
 
-#      - name: Bike Sharing Auth test
-#
-#      - name: Bike Sharing location test
-#
+      - name: Bike Sharing Auth test
+        run: |
+          cd bike_sharing_auth
+          mvn test
+
+      - name: Bike Sharing location test
+        run: |
+          cd bike_sharing_location
+          mvn test
+
 #      - name: Bike Sharing UI test
 #
 #  build:
