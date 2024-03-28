@@ -28,7 +28,7 @@ jobs:
           cache: maven
 
       - name: Bike Sharing test
-        runs: |
+        run: |
           cd bike_sharing
           mwn test
 
