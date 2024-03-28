@@ -48,6 +48,7 @@ jobs:
 
   build:
     name: Build all apps
+    needs: Test all apps
     runs-on: ubuntu-latest
 
     steps:
@@ -64,14 +65,14 @@ jobs:
         run: |
           cd bike_sharing
           mvn clean package
-          java -jar ./target/bike_sharing-0.0.1-SNAPSHOT.war
+#          java -jar ./target/bike_sharing-0.0.1-SNAPSHOT.war
 #          ls
 #          ls target
-      - name: Save Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: my-artifact
-          path: ./target/bike_sharing-0.0.1-SNAPSHOT.war
+#      - name: Save Artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: my-artifact
+#          path: ./target/bike_sharing-0.0.1-SNAPSHOT.war
           
 
 #      # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
