@@ -31,7 +31,7 @@ jobs:
 
       - name: Bike Sharing test
         run: |
-          echo ls 
+          ls
 
 #      - name: Bike Sharing Auth test
 #
