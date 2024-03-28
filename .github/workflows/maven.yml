@@ -39,10 +39,10 @@ jobs:
           cd bike_sharing_auth
           mvn test
 
-#      - name: Bike Sharing location test
-#        run: |
-#          cd bike_sharing_location
-#          mvn test
+      - name: Bike Sharing location test
+        run: |
+          cd bike_sharing_location
+          mvn test
 
 #      - name: Bike Sharing UI test
 
@@ -93,7 +93,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Package
-          path: bike_sharing/target/authenticator-0.0.1-SNAPSHOT.war
+          path: bike_sharing_auth/target/authenticator-0.0.1-SNAPSHOT.war
 
 #      # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
 #      - name: Update dependency graph
