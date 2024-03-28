@@ -31,6 +31,7 @@ jobs:
 
       - name: Bike Sharing test
         run: |
+          cd bike_sharing
           ls
 
 #      - name: Bike Sharing Auth test
