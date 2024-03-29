@@ -129,6 +129,7 @@ jobs:
       - name: Build Bike Sharing UI
         run: |
           cd bike_sharing_ui
+          npm ci
           npm run build
 
       - name: print Bike Sharing UI
