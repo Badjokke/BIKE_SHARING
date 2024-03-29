@@ -44,7 +44,16 @@ jobs:
           cd bike_sharing_location
           mvn test
 
-#      - name: Bike Sharing UI test
+      - name: Set up NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Bike Sharing UI test
+        run: |
+          cd bike_sharing_ui
+          npm ci
+          npm test
 
   build:
     name: Build all apps
