@@ -109,17 +109,17 @@ jobs:
           cd bike_sharing_auth
           mvn clean install
 
-      - name: print Bike Sharing Auth
+      - name: print Bike Sharing Location
         run: |
-          cd bike_sharing_auth
+          cd bike_sharing_location
           cd target
           ls
 
-      - name: Save Artifact from Bike Sharing Auth
+      - name: Save Artifact from Bike Sharing Location
         uses: actions/upload-artifact@v4
         with:
-          name: bike_sharing_auth
-          path: bike_sharing_auth/target/authenticator-0.0.1-SNAPSHOT.war
+          name: bike_sharing_location
+          path: bike_sharing_location/target/bike_sharing_location-0.0.1-SNAPSHOT.war
 
 #      # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
 #      - name: Update dependency graph
