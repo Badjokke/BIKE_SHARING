@@ -53,7 +53,7 @@ jobs:
         run: |
           cd bike_sharing_ui
           npm ci
-          npm test --passWithNoTests
+          npm test
 
   build:
     name: Build all apps
@@ -84,7 +84,7 @@ jobs:
       - name: Save Artifact from Bike Sharing
         uses: actions/upload-artifact@v4
         with:
-          name: Package/bike_sharing
+          name: bike_sharing
           path: bike_sharing/target/bike_sharing-0.0.1-SNAPSHOT.war
 
       - name: Build Bike Sharing Auth
@@ -101,7 +101,24 @@ jobs:
       - name: Save Artifact from Bike Sharing Auth
         uses: actions/upload-artifact@v4
         with:
-          name: Package/bike_sharing_auth
+          name: bike_sharing_auth
+          path: bike_sharing_auth/target/authenticator-0.0.1-SNAPSHOT.war
+
+      - name: Build Bike Sharing Location
+        run: |
+          cd bike_sharing_auth
+          mvn clean install
+
+      - name: print Bike Sharing Auth
+        run: |
+          cd bike_sharing_auth
+          cd target
+          ls
+
+      - name: Save Artifact from Bike Sharing Auth
+        uses: actions/upload-artifact@v4
+        with:
+          name: bike_sharing_auth
           path: bike_sharing_auth/target/authenticator-0.0.1-SNAPSHOT.war
 
 #      # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
