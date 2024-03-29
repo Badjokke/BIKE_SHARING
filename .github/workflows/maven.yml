@@ -106,7 +106,7 @@ jobs:
 
       - name: Build Bike Sharing Location
         run: |
-          cd bike_sharing_auth
+          cd bike_sharing_location
           mvn clean install
 
       - name: print Bike Sharing Location
