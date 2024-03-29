@@ -15,6 +15,10 @@ on:
   pull_request:
     branches: [ "master" ]
 
+env:
+    CI: false
+
+
 jobs:
   test:
     name: Test all apps
