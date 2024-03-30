@@ -1,0 +1,7 @@
+---
+
+- name: Initial Server Configuration
+  hosts: loadbalancers
+  roles:
+    - users
+    

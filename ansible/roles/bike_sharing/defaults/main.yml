@@ -1,0 +1,20 @@
+---
+# defaults file for calculator
+# todo expand for all microservices
+tmp_dir: "/tmp/downloads"
+log_dir: "/var/log"
+
+calculator_base_dir: "/opt/bike_sharing"
+#TODO probably rename
+calculator_binary_filename: "sampleapp"
+templates_archive_filename: "calculator-templates.tar.gz"
+
+gitlab_auth_header: "PRIVATE-TOKEN"
+
+gitlab_auth_headers:
+  - key: "{{ gitlab_auth_header }}"
+    value: "{{ gitlab_auth_token }}"
+
+calculator_service_name: "bike_sharing"
+
+systemd_dir: "/etc/systemd/system/"

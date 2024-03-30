@@ -1,0 +1,12 @@
+[Unit]
+SourcePath={{ calculator_script }}
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+Type=forking
+ExecStart={{ calculator_script }} start
+ExecStop={{ calculator_script }} stop
+
+[Install]
+WantedBy=multi-user.target

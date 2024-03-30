@@ -1,0 +1,1 @@
+Group variables which ought to be shared between hosts in all environments (inventories) come here.

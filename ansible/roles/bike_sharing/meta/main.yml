@@ -1,0 +1,14 @@
+galaxy_info:
+  role_name: calculator
+  author: Jakub Danek
+  description: Role for calculator service deployment
+  company: KIV ZCU
+
+  license: MIT
+
+  min_ansible_version: "2.1"
+  
+  galaxy_tags: []
+
+
+dependencies: []

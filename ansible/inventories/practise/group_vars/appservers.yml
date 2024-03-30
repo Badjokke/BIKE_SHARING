@@ -1,0 +1,21 @@
+# global appserverss variables
+
+user_name: bike_sharing
+user_group: bike_sharing
+user_shell: /bin/bash
+
+gitlab_binary_package_version: "rolling"
+gitlab_template_package_version: "rolling"
+
+calculator_download_url: "{{ gitlab_url}}/{{ gitlab_project_id }}/packages/generic/{{ gitlab_binary_package_name }}/{{ gitlab_binary_package_version }}/{{ gitlab_binary_file_name }}"
+template_download_url: "{{ gitlab_url}}/{{ gitlab_project_id }}/packages/generic/{{ gitlab_template_package_name }}/{{ gitlab_template_package_version }}/{{ gitlab_template_file_name }}"
+
+gitlab_project_id: "524"
+gitlab_binary_package_name: "sampleapp"
+gitlab_binary_file_name: "sampleapp"
+
+gitlab_template_package_name: "sampleapp"
+gitlab_template_file_name: "calculator-templates.tar.gz"
+
+calculator_user: "{{ user_name }}"
+calculator_group: "{{ user_group }}"
