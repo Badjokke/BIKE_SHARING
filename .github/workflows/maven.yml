@@ -161,7 +161,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: bike_sharing
-          path: /artifacts_github/bike_sharing.war
+          path: /artifacts_github
       #- name: Upload bike_sharing artifact to server
       #  run: |
       #    scp -r /artifacts_github/bike_sharing.war nodeadm@147.228.173.146:/home/nodeadm/artifact
