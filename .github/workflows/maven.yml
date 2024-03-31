@@ -17,7 +17,7 @@ on:
 
 env:
     CI: false
-
+    SSH_KEY: xxx
 
 jobs:
   test:
@@ -143,12 +143,26 @@ jobs:
           name: bike-sharing-ui
           path: bike_sharing_ui/build
 
+
+
+
+
+
+
+
       #- name: Copy artifacts for production run
       #  run: |
       #    cd bike_sharing_ui
       #    cp ./nginx.conf /etc/nginx/conf.d/default.conf
       #    cp -r /build/* /usr/share/nginx/html
           
+  #upload:
+  #  name: Uploads all binaries to production server
+  #  needs: build
+  #  runs-on: ubuntu-latest
+  #  steps:
+
+
 
 #      - name: Save Artifact from Bike Sharing UI
 #        uses: actions/upload-artifact@v4
