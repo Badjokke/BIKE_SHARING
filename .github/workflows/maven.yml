@@ -157,6 +157,13 @@ jobs:
       - name: Create directory for artifacts
         run: |
           sudo mkdir -p /artifacts_github
+          sudo mkdir -p /artifacts_github/bike-sharing-ui
+          sudo mkdir -p /artifacts_github/bike_sharing_location
+          sudo mkdir -p /artifacts_github/bike_sharing
+          sudo mkdir -p /artifacts_github/bike_sharing_auth
+
+
+
       - name: Download bike_sharing artifact
         uses: actions/download-artifact@v4
         with:
