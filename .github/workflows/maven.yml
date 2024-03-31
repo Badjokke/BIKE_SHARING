@@ -152,8 +152,6 @@ jobs:
     name: Uploads all binaries to production server
     needs: build
     runs-on: ubuntu-latest
-    env:
-      SSH_KEY: ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1MjEAAACFBAFdJoJEgG87l/oXZtgaB/oT+9o17mC7LpxW/60jnxRz1imRSq+LPoWB5GftSmnMME1utYoWOhW9AZFPeQHNavMLFQAnd1dNrfdW6AVi6xJ+8rHnNE5wPex5Vh0l4WFyRobcmXAsvIDloJD2gWuWrM6lXjkEZ/qG6MxpZW3j+CVKsW2g7g== root@5ac89657b6e8
     
     steps:
       - name: Download bike_sharing artifact
