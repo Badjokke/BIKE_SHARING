@@ -11,13 +11,12 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "trefil" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "trefil" ]
 
 env:
     CI: false
-    SSH_KEY: xxx
 
 jobs:
   test:
@@ -143,24 +142,30 @@ jobs:
           name: bike-sharing-ui
           path: bike_sharing_ui/build
 
-
-
-
-
-
-
-
       #- name: Copy artifacts for production run
       #  run: |
       #    cd bike_sharing_ui
       #    cp ./nginx.conf /etc/nginx/conf.d/default.conf
       #    cp -r /build/* /usr/share/nginx/html
           
-  #upload:
-  #  name: Uploads all binaries to production server
-  #  needs: build
-  #  runs-on: ubuntu-latest
-  #  steps:
+  upload:
+    name: Uploads all binaries to production server
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      SSH_KEY: ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1MjEAAACFBAFdJoJEgG87l/oXZtgaB/oT+9o17mC7LpxW/60jnxRz1imRSq+LPoWB5GftSmnMME1utYoWOhW9AZFPeQHNavMLFQAnd1dNrfdW6AVi6xJ+8rHnNE5wPex5Vh0l4WFyRobcmXAsvIDloJD2gWuWrM6lXjkEZ/qG6MxpZW3j+CVKsW2g7g== root@5ac89657b6e8
+    
+    steps:
+      - name: Download bike_sharing artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: bike_sharing
+          path: /artifacts_github/bike_sharing.war
+      #- name: Upload bike_sharing artifact to server
+      #  run: |
+      #    scp -r /artifacts_github/bike_sharing.war nodeadm@147.228.173.146:/home/nodeadm/artifact
+      #  env:
+      #      SSH_PRIVATE_KEY
 
 
 
