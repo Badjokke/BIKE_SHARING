@@ -19,6 +19,7 @@ env:
     CI: false
 
 jobs:
+
   test:
     name: Test all apps
     runs-on: ubuntu-latest
@@ -77,12 +78,6 @@ jobs:
         run: |
           cd bike_sharing
           mvn clean install
-
-      - name: print Bike Sharing
-        run: |
-          cd bike_sharing 
-          cd target
-          ls
 
       - name: Save Artifact from Bike Sharing
         uses: actions/upload-artifact@v4
@@ -152,23 +147,16 @@ jobs:
     name: Uploads all binaries to production server
     needs: build
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Create directory for artifacts
-        run: |
-          sudo mkdir -p /artifacts_github
-          sudo mkdir -p /artifacts_github/bike-sharing-ui
-          sudo mkdir -p /artifacts_github/bike_sharing_location
-          sudo mkdir -p /artifacts_github/bike_sharing
-          sudo mkdir -p /artifacts_github/bike_sharing_auth
-
-
-
       - name: Download bike_sharing artifact
         uses: actions/download-artifact@v4
         with:
-          path: /artifacts_github
-      #- name: Upload bike_sharing artifact to server
+          name: bike_sharing
+          path: /tmp/bike_sharing.war
+      
+      
+      
+          #- name: Upload bike_sharing artifact to server
       #  run: |
       #    scp -r /artifacts_github/bike_sharing.war nodeadm@147.228.173.146:/home/nodeadm/artifact
       #  env:
