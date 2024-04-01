@@ -17,9 +17,13 @@ on:
 
 env:
     CI: false
+    bike_sharing_artifact_name: bike_sharing
+    bike_sharing_auth_artifact_name: bike_sharing_auth
+    bike_sharing_location_artifact_name: bike_sharing_location
+    bike_sharing_ui_artifact_name: bike-sharing-ui
+
 
 jobs:
-
   test:
     name: Test all apps
     runs-on: ubuntu-latest
@@ -82,7 +86,7 @@ jobs:
       - name: Save Artifact from Bike Sharing
         uses: actions/upload-artifact@v4
         with:
-          name: bike_sharing
+          name: ${{env.bike_sharing_artifact_name}}
           path: bike_sharing/target/bike_sharing-0.0.1-SNAPSHOT.war
 
       - name: Build Bike Sharing Auth
@@ -99,7 +103,7 @@ jobs:
       - name: Save Artifact from Bike Sharing Auth
         uses: actions/upload-artifact@v4
         with:
-          name: bike_sharing_auth
+          name: ${{env.bike_sharing_auth_artifact_name}}
           path: bike_sharing_auth/target/authenticator-0.0.1-SNAPSHOT.war
 
       - name: Build Bike Sharing Location
@@ -116,7 +120,7 @@ jobs:
       - name: Save Artifact from Bike Sharing Location
         uses: actions/upload-artifact@v4
         with:
-          name: bike_sharing_location
+          name: ${{env.bike_sharing_location_artifact_name}}
           path: bike_sharing_location/target/bike_sharing_location-0.0.1-SNAPSHOT.war
 
       - name: Set up NodeJS
@@ -129,13 +133,14 @@ jobs:
           cd bike_sharing_ui
           npm ci
           npm run build
+          tar -czvf bike_sharing_ui.tar.gz build nginx.conf
 
 
       - name: Save Artifact from Bike Sharing UI
         uses: actions/upload-artifact@v4
         with:
-          name: bike-sharing-ui
-          path: bike_sharing_ui/build
+          name: ${{env.bike_sharing_ui_artifact_name}}
+          path: bike_sharing_ui/bike_sharing_ui.tar.gz
 
       #- name: Copy artifacts for production run
       #  run: |
@@ -143,34 +148,49 @@ jobs:
       #    cp ./nginx.conf /etc/nginx/conf.d/default.conf
       #    cp -r /build/* /usr/share/nginx/html
           
-  upload:
-    name: Uploads all binaries to production server
+  download:
+    name: Download all production artifacts from github repository
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Download bike_sharing artifact
         uses: actions/download-artifact@v4
         with:
-          name: bike_sharing
-          path: /tmp/bike_sharing.war
-      
-      - name: Upload bike_sharing artifact to host node
-        uses: appleboy/ssh-action@master
+          name: ${{env.bike_sharing_artifact_name}}
+          path: /tmp/bike_sharing-0.0.1-SNAPSHOT.war
+
+      - name: Download bike_sharing_auth artifact
+        uses: actions/download-artifact@v4
         with:
-          host: ${{ secrets.HOST_NODE }}
-          username: ${{ secrets.NODE_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-                scp -i ${{secrets.SSH_KEY}} /tmp/bike_sharing.war ${{ secrets.NODE_USERNAME }}@${{ secrets.HOST_NODE }}:/home/${{secrets.NODE_USERNAME}}/artifact/bike_sharing.war
+            name: ${{env.bike_sharing_auth_artifact_name}}
+            path: /tmp/authenticator-0.0.1-SNAPSHOT.war
       
-      
-      
+      - name: Download bike_sharing_location artifact
+        uses: actions/download-artifact@v4
+        with:
+              name: ${{env.bike_sharing_location_artifact_name}}
+              path: /tmp/bike_sharing_location-0.0.1-SNAPSHOT.war
+
+      - name: Download bike_sharing_ui artifact
+        uses: actions/download-artifact@v4
+        with:
+              name: ${{env.bike_sharing_location_artifact_name}}
+              path: /tmp/bike_sharing_ui.zip
+              
           #- name: Upload bike_sharing artifact to server
       #  run: |
       #    scp -r /artifacts_github/bike_sharing.war nodeadm@147.228.173.146:/home/nodeadm/artifact
       #  env:
       #      SSH_PRIVATE_KEY
 
+          
+          
+              #- name: Upload bike_sharing artifact to server
+          #  run: |
+          #    scp -r /artifacts_github/bike_sharing.war nodeadm@147.228.173.146:/home/nodeadm/artifact
+          #  env:
+          #      SSH_PRIVATE_KEY
+    
 
 
 #      - name: Save Artifact from Bike Sharing UI
