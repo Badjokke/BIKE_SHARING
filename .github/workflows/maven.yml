@@ -157,8 +157,11 @@ jobs:
       - name: Upload bike_sharing artifact to host node
         uses: appleboy/ssh-action@master
         with:
-            script: |
-                scp -i ${{secrets.SSH_PRIVATE_KEY}} /tmp/bike_sharing.war ${{ secrets.NODE_USERNAME }}@${{ secrets.HOST_NODE }}:/home/${{secrets.NODE_USERNAME}}/artifact/bike_sharing.war
+          host: ${{ secrets.HOST_NODE }}
+          username: ${{ secrets.NODE_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+                scp -i ${{secrets.SSH_KEY}} /tmp/bike_sharing.war ${{ secrets.NODE_USERNAME }}@${{ secrets.HOST_NODE }}:/home/${{secrets.NODE_USERNAME}}/artifact/bike_sharing.war
       
       
       
