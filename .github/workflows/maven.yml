@@ -188,7 +188,7 @@ jobs:
               host: ${{ secrets.HOST_NODE }}
               username: ${{ secrets.NODE_USERNAME }}
               key: ${{ secrets.SSH_KEY }}
-              source: /tmp/bike_sharing_ui.zip,/tmp/bike_sharing_location-0.0.1-SNAPSHOT.war,/tmp/authenticator-0.0.1-SNAPSHOT.war,/tmp/bike_sharing-0.0.1-SNAPSHOT.war
+              source: /tmp/bike_sharing_ui.zip
               target: /home/nodeadm
           
               #- name: Upload bike_sharing artifact to server
