@@ -148,8 +148,8 @@ jobs:
       #    cp ./nginx.conf /etc/nginx/conf.d/default.conf
       #    cp -r /build/* /usr/share/nginx/html
           
-  download:
-    name: Download all production artifacts from github repository
+  Artifacts_production:
+    name: Copies all artifacts to production server
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -157,38 +157,33 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{env.bike_sharing_artifact_name}}
-          path: /tmp/bike_sharing-0.0.1-SNAPSHOT.war
+          path: distfiles
 
       - name: Download bike_sharing_auth artifact
         uses: actions/download-artifact@v4
         with:
             name: ${{env.bike_sharing_auth_artifact_name}}
-            path: /tmp/authenticator-0.0.1-SNAPSHOT.war
+            path: distfiles
       
       - name: Download bike_sharing_location artifact
         uses: actions/download-artifact@v4
         with:
               name: ${{env.bike_sharing_location_artifact_name}}
-              path: /tmp/bike_sharing_location-0.0.1-SNAPSHOT.war
+              path: distfiles
 
       - name: Download bike_sharing_ui artifact
         uses: actions/download-artifact@v4
         with:
               name: ${{env.bike_sharing_location_artifact_name}}
-              path: /tmp/bike_sharing_ui.zip
+              path: distfiles
               
-  upload:
-      name: Upload artifacts to production node
-      needs: download
-      runs-on: ubuntu-latest
-      steps:
-        - name: Upload downloaded artifacts to target node
-          uses: appleboy/scp-action@v0.1.7
-          with:
+      - name: Upload downloaded artifacts to target node
+        uses: appleboy/scp-action@v0.1.7
+        with:
               host: ${{ secrets.HOST_NODE }}
               username: ${{ secrets.NODE_USERNAME }}
               key: ${{ secrets.SSH_KEY }}
-              source: /tmp/bike_sharing_ui.zip
+              source: distfiles/*
               target: /home/nodeadm
           
               #- name: Upload bike_sharing artifact to server
