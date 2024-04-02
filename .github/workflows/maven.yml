@@ -177,12 +177,13 @@ jobs:
               name: ${{env.bike_sharing_location_artifact_name}}
               path: /tmp/bike_sharing_ui.zip
               
-          #- name: Upload bike_sharing artifact to server
-      #  run: |
-      #    scp -r /artifacts_github/bike_sharing.war nodeadm@147.228.173.146:/home/nodeadm/artifact
-      #  env:
-      #      SSH_PRIVATE_KEY
-
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+                host: ${{ secrets.HOST_NODE }}
+                username: ${{ secrets.NODE_USERNAME }}
+                key: ${{ secrets.GITHUB_TOKEN }}
+                script: whoami
           
           
               #- name: Upload bike_sharing artifact to server
