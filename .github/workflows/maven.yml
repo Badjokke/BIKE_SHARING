@@ -174,7 +174,7 @@ jobs:
       - name: Download bike_sharing_ui artifact
         uses: actions/download-artifact@v4
         with:
-              name: ${{env.bike_sharing_location_artifact_name}}
+              name: ${{env.bike_sharing_ui_artifact_name}}
               path: distfiles
               
       - name: Upload downloaded artifacts to target node
