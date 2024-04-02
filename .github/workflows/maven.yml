@@ -177,14 +177,19 @@ jobs:
               name: ${{env.bike_sharing_location_artifact_name}}
               path: /tmp/bike_sharing_ui.zip
               
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-                host: ${{ secrets.HOST_NODE }}
-                username: ${{ secrets.NODE_USERNAME }}
-                key: ${{ secrets.SSH_KEY }}
-                script: whoami
-          
+  upload:
+      name: Upload artifacts to production node
+      needs: download
+      runs-on: ubuntu-latest
+      steps:
+        - name: Upload downloaded artifacts to target node
+          uses: appleboy/scp-action@v0.1.7
+          with:
+              host: ${{ secrets.HOST_NODE }}
+              username: ${{ secrets.NODE_USERNAME }}
+              key: ${{ secrets.SSH_KEY }}
+              source: /tmp/bike_sharing_ui.zip,/tmp/bike_sharing_location-0.0.1-SNAPSHOT.war,/tmp/authenticator-0.0.1-SNAPSHOT.war,/tmp/bike_sharing-0.0.1-SNAPSHOT.war
+              target: /home/nodeadm
           
               #- name: Upload bike_sharing artifact to server
           #  run: |
