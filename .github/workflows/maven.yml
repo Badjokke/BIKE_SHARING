@@ -182,7 +182,7 @@ jobs:
         with:
                 host: ${{ secrets.HOST_NODE }}
                 username: ${{ secrets.NODE_USERNAME }}
-                key: ${{ secrets.GITHUB_TOKEN }}
+                key: ${{ secrets.SSH_KEY }}
                 script: whoami
           
           
