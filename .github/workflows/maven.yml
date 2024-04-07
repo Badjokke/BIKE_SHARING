@@ -11,9 +11,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "trefil" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "trefil" ]
+    branches: [ "master" ]
 
 env:
     CI: false
