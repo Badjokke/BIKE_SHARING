@@ -6,4 +6,4 @@
         role: users
       notify: Restart Calculator Service 
     - ansible.builtin.import_role:
-        role: bike_sharing
+        role: calculator

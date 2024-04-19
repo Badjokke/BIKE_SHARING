@@ -1,0 +1,18 @@
+---
+# defaults file for calculator
+tmp_dir: "/tmp/downloads"
+log_dir: "/var/log"
+
+calculator_base_dir: "/opt/calculator"
+calculator_binary_filename: "sampleapp"
+templates_archive_filename: "calculator-templates.tar.gz"
+
+gitlab_auth_header: "PRIVATE-TOKEN"
+
+gitlab_auth_headers:
+  - key: "{{ gitlab_auth_header }}"
+    value: "{{ gitlab_auth_token }}"
+
+calculator_service_name: "calculator"
+
+systemd_dir: "/etc/systemd/system/"

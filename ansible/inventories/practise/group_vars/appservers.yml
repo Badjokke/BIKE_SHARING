@@ -1,7 +1,7 @@
 # global appserverss variables
 
-user_name: bike_sharing
-user_group: bike_sharing
+user_name: calculator
+user_group: calculator
 user_shell: /bin/bash
 
 gitlab_binary_package_version: "rolling"

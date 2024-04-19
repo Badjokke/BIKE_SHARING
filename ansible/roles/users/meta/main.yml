@@ -1,6 +1,6 @@
 galaxy_info:
   role_name: users
-  author: JTVH
+  author: Vaclav Hrabik
   description: Role for user and user group management.
   company: KIV ZCU
 

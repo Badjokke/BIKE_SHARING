@@ -1,0 +1,36 @@
+variables:
+  ENVIRONMENT:
+    description: "Environment to deploy to"
+    value: "practise"
+
+default:
+  image: cytopia/ansible:2.12
+  tags:
+    - kiv
+
+stages:
+  - deploy
+
+deploy-calculator:
+  stage: deploy
+  before_script:
+    - which ssh-agent || ( apk --update add openssh-client )
+
+    - eval $(ssh-agent -s)
+    - chmod 400 $SSH_PRIVATE_KEY
+    - ssh-add $SSH_PRIVATE_KEY
+  ##
+  ## Create the SSH directory and give it the right permissions
+  ##
+    - ls -lh
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - cp $SSH_SERVER_HOSTKEYS ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+
+  script:
+    - "ansible-playbook --vault-password-file ./password.sh -i inventories/${ENVIRONMENT}/hosts appservers.yml"
+  environment: $ENVIRONMENT
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "pipeline"
+    - when: manual
