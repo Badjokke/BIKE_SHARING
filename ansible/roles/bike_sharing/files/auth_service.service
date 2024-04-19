@@ -1,0 +1,14 @@
+[Unit]
+Description=Authentication Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/java -jar {{bike_sharing_base_dir}}/{{authenticator_service_executable}}
+WorkingDirectory={{bike_sharing_base_dir}}
+User=nodeadm
+Group=nodeadm
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

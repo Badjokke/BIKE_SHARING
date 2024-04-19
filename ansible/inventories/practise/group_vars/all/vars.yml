@@ -1,4 +1,4 @@
 ---
 
 gitlab_url: "https://gitlab.kiv.zcu.cz/api/v4/projects"
-gitlab_auth_token: "{{ vault_gitlab_auth_token }}"
+gitlab_auth_token: "123"

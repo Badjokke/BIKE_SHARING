@@ -4,17 +4,15 @@
 tmp_dir: "/tmp/downloads"
 log_dir: "/var/log"
 
-calculator_base_dir: "/opt/bike_sharing"
+bike_sharing_base_dir: "/home/nodeadm/distfiles"
 #TODO probably rename
-calculator_binary_filename: "sampleapp"
-templates_archive_filename: "calculator-templates.tar.gz"
-
-gitlab_auth_header: "PRIVATE-TOKEN"
-
-gitlab_auth_headers:
-  - key: "{{ gitlab_auth_header }}"
-    value: "{{ gitlab_auth_token }}"
+bike_sharing_app_name: "sampleapp"
 
 calculator_service_name: "bike_sharing"
+
+#auth service name
+authenticator_service_name: "authenticator"
+authenticator_service_executable: "authenticator-0.0.1-SNAPSHOT.war"
+
 
 systemd_dir: "/etc/systemd/system/"
