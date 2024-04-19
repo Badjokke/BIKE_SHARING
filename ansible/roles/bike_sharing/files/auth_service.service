@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/java -jar {{bike_sharing_base_dir}}/{{authenticator_service_executable}}
-WorkingDirectory={{bike_sharing_base_dir}}
+ExecStart=/usr/bin/java -jar /home/nodeadm/distfiles/authenticator-0.0.1-SNAPSHOT.war
+WorkingDirectory=/home/nodeadm/distfiles
 User=nodeadm
 Group=nodeadm
 Restart=always

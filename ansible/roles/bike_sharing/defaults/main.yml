@@ -9,9 +9,8 @@ bike_sharing_base_dir: "/home/nodeadm/distfiles"
 bike_sharing_app_name: "sampleapp"
 
 calculator_service_name: "bike_sharing"
-
 #auth service name
-authenticator_service_name: "authenticator"
+authenticator_service_name: "auth_service.service"
 authenticator_service_executable: "authenticator-0.0.1-SNAPSHOT.war"
 
 
