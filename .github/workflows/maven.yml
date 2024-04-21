@@ -210,7 +210,9 @@ jobs:
       run: touch $HOME/secrets/id_rsa.pem
       
     - name: Decrypt Pem
-      run: gpg --quiet --batch --yes --decrypt --passphrase="$LARGE_SECRET_PASSPHRASE" --output $HOME/secrets/id_rsa.pem id_rsa.gpg
+      run: |
+           gpg --quiet --batch --yes --decrypt --passphrase="$LARGE_SECRET_PASSPHRASE" --output $HOME/secrets/id_rsa.pem id_rsa.gpg
+           ssh-keyscan -H 147.228.173.146 >> $HOME/secrets/known_hosts
       env:
          LARGE_SECRET_PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
