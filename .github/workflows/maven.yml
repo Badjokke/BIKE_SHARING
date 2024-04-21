@@ -203,9 +203,11 @@ jobs:
       run: pip install ansible
       #necessary to create a file with private key for ansible playbook
     - name: Retrieve SSH Key
-      run: echo "${{ secrets.SSH_KEY }}" > ssh_key.pem && chmod 600 ssh_key.pem && cat ssh_key.pem
-
+      run: |
+          echo -n "${{ secrets.SSH_KEY }}" > ssh_key.pem
+          chmod 600 ssh_key.pem
+          cat ssh_key.pem
 
 
     - name: Run Ansible playbook
-      run: ansible-playbook -i ansible/inventories/practise/ ansible/playbook_apps.yml --private-key=ssh_key.pem
+      run: ansible-playbook -i ansible/inventories/practise/ ansible/playbook_apps.yml --private-key <(echo -n "${{ secrets.SSH_KEY }}")
