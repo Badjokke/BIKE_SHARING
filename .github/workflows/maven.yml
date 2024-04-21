@@ -204,7 +204,7 @@ jobs:
 
     - name: Run Ansible playbook
       
-      run: ls && ansible-playbook -i ansible/inventories/practice/ ansible/playbook_apps.yml  # Replace playbook.yml with your playbook file name
+      run: ansible-playbook -i ansible/inventories/practise/ ansible/playbook_apps.yml  # Replace playbook.yml with your playbook file name
       
 
 
