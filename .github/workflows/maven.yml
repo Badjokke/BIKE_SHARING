@@ -218,4 +218,4 @@ jobs:
 
 
     - name: Run Ansible playbook
-      run: ansible-playbook -i ansible/inventories/practise/ ansible/playbook_apps.yml $HOME/secrets/id_rsa.pem
+      run: ansible-playbook -i ansible/inventories/practise/ ansible/playbook_apps.yml --private_key=$HOME/secrets/id_rsa.pem
