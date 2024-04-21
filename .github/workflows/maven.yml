@@ -157,25 +157,25 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{env.bike_sharing_artifact_name}}
-          path: distfiles
+          path: distfiles/bike_sharing
 
       - name: Download bike_sharing_auth artifact
         uses: actions/download-artifact@v4
         with:
             name: ${{env.bike_sharing_auth_artifact_name}}
-            path: distfiles
+            path: distfiles/auth
       
       - name: Download bike_sharing_location artifact
         uses: actions/download-artifact@v4
         with:
               name: ${{env.bike_sharing_location_artifact_name}}
-              path: distfiles
+              path: distfiles/location
 
       - name: Download bike_sharing_ui artifact
         uses: actions/download-artifact@v4
         with:
               name: ${{env.bike_sharing_ui_artifact_name}}
-              path: distfiles
+              path: distfiles/react
               
       - name: Upload downloaded artifacts to target node
         uses: appleboy/scp-action@v0.1.7

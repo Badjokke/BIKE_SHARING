@@ -1,0 +1,14 @@
+[Unit]
+Description=Sharing service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/java -jar /home/nodeadm/distfiles/bike_sharing/bike_sharing-0.0.1-SNAPSHOT.war
+WorkingDirectory=/home/nodeadm/distfiles/bike_sharing
+User=nodeadm
+Group=nodeadm
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -5,13 +5,22 @@ tmp_dir: "/tmp/downloads"
 log_dir: "/var/log"
 
 bike_sharing_base_dir: "/home/nodeadm/distfiles"
-#TODO probably rename
-bike_sharing_app_name: "sampleapp"
 
 calculator_service_name: "bike_sharing"
 #auth service name
 authenticator_service_name: "auth_service.service"
 authenticator_service_executable: "authenticator-0.0.1-SNAPSHOT.war"
 
+#bike_sharing service name
+bike_sharing_service_name: "bike_sharing_service.service"
+bike_sharing_service_executable: "bike_sharing-0.0.1-SNAPSHOT.war"
+
+#bike location service name
+bike_location_service_name: "bike_location_service.service"
+bike_location_service_executable: "bike_sharing_location-0.0.1-SNAPSHOT.war"
+
+#client service
+client_archive_name: "bike_sharing_ui.tar.gz"
+client_root_dir: "{{bike_sharing_base_dir}}/react"
 
 systemd_dir: "/etc/systemd/system/"

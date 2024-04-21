@@ -1,0 +1,35 @@
+---
+- name: unzip archive
+  ansible.builtin.unarchive:
+    src: "{{client_root_dir}}/{{client_archive_name}}"
+    dest: "{{client_root_dir}}"
+    remote_src: yes
+    extra_opts: [--overwrite]
+  become: true
+
+- name: Ensure the directory for nginx configuration exists
+  ansible.builtin.file:
+    path: /etc/nginx/conf.d
+    state: directory
+
+
+- name: copy configuration to nginx server
+  ansible.builtin.copy:
+    src: "{{client_root_dir}}/nginx.conf"
+    dest: "/etc/nginx/conf.d/default.conf"
+    remote_src: yes 
+  become: true
+
+- name: Find files in the build directory
+  ansible.builtin.find:
+    paths: "{{ client_root_dir }}/build"
+    file_type: file
+  register: build_files
+
+- name: Copy build to nginx
+  ansible.builtin.copy:
+    src: "{{ item.path }}"
+    dest: "/usr/share/nginx/html/"
+    remote_src: yes
+  with_items: "{{ build_files.files }}"
+  become: true
