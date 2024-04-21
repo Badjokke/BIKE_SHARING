@@ -203,7 +203,8 @@ jobs:
       run: pip install ansible
 
     - name: Run Ansible playbook
-      run: ansible-playbook -i ansible/inventories/practice ansible/playbook_apps.yml  # Replace playbook.yml with your playbook file name
+      
+      run: ls && ansible-playbook -i ansible/inventories/practice/ ansible/playbook_apps.yml  # Replace playbook.yml with your playbook file name
       
 
 
