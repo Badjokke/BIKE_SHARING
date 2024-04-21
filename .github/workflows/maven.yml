@@ -197,23 +197,15 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'  # Use the appropriate Python version
+        python-version: '3.10' 
     
     - name: Install ansible 
       run: pip install ansible
+      #necessary to create a file with private key for ansible playbook
+    - name: Retrieve SSH Key
+      run: echo "${{ secrets.SSH_KEY }}" > ssh_key.pem && chmod 600 ssh_key.pem
+
+
 
     - name: Run Ansible playbook
-      
-      run: ansible-playbook -i ansible/inventories/practise/ ansible/playbook_apps.yml  # Replace playbook.yml with your playbook file name
-      
-
-
-#      - name: Save Artifact from Bike Sharing UI
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: bike_sharing_ui
-#          path: bike_sharing_ui/target/bike_sharing_location-0.0.1-SNAPSHOT.war
-
-#      # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-#      - name: Update dependency graph
-#        uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+      run: ansible-playbook -i ansible/inventories/practise/ ansible/playbook_apps.yml --private-key=ssh_key.pem
