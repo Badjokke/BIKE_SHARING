@@ -186,12 +186,25 @@ jobs:
               source: distfiles/*
               target: /home/nodeadm
           
-              #- name: Upload bike_sharing artifact to server
-          #  run: |
-          #    scp -r /artifacts_github/bike_sharing.war nodeadm@147.228.173.146:/home/nodeadm/artifact
-          #  env:
-          #      SSH_PRIVATE_KEY
+  Ansible_deploy:
+    name: Run ansible playbook
+    needs: Artifacts_production
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
     
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'  # Use the appropriate Python version
+    
+    - name: Install ansible 
+      run: pip install ansible
+
+    - name: Run Ansible playbook
+      run: ansible-playbook -i ansible/inventories/practice ansible/playbook_apps.yml  # Replace playbook.yml with your playbook file name
+      
 
 
 #      - name: Save Artifact from Bike Sharing UI

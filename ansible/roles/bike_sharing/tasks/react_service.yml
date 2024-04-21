@@ -20,16 +20,7 @@
     remote_src: yes 
   become: true
 
-- name: Find files in the build directory
-  ansible.builtin.find:
-    paths: "{{ client_root_dir }}/build"
-    file_type: file
-  register: build_files
-
-- name: Copy build to nginx
-  ansible.builtin.copy:
-    src: "{{ item.path }}"
-    dest: "/usr/share/nginx/html/"
-    remote_src: yes
-  with_items: "{{ build_files.files }}"
+- name: copy build to nginx html
+  ansible.builtin.shell:
+      cmd: "cp -r {{client_root_dir}}/build/* /usr/share/nginx/html/"
   become: true
