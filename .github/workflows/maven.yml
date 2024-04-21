@@ -207,7 +207,9 @@ jobs:
       run: mkdir -p $HOME/secrets
   
     - name: Create pem file if not exists
-      run: touch $HOME/secrets/id_rsa.pem
+      run: |
+           touch $HOME/secrets/id_rsa.pem
+           chmod 600 $HOME/secrets/id_rsa.pem
       
     - name: Decrypt Pem
       run: |
