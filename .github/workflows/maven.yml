@@ -203,7 +203,7 @@ jobs:
       run: pip install ansible
       #necessary to create a file with private key for ansible playbook
     - name: Retrieve SSH Key
-      run: echo "${{ secrets.SSH_KEY }}" > ssh_key.pem && chmod 600 ssh_key.pem
+      run: echo "${{ secrets.SSH_KEY }}" > ssh_key.pem && chmod 600 ssh_key.pem && cat ssh_key.pem
 
 
 
