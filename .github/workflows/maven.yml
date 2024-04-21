@@ -202,6 +202,10 @@ jobs:
     - name: Install ansible 
       run: pip install ansible
       #necessary to create a file with private key for ansible playbook
+    
+    - name: Create secrets directory if not exists
+      run: mkdir -p $HOME/secrets
+  
     - name: Create pem file if not exists
       run: touch $HOME/secrets/id_rsa.pem
       
