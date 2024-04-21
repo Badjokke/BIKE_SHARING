@@ -202,12 +202,11 @@ jobs:
     - name: Install ansible 
       run: pip install ansible
       #necessary to create a file with private key for ansible playbook
-    - name: Retrieve SSH Key
-      run: |
-          echo -n "${{ secrets.SSH_KEY }}" > ssh_key.pem
-          chmod 600 ssh_key.pem
-          cat ssh_key.pem
+    - name: Decrypt Pem
+      run: gpg --quiet --batch --yes --decrypt --passphrase="$LARGE_SECRET_PASSPHRASE" --output $HOME/secrets/id_rsa id_rsa.gpg
+      env:
+         LARGE_SECRET_PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
 
     - name: Run Ansible playbook
-      run: ansible-playbook -i ansible/inventories/practise/ ansible/playbook_apps.yml --private-key <(echo -n "${{ secrets.SSH_KEY }}")
+      run: ansible-playbook -i ansible/inventories/practise/ ansible/playbook_apps.yml $HOME/secrets/id_rsa
