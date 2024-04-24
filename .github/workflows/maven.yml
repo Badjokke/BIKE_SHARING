@@ -202,12 +202,22 @@ jobs:
     - name: Install ansible 
       run: pip install ansible
       #necessary to create a file with private key for ansible playbook
-    - name: Retrieve SSH Key
+    
+    - name: Create secrets directory if not exists
+      run: mkdir -p $HOME/secrets
+  
+    - name: Create pem file if not exists
       run: |
-          echo -n "${{ secrets.SSH_KEY }}" > ssh_key.pem
-          chmod 600 ssh_key.pem
-          cat ssh_key.pem
+           touch $HOME/secrets/id_rsa.pem
+           chmod 600 $HOME/secrets/id_rsa.pem
+      
+    - name: Decrypt Pem
+      run: |
+           gpg --quiet --batch --yes --decrypt --passphrase="$LARGE_SECRET_PASSPHRASE" --output $HOME/secrets/id_rsa.pem id_rsa.gpg
+           ssh-keyscan -H 147.228.173.146 >> $HOME/secrets/known_hosts
+      env:
+         LARGE_SECRET_PASSPHRASE: ${{ secrets.PASSPHRASE }}
 
 
     - name: Run Ansible playbook
-      run: ansible-playbook -i ansible/inventories/practise/ ansible/playbook_apps.yml --private-key <(echo -n "${{ secrets.SSH_KEY }}")
+      run: ansible-playbook -i ansible/inventories/practise/ ansible/playbook_apps.yml --private-key=$HOME/secrets/id_rsa.pem --ssh-common-args="-o UserKnownHostsFile=$HOME/secrets/known_hosts"
