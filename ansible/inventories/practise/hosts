@@ -3,3 +3,6 @@
 
 [appservers]
 147.228.173.146 ansible_user=nodeadm
+
+[databaseservers]
+147.228.173.145 ansible_user=nodeadm

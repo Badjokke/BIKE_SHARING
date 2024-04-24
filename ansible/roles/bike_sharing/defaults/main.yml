@@ -5,8 +5,11 @@ tmp_dir: "/tmp/downloads"
 log_dir: "/var/log"
 
 bike_sharing_base_dir: "/home/nodeadm/distfiles"
-
+db_dir: "{{bike_sharing_base_dir}}/db_scripts"
 calculator_service_name: "bike_sharing"
+mysqldb_root_password: "verysecret"
+
+
 #auth service name
 authenticator_service_name: "auth_service.service"
 authenticator_service_executable: "authenticator-0.0.1-SNAPSHOT.war"
