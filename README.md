@@ -39,3 +39,6 @@ Bike sharing aplikace implementující byznys požadavky:  https://github.com/fi
 # Rozběhnutí
   Aplikace je dockerizovaná - stačí pouze spustit docker engine a následně spustit příkazy: docker compose build; docker compose up;
   Pro správný běh je nutné vložit dummy data do databáze - sql skript se nachází v adresáři data
+
+
+# nová branch
