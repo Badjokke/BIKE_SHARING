@@ -6,3 +6,6 @@
 
 [databaseservers]
 147.228.173.145 ansible_user=nodeadm
+
+[dockerserver]
+147.228.173.153 ansible_user=nodeadm

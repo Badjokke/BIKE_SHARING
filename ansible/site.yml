@@ -1,4 +1,4 @@
 ---
 
-- import_playbook: loadbalancers.yml
-- import_playbook: appservers.yml
+- import_playbook: playbook_docker_install.yml
+- import_playbook: playbook_docker_compose.yml

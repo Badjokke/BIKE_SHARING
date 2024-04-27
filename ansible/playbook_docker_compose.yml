@@ -1,0 +1,7 @@
+---
+
+- name: Run app in docker
+  hosts: appservers
+  tasks:
+    - ansible.builtin.import_role:
+        role: docker_bike_sharing

@@ -1,0 +1,7 @@
+---
+
+- name: Install docker
+  hosts: appservers
+  tasks:
+    - ansible.builtin.import_role:
+        role: docker

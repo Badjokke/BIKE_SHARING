@@ -1,0 +1,17 @@
+---
+# tasks file for docker_bike_sharing
+- name: Example clone of a single branch
+  ansible.builtin.git:
+    repo: https://github.com/Badjokke/BIKE_SHARING.git
+    dest: /BIKE_SHARING
+    single_branch: yes
+    version: hrabik
+
+- name: Create and start services
+  community.docker.docker_compose_v2:
+      project_src: /BIKE_SHARING
+  register: output
+
+- name: Show results
+  ansible.builtin.debug:
+    var: output
