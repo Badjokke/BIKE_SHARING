@@ -8,11 +8,6 @@
     update: yes
     version: docker
 
-- name: Destroy all services
-  community.docker.docker_compose_v2:
-    project_src: /BIKE_SHARING
-    remove_images: all
-
 - name: Create and start services
   community.docker.docker_compose_v2:
       project_src: /BIKE_SHARING
