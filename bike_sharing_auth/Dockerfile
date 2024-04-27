@@ -23,4 +23,4 @@ COPY --from=build /auth_app/target/authenticator-*.jar /auth_app/bike-authentica
 EXPOSE 8080
 
 # Define the default command to run the Spring Boot application
-CMD ["java", "-jar", "bike-authenticator.jar"]
+ENTRYPOINT ["java", "-jar", "bike-authenticator.jar"]

@@ -1,7 +1,8 @@
 ---
 
 - name: Install docker
-  hosts: appservers
+  hosts: dockerserver
+  become: yes
   tasks:
     - ansible.builtin.import_role:
         role: docker

@@ -23,4 +23,4 @@ COPY --from=build /app/target/bike_sharing-*.jar /app/bike-sharing.jar
 EXPOSE 8080
 
 # Define the default command to run the Spring Boot application
-CMD ["java", "-jar", "bike-sharing.jar"]
+ENTRYPOINT ["java", "-jar", "bike-sharing.jar"]

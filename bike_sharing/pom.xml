@@ -11,7 +11,7 @@
     <groupId>com.example</groupId>
     <artifactId>bike_sharing</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>bike_sharing</name>
     <description>bike_sharing</description>
     <properties>
