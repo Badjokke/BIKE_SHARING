@@ -1,0 +1,9 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "docker_cicd" ]
+  pull_request:
+    branches: [ "docker_cicd" ]
+jobs:
+  test:
