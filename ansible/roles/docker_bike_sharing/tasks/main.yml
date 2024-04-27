@@ -6,12 +6,12 @@
     dest: /BIKE_SHARING
     single_branch: yes
     update: yes
-    version: master
+    version: docker
 
-- name: Stop all services
+- name: Destroy all services
   community.docker.docker_compose_v2:
     project_src: /BIKE_SHARING
-    state: stopped
+    remove_images: all
 
 - name: Create and start services
   community.docker.docker_compose_v2:

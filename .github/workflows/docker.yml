@@ -1,0 +1,43 @@
+name: Docker container
+
+on:
+  push:
+    branches: [ "hrabik" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  Ansible_deploy:
+    name: Run ansible playbook
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10' 
+    
+    - name: Install ansible 
+      run: pip install ansible
+      #necessary to create a file with private key for ansible playbook
+    
+    - name: Create secrets directory if not exists
+      run: mkdir -p $HOME/secrets
+  
+    - name: Create pem file if not exists
+      run: |
+           touch $HOME/secrets/id_rsa.pem
+           chmod 600 $HOME/secrets/id_rsa.pem
+      
+    - name: Decrypt Pem
+      run: |
+           gpg --quiet --batch --yes --decrypt --passphrase="$LARGE_SECRET_PASSPHRASE" --output $HOME/secrets/id_rsa.pem id_rsa.gpg
+           ssh-keyscan -H 147.228.173.153 >> $HOME/secrets/known_hosts
+      env:
+         LARGE_SECRET_PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+
+    - name: Run Ansible playbook
+      run: ansible-playbook -i ansible/inventories/practise/ ansible/site.yml --private-key=$HOME/secrets/id_rsa.pem --ssh-common-args="-o UserKnownHostsFile=$HOME/secrets/known_hosts"
