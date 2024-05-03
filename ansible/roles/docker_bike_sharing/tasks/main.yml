@@ -4,7 +4,6 @@
   git:
     repo: https://github.com/Badjokke/BIKE_SHARING.git
     dest: /BIKE_SHARING
-    version: hrabik
 
 - name: Get host info
   community.docker.docker_host_info:
