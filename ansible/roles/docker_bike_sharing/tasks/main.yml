@@ -5,7 +5,7 @@
     repo: https://github.com/Badjokke/BIKE_SHARING.git
     dest: /BIKE_SHARING
     single_branch: yes
-    version: docker_02 
+    version: origin/hrabik 
 
 - name: Get host info
   community.docker.docker_host_info:
