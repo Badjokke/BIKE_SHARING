@@ -1,7 +1,0 @@
----
-# vars file for calculator
-
-calculator_log_dir: "{{ log_dir }}/{{ calculator_service_name }}"
-
-calculator_script: "{{ calculator_base_dir }}/{{ calculator_service_name }}.sh"
-calculator_pid_file: "{{ calculator_base_dir }}/{{ calculator_service_name }}.pid"

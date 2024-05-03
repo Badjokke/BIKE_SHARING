@@ -1,8 +1,0 @@
----
-# handlers file for calculator
-- name: Restart Calculator Service
-  become: true
-  ansible.builtin.service:
-    name: "{{ calculator_service_name }}"
-    daemon_reload: true
-    state: restarted  

@@ -1,7 +1,0 @@
----
-- name: Bikesharing database run
-  hosts: databaseservers
-  tasks:
-    - ansible.builtin.import_role:
-        role: bike_sharing
-        tasks_from: database_service
