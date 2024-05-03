@@ -1,12 +1,9 @@
 ---
 # tasks file for docker_bike_sharing
-- name: Clone of a single branch
-  ansible.builtin.git:
+- git:
     repo: https://github.com/Badjokke/BIKE_SHARING.git
     dest: /BIKE_SHARING
-    single_branch: yes
-    update: yes
-    version: docker
+    version: trefil
 
 - name: Get host info
   community.docker.docker_host_info:
