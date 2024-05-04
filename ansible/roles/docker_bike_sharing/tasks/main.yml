@@ -1,8 +1,8 @@
 ---
 # tasks file for docker_bike_sharing
 - name: Clone GitHub repository to server
-  shell: 
-  cmd: rm -rf BIKE_SHARING/ |
+  ansible.builtin.shell: 
+    cmd: rm -rf BIKE_SHARING/ |
       git clone https://github.com/Badjokke/BIKE_SHARING.git |
       cd BIKE_SHARING/ |
       git checkout hrabik
