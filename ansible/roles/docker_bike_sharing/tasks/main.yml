@@ -7,11 +7,8 @@
 - name: Clone new version
   ansible.builtin.shell: git clone https://github.com/Badjokke/BIKE_SHARING.git
 
-- name: Move to BIKE_SHARING/
-  ansible.builtin.shell: cd BIKE_SHARING/
-
 - name: Checkout hrabik branh
-  ansible.builtin.shell: git checkout hrabik      
+  ansible.builtin.shell: cd BIKE_SHARING/ | git checkout hrabik      
 
 - name: Get host info
   community.docker.docker_host_info:
