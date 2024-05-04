@@ -5,10 +5,7 @@
   ansible.builtin.shell: rm -rf BIKE_SHARING/
 
 - name: Clone new version
-  ansible.builtin.shell: git clone https://github.com/Badjokke/BIKE_SHARING.git
-
-- name: Checkout hrabik branh
-  ansible.builtin.shell: cd BIKE_SHARING/ | git checkout hrabik      
+  ansible.builtin.shell: git clone --branch hrabik https://github.com/Badjokke/BIKE_SHARING.git    
 
 - name: Get host info
   community.docker.docker_host_info:
