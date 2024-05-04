@@ -1,8 +1,33 @@
 ---
 # tasks file for docker_bike_sharing
-- name: Run shell script
-  shell: ls
-  register: shell_output
+- name: Clone GitHub repository to server
+  shell: 
+  cmd: rm -rf BIKE_SHARING/ |
+      git clone https://github.com/Badjokke/BIKE_SHARING.git |
+      cd BIKE_SHARING/ |
+      git checkout hrabik
 
-- name: Debug shell
-  debug: var=shell_output
+- name: Get host info
+  community.docker.docker_host_info:
+    containers: yes
+    images: yes
+  register: docker_info
+
+- name: Remove all containers and their volumes
+  community.docker.docker_container:
+    name: "{{ item }}"
+    state: absent
+    keep_volumes: no
+  loop: "{{ docker_info.containers | map(attribute='Id') }}"
+
+- name: Remove all images
+  community.docker.docker_image:
+    name: "{{ item }}"
+    state: absent
+    force_absent: yes
+  loop: "{{ docker_info.images | map(attribute='Id') }}"
+
+- name: Docker compose up
+  community.docker.docker_compose_v2:
+      project_src: /BIKE_SHARING
+    
