@@ -28,6 +28,9 @@
   loop: "{{ docker_info.images | map(attribute='Id') }}"
 
 - name: Docker compose up
-  community.docker.docker_compose_v2:
-      project_src: /BIKE_SHARING
+  ansible.builtin.shell:  | 
+    cd BIKE_SHARING/
+    sudo docker compose up -d
+
+
     
